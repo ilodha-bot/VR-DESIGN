@@ -72,21 +72,6 @@
     .fade-transition {
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
-
-    /* Key Plan Pin Pulse */
-    @keyframes pulse-ring {
-      0% { transform: scale(0.8); opacity: 1; }
-      100% { transform: scale(2.2); opacity: 0; }
-    }
-    .pulsing-dot::after {
-      content: '';
-      position: absolute;
-      width: 100%; height: 100%;
-      top: 0; left: 0;
-      border-radius: 50%;
-      background-color: #f59e0b;
-      animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-    }
   </style>
 </head>
 <body class="text-slate-100 antialiased select-none">
@@ -139,18 +124,18 @@
       <!-- Actions -->
       <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800">
         <div class="flex items-center gap-2">
-          <button id="start-walkthrough-btn" onclick="app.enterWalkthrough()" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-lg flex items-center gap-2 transition-all">
+          <button id="start-walkthrough-btn" onclick="app.enterWalkthrough()" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-lg flex items-center gap-2 transition-all cursor-pointer z-10">
             <span>ENTER WALKTHROUGH</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
 
-          <button id="vr-direct-btn" onclick="app.requestVR()" class="glass-button px-5 py-3 rounded-xl text-xs font-semibold flex items-center gap-2 hover:border-amber-500">
+          <button id="vr-direct-btn" onclick="app.requestVR()" class="glass-button px-5 py-3 rounded-xl text-xs font-semibold flex items-center gap-2 hover:border-amber-500 cursor-pointer z-10">
             <i data-lucide="glasses" class="w-4 h-4 text-amber-400"></i>
             <span>ENTER VR (META QUEST)</span>
           </button>
         </div>
 
-        <button onclick="app.openGoogleMapsModal()" class="text-xs text-slate-400 hover:text-amber-400 flex items-center gap-1.5 transition-colors">
+        <button onclick="app.openGoogleMapsModal()" class="text-xs text-slate-400 hover:text-amber-400 flex items-center gap-1.5 transition-colors cursor-pointer z-10">
           <i data-lucide="map-pin" class="w-4 h-4 text-amber-500"></i>
           <span>View Existing Site (360° Google Maps)</span>
         </button>
@@ -170,116 +155,4 @@
 
     <!-- Mode Switcher & Controls -->
     <div class="glass-panel px-3 py-1.5 rounded-xl flex items-center gap-2 pointer-events-auto">
-      <button id="engine-toggle-btn" class="glass-button px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2">
-        <i data-lucide="box" class="w-3.5 h-3.5"></i>
-        <span>Engine: <strong class="text-amber-500">3D Walkthrough</strong></span>
-      </button>
-
-      <div class="h-4 w-px bg-slate-700"></div>
-
-      <button onclick="app.toggleDaytime()" class="glass-button p-2 rounded-lg text-xs" title="Toggle Daylight / Night">
-        <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
-      </button>
-
-      <button onclick="app.openGoogleMapsModal()" class="glass-button px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5">
-        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i>
-        <span>Site Street View</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- 3. BOTTOM-LEFT PERSISTENT KEY PLAN HUD -->
-  <div id="key-plan-hud" class="fixed bottom-24 left-6 z-20 glass-panel rounded-2xl p-3 w-56 border border-slate-700/80 shadow-2xl opacity-0 transition-opacity duration-500">
-    <div class="flex items-center justify-between mb-2 pb-1 border-b border-slate-800">
-      <div class="flex items-center gap-1.5">
-        <i data-lucide="compass" class="w-3.5 h-3.5 text-amber-500"></i>
-        <span class="text-[10px] font-bold tracking-wider text-slate-300 uppercase">KEY PLAN</span>
-      </div>
-      <span id="key-plan-zone-label" class="text-[9px] font-mono text-amber-400 font-medium">Entrance Plaza</span>
-    </div>
-
-    <!-- Mini Key Plan Canvas -->
-    <div class="relative w-full h-36 bg-slate-950 rounded-lg overflow-hidden border border-slate-800 cursor-pointer" onclick="app.togglePanel('map')">
-      <canvas id="key-plan-canvas" class="w-full h-full"></canvas>
-      <div class="absolute bottom-1 right-1 bg-slate-900/90 text-[8px] font-mono px-1.5 py-0.5 rounded text-slate-400">
-        CLICK TO EXPAND MAP
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. BOTTOM FLOATING SPATIAL CONTROL DOCK -->
-  <nav id="main-dock" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 opacity-0 transition-opacity duration-500 pointer-events-none">
-    <div class="glass-dock px-3 py-2 rounded-2xl flex items-center gap-1 shadow-2xl pointer-events-auto">
-      <button onclick="app.teleportTo('entrance')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Home Entrance Plaza">
-        <i data-lucide="home" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">HOME</span>
-      </button>
-
-      <button onclick="app.togglePanel('menu')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Market Directory Directory">
-        <i data-lucide="menu" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">MENU</span>
-      </button>
-
-      <button onclick="app.togglePanel('map')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="2D Master Plan Map">
-        <i data-lucide="map" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">MAP</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button id="teleport-mode-btn" onclick="app.setNavMode('teleport')" class="glass-button active p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Teleportation Arc Mode">
-        <i data-lucide="map-pin" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">TELEPORT</span>
-      </button>
-
-      <button id="walk-mode-btn" onclick="app.setNavMode('walk')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Walking Mode">
-        <i data-lucide="footprints" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">WALK</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button onclick="app.togglePanel('layers')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Architectural Layers">
-        <i data-lucide="layers" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">LAYERS</span>
-      </button>
-
-      <button onclick="app.togglePanel('analysis')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Design Analysis Overlays">
-        <i data-lucide="activity" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">ANALYSIS</span>
-      </button>
-
-      <button onclick="app.togglePanel('materials')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Material Palette Explorer">
-        <i data-lucide="box" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">MATERIALS</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button onclick="app.togglePanel('camera')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Camera Presets">
-        <i data-lucide="camera" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">CAMERA</span>
-      </button>
-
-      <button onclick="app.togglePanel('settings')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Comfort & Settings">
-        <i data-lucide="settings" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">SETTINGS</span>
-      </button>
-
-      <button onclick="app.togglePanel('help')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Interaction Guide">
-        <i data-lucide="help-circle" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">HELP</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button onclick="app.exitWalkthrough()" class="glass-button p-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-900/30 flex flex-col items-center gap-1" title="Exit to Welcome Screen">
-        <i data-lucide="log-out" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">EXIT</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- MODALS & PANELS -->
-
-  <!-- Panel: Directory Menu -->
+      <button id="engine-toggle-btn" class="glass-button px-3 py-1.5 rounded-lg text
