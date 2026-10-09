@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Purna Market Redevelopment | VR Architectural Review</title>
+  <title>Kundam Market Redevelopment | VR Architectural Review</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Three.js Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- OrbitControls Fallback -->
+  <!-- OrbitControls -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -69,10 +69,6 @@
       transition: opacity 0.3s ease;
       z-index: 10;
     }
-
-    .fade-transition {
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
   </style>
 </head>
 <body class="text-slate-100 antialiased select-none">
@@ -83,78 +79,17 @@
   <!-- Locomotion Vignette Overlay -->
   <div id="vignette-overlay"></div>
 
-  <!-- 1. LANDING / WELCOME SCREEN -->
-  <section id="landing-page" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-50 flex items-center justify-center p-6 fade-transition">
-    <div class="glass-panel max-w-3xl w-full rounded-3xl p-8 border border-slate-700/80 shadow-2xl relative overflow-hidden">
-      <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-600 via-orange-500 to-amber-700"></div>
-
-      <div class="flex items-center gap-3 mb-3">
-        <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-600/20 text-amber-400 border border-amber-500/30">Academic Architectural Proposal</span>
-        <span class="text-xs text-slate-400 font-mono">VR DESIGN REVIEW PLATFORM</span>
-      </div>
-
-      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
-        PURNA MARKET REDEVELOPMENT
-      </h1>
-
-      <div class="space-y-4 text-slate-300 text-sm leading-relaxed mb-8">
-        <p>
-          Welcome to the virtual design review walkthrough for the proposed <strong>Purna Market (Kundam Market) Redevelopment</strong>. This platform provides an immersive spatial experience designed for faculty jurors, practicing architects, municipal clients, and visitors to inspect spatial organization, material selections, environmental response, and zoning logic.
-        </p>
-        <p>
-          The redevelopment replaces informal vendor sprawl with structured, ventilated market blocks integrated around passive cooling courtyards. Built using <em>Compressed Stabilized Earth Blocks (CSEB)</em>, local <em>bamboo shading canopies</em>, and <em>terracotta tile roofing</em>, the design prioritizes community accessibility, vendor ergonomics, and natural daylighting.
-        </p>
-
-        <!-- Quick Specs Grid -->
-        <div class="grid grid-cols-3 gap-3 pt-2 text-xs">
-          <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span class="block text-slate-400 text-[10px] uppercase font-mono">Total Site Area</span>
-            <strong class="text-amber-400 font-medium">12,400 sq.m</strong>
-          </div>
-          <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span class="block text-slate-400 text-[10px] uppercase font-mono">Functional Zones</span>
-            <strong class="text-amber-400 font-medium">12 Market Sectors</strong>
-          </div>
-          <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span class="block text-slate-400 text-[10px] uppercase font-mono">Cooling Strategy</span>
-            <strong class="text-amber-400 font-medium">Passive Stack & Courtyard</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800">
-        <div class="flex items-center gap-3">
-          <button id="start-walkthrough-btn" onclick="enterWalkthrough()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-lg flex items-center gap-2 transition-all cursor-pointer">
-            <span>ENTER WALKTHROUGH</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </button>
-
-          <button id="vr-direct-btn" onclick="requestVR()" class="glass-button px-5 py-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 hover:border-amber-500 cursor-pointer">
-            <i data-lucide="glasses" class="w-4 h-4 text-amber-400"></i>
-            <span>ENTER VR (META QUEST)</span>
-          </button>
-        </div>
-
-        <button onclick="openGoogleMapsModal()" class="text-xs text-slate-300 hover:text-amber-400 flex items-center gap-1.5 transition-colors cursor-pointer">
-          <i data-lucide="map-pin" class="w-4 h-4 text-amber-500"></i>
-          <span>View Existing Site (360° Google Maps)</span>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2. TOP STATUS BAR -->
-  <header id="top-bar" class="absolute top-4 left-4 right-4 flex justify-between items-center z-20 pointer-events-none opacity-0 transition-opacity duration-500">
+  <!-- 1. TOP STATUS BAR (DIRECT ACCESS) -->
+  <header id="top-bar" class="absolute top-4 left-4 right-4 flex justify-between items-center z-20 pointer-events-none">
     <div class="glass-panel px-4 py-2.5 rounded-xl flex items-center gap-3 pointer-events-auto">
       <div class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></div>
       <div>
-        <h1 class="text-xs font-bold tracking-widest uppercase text-slate-200">Purna Market Redevelopment</h1>
+        <h1 class="text-xs font-bold tracking-widest uppercase text-slate-200">Kundam Market Redevelopment</h1>
         <p class="text-[10px] text-slate-400 font-mono">ARCHITECTURAL VR REVIEW PLATFORM</p>
       </div>
     </div>
 
-    <!-- Mode Switcher & Controls -->
+    <!-- Mode Switcher, Controls & WebXR Trigger -->
     <div class="glass-panel px-3 py-1.5 rounded-xl flex items-center gap-2 pointer-events-auto">
       <button id="engine-toggle-btn" onclick="toggleEngineMode()" class="glass-button px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2">
         <i data-lucide="box" class="w-3.5 h-3.5"></i>
@@ -171,11 +106,19 @@
         <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i>
         <span>Site Street View</span>
       </button>
+
+      <div class="h-4 w-px bg-slate-700"></div>
+
+      <!-- DIRECT VR ENTRY BUTTON -->
+      <button onclick="requestVR()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-all cursor-pointer">
+        <i data-lucide="glasses" class="w-4 h-4"></i>
+        <span>ENTER VR (META QUEST)</span>
+      </button>
     </div>
   </header>
 
-  <!-- 3. BOTTOM-LEFT PERSISTENT KEY PLAN HUD -->
-  <div id="key-plan-hud" class="fixed bottom-24 left-6 z-20 glass-panel rounded-2xl p-3 w-56 border border-slate-700/80 shadow-2xl opacity-0 transition-opacity duration-500">
+  <!-- 2. BOTTOM-LEFT PERSISTENT KEY PLAN HUD -->
+  <div id="key-plan-hud" class="fixed bottom-24 left-6 z-20 glass-panel rounded-2xl p-3 w-56 border border-slate-700/80 shadow-2xl">
     <div class="flex items-center justify-between mb-2 pb-1 border-b border-slate-800">
       <div class="flex items-center gap-1.5">
         <i data-lucide="compass" class="w-3.5 h-3.5 text-amber-500"></i>
@@ -193,58 +136,5 @@
     </div>
   </div>
 
-  <!-- 4. BOTTOM FLOATING SPATIAL CONTROL DOCK -->
-  <nav id="main-dock" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 opacity-0 transition-opacity duration-500 pointer-events-none">
-    <div class="glass-dock px-3 py-2 rounded-2xl flex items-center gap-1 shadow-2xl pointer-events-auto">
-      <button onclick="teleportTo('entrance')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Home Entrance Plaza">
-        <i data-lucide="home" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">HOME</span>
-      </button>
-
-      <button onclick="togglePanel('menu')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Market Directory">
-        <i data-lucide="menu" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">MENU</span>
-      </button>
-
-      <button onclick="togglePanel('map')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="2D Master Plan Map">
-        <i data-lucide="map" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">MAP</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button id="teleport-mode-btn" onclick="setNavMode('teleport')" class="glass-button active p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Teleportation Mode">
-        <i data-lucide="map-pin" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">TELEPORT</span>
-      </button>
-
-      <button id="walk-mode-btn" onclick="setNavMode('walk')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Walking Mode">
-        <i data-lucide="footprints" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">WALK</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button onclick="togglePanel('layers')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Architectural Layers">
-        <i data-lucide="layers" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">LAYERS</span>
-      </button>
-
-      <button onclick="togglePanel('analysis')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Design Analysis Overlays">
-        <i data-lucide="activity" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">ANALYSIS</span>
-      </button>
-
-      <button onclick="togglePanel('materials')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Material Palette Explorer">
-        <i data-lucide="box" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">MATERIALS</span>
-      </button>
-
-      <div class="h-6 w-px bg-slate-800 mx-1"></div>
-
-      <button onclick="togglePanel('camera')" class="glass-button p-2.5 rounded-xl text-slate-300 hover:text-white flex flex-col items-center gap-1" title="Camera Presets">
-        <i data-lucide="camera" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium tracking-tight">CAMERA</span>
-      </button>
-
-      <button onclick="togglePanel('settings')" class="glass-button
+  <!-- 3. BOTTOM FLOATING SPATIAL CONTROL DOCK -->
+  <nav id="main-dock" class="
