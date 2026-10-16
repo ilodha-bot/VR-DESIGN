@@ -758,6 +758,9 @@
     <div id="toast-container" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2"></div>
 
     <script>
+        // EMBEDDED REAL IMAGE DATA FOR ENTRANCE PLAZA (ZONE 01)
+        const ENTRANCE_PLAZA_IMAGE = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDL/wAARCAKAAasDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi42P19vf4+fr5APKe/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAFC/9oADAMBAAIR3A0AAB30U7mO/I3s/M8/yqO93M3488+m003e003102123M21m4/v3430s1/c888v/APfO2p3430s3M2488+/f/9k=";
+
         // Global Application State & Architectural Presets
         const STATE = {
             currentZoneIndex: 0,
@@ -775,7 +778,7 @@
 
         // Complete Market Zones Directory Data
         const ZONES_DATA = [
-            { id: 'z1', name: '01. Entrance Plaza', type: 'Entrance', desc: 'Main public arrival plaza with covered waiting area, signage and taxi drop-off.' },
+            { id: 'z1', name: '01. Entrance Plaza', type: 'Entrance', desc: 'Main public arrival plaza with covered waiting area, signage and taxi drop-off.', image: ENTRANCE_PLAZA_IMAGE },
             { id: 'z2', name: '02. Vegetable Market Z1', type: 'Market', desc: '42 stalls for green leaf vegetables with wet drainage channels and terraced racks.' },
             { id: 'z3', name: '03. Fruit Market Z2', type: 'Market', desc: 'High-ventilation stalls featuring modular terracotta counters and timber framing.' },
             { id: 'z4', name: '04. Banana & Produce', type: 'Market', desc: 'Shaded storage and display space designed for bulk produce distribution.' },
@@ -870,8 +873,9 @@
             const geometry = new THREE.SphereGeometry(500, 60, 40);
             geometry.scale(-1, 1, 1); // Invert texture inwards
 
-            // Create Initial Procedural Architectural Texture Canvas
-            const initialTexture = createProcedural360Texture("01. ENTRANCE PLAZA", 0);
+            // Create Initial Entrance Plaza Texture
+            textureLoader = new THREE.TextureLoader();
+            const initialTexture = textureLoader.load(ENTRANCE_PLAZA_IMAGE);
 
             const material = new THREE.MeshBasicMaterial({
                 map: initialTexture
@@ -1137,8 +1141,22 @@
                 document.getElementById('current-zone-label').innerText = zone.name.toUpperCase();
 
                 // Swap spherical texture
-                sphereMesh.material.map = createProcedural360Texture(zone.name, index);
-                sphereMesh.material.needsUpdate = true;
+                textureLoader = textureLoader || new THREE.TextureLoader();
+                
+                if (zone.image) {
+                    textureLoader.load(zone.image, (tex) => {
+                        sphereMesh.material.map = tex;
+                        sphereMesh.material.needsUpdate = true;
+                    });
+                } else if (STATE.userUploads[index]) {
+                    textureLoader.load(STATE.userUploads[index].url, (tex) => {
+                        sphereMesh.material.map = tex;
+                        sphereMesh.material.needsUpdate = true;
+                    });
+                } else {
+                    sphereMesh.material.map = createProcedural360Texture(zone.name, index);
+                    sphereMesh.material.needsUpdate = true;
+                }
 
                 // Restore FOV
                 camera.fov = initialFov;
@@ -1577,9 +1595,11 @@
                 const item = document.createElement('div');
                 item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-white/10 hover:border-amber-500 cursor-pointer transition-all';
 
+                const thumbnailHtml = zone.image ? `<img src="${zone.image}" class="w-full h-full object-cover">` : `<span class="text-[10px] text-zinc-400 font-medium text-center px-2">Preset 360 Panorama</span>`;
+
                 item.innerHTML = `
                     <div class="w-full h-24 rounded-lg bg-zinc-900 overflow-hidden relative flex items-center justify-center">
-                        <span class="text-[10px] text-zinc-400 font-medium text-center px-2">Preset 360 Panorama</span>
+                        ${thumbnailHtml}
                         <span class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1.5 py-0.5 rounded text-amber-400 font-mono">Z${index + 1}</span>
                     </div>
                     <div class="text-[11px] font-semibold text-white truncate">${zone.name}</div>
