@@ -14,18 +14,19 @@
     <!-- Inter & Plus Jakarta Sans Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-dark: #0f0f14;
-            --glass-bg: rgba(18, 18, 24, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --terracotta: #C85A32;
-            --terracotta-hover: #D96B43;
-            --terracotta-glow: rgba(200, 90, 50, 0.45);
-            --text-main: #F4F4F6;
-            --text-muted: #9A9AA4;
+            --bg-dark: #09090d;
+            --glass-bg: rgba(15, 15, 22, 0.82);
+            --glass-card: rgba(20, 20, 30, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --amber-main: #f59e0b;
+            --amber-hover: #d97706;
+            --amber-glow: rgba(245, 158, 11, 0.4);
+            --text-main: #f4f4f6;
+            --text-muted: #9ca3af;
         }
 
         * {
@@ -48,103 +49,90 @@
         /* Glassmorphism Panel Standard */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .glass-panel-light {
-            background: rgba(30, 30, 40, 0.75);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            background: rgba(30, 30, 45, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
         }
 
         .glass-button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: var(--text-main);
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
         }
 
         .glass-button:hover {
-            background: rgba(255, 255, 255, 0.14);
-            border-color: rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-1px);
         }
 
         .glass-button.active {
-            background: var(--terracotta);
-            border-color: var(--terracotta-hover);
-            box-shadow: 0 0 16px var(--terracotta-glow);
-            color: #ffffff;
+            background: var(--amber-main);
+            border-color: var(--amber-hover);
+            box-shadow: 0 0 18px var(--amber-glow);
+            color: #000000;
+            font-weight: 700;
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--terracotta);
-        }
-
-        /* Tooltip style */
-        .tooltip {
-            position: absolute;
-            bottom: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%) translateY(4px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            background: rgba(10, 10, 12, 0.95);
-            border: 1px solid var(--glass-border);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            z-index: 50;
-        }
-
-        .has-tooltip:hover .tooltip {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            background: var(--amber-main);
         }
 
         /* Hotspot Pulse */
         @keyframes pulse-ring {
-            0% { transform: scale(0.85); opacity: 0.9; }
-            50% { transform: scale(1.25); opacity: 0.35; }
-            100% { transform: scale(0.85); opacity: 0.9; }
+            0% { transform: scale(0.88); opacity: 0.95; }
+            50% { transform: scale(1.22); opacity: 0.4; }
+            100% { transform: scale(0.88); opacity: 0.95; }
         }
 
         .hotspot-ring {
-            animation: pulse-ring 2s infinite ease-in-out;
+            animation: pulse-ring 2.2s infinite ease-in-out;
         }
+
+        /* Chevrons Flow Animation */
+        @keyframes chevron-flow {
+            0% { opacity: 0.2; transform: translateY(6px); }
+            50% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0.2; transform: translateY(-6px); }
+        }
+
+        .chevron-anim-1 { animation: chevron-flow 1.8s infinite ease-in-out; }
+        .chevron-anim-2 { animation: chevron-flow 1.8s infinite ease-in-out 0.3s; }
+        .chevron-anim-3 { animation: chevron-flow 1.8s infinite ease-in-out 0.6s; }
 
         /* Modal Transitions */
         .modal-fade {
-            transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .modal-hidden {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.96) translateY(12px);
+            transform: scale(0.96) translateY(10px);
         }
         .modal-visible {
             opacity: 1;
@@ -152,15 +140,15 @@
             transform: scale(1) translateY(0);
         }
 
-        /* Teleport Screen Wipe Overlay Transition */
+        /* Teleport Transition Overlay */
         #transition-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle, rgba(200,90,50,0.3) 0%, rgba(10,10,15,0.98) 80%);
+            background: radial-gradient(circle, rgba(245,158,11,0.35) 0%, rgba(9,9,13,0.98) 75%);
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.42s ease-in-out;
-            z-index: 45;
+            transition: opacity 0.38s ease-in-out;
+            z-index: 60;
         }
         #transition-overlay.active {
             opacity: 1;
@@ -172,28 +160,45 @@
             display: block;
             touch-action: none;
         }
+
+        .amber-gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dynamic SVG Map Styling */
+        .map-zone-polygon {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .map-zone-polygon:hover {
+            fill-opacity: 0.85 !important;
+            stroke: #f59e0b !important;
+            stroke-width: 2.5px !important;
+        }
     </style>
 </head>
-<body class="bg-black text-slate-100 overflow-hidden select-none">
+<body class="bg-black text-slate-100 overflow-hidden select-none font-sans">
 
     <!-- PRE-ENTER LANDING PAGE MODAL OVERLAY -->
     <div id="landing-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-zinc-950 via-black to-zinc-900 transition-opacity duration-500">
         <div class="glass-panel w-full max-w-3xl p-8 sm:p-10 rounded-3xl border border-white/15 relative overflow-hidden flex flex-col items-center text-center shadow-2xl">
             <!-- Background Decorative Glow -->
-            <div class="absolute -top-24 -right-24 w-72 h-72 bg-amber-600/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-orange-700/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-amber-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
             <!-- Title & Subtitle -->
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wider uppercase mb-4">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wider uppercase mb-4">
                 <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-                Architectural VR Prototype
+                Kundam Market VR Experience
             </div>
 
             <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3 font-sans">
-                Kundam Market VR Experience
+                KUNDAM MARKET VR ARCHITECTURAL EXPERIENCE
             </h1>
             <p class="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed mb-6">
-                Explore an immersive 360° architectural vision for the Kundam Sustainable Public Market. Experience natural passive ventilation, solar canopy structures, and community spaces through interactive VR navigation.
+                Explore an immersive 360° architectural vision for the Kundam Sustainable Public Market. Discover 14 specialized market sectors, passive climate design, central Banyan courtyard, and interactive wayfinding.
             </p>
 
             <!-- Key Feature Cards -->
@@ -202,33 +207,33 @@
                     <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
                         <span>⚡</span> Interactive Teleport
                     </div>
-                    <div class="text-[11px] text-zinc-400">Click pulsing 3D nodes in the viewport to move between sectors.</div>
+                    <div class="text-[11px] text-zinc-400">Directly teleport between all 14 market sectors using the interactive dialogue and site plan.</div>
                 </div>
 
                 <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
                     <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
                         <span>🏛</span> Climate Resilient
                     </div>
-                    <div class="text-[11px] text-zinc-400">Designed with compressed earth blocks, timber trusses, and solar roofs.</div>
+                    <div class="text-[11px] text-zinc-400">Passive ventilation chimneys, compressed earth blocks, and solar canopy architecture.</div>
                 </div>
 
                 <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
                     <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
                         <span>🥽</span> WebXR & Desktop
                     </div>
-                    <div class="text-[11px] text-zinc-400">Fully responsive across WebXR (Meta Quest), tablet, and desktop viewports.</div>
+                    <div class="text-[11px] text-zinc-400">Fully responsive 360° environment with WebXR VR support for Meta Quest and mobile.</div>
                 </div>
             </div>
 
             <!-- Action Button to Enter -->
-            <button id="btn-enter-experience" class="w-full sm:w-auto px-8 py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm rounded-2xl shadow-xl shadow-amber-900/40 border border-amber-400/40 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer">
+            <button id="btn-enter-experience" class="w-full sm:w-auto px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm rounded-2xl shadow-xl shadow-amber-950/50 border border-amber-300/40 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer">
                 <span>ENTER ARCHITECTURAL EXPERIENCE</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
         </div>
     </div>
 
-    <!-- Screen Transition Blur Effect Element -->
+    <!-- Screen Transition Overlay Effect Element -->
     <div id="transition-overlay"></div>
 
     <!-- 360 WebGL Canvas -->
@@ -239,158 +244,297 @@
         <div id="hotspots-overlay" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
     </div>
 
-    <!-- TOP ARCHITECTURAL HEADER HUD -->
-    <header id="top-hud" class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-none transition-all duration-300">
-        <!-- Left Title & Location Info -->
-        <div class="glass-panel px-4 py-2.5 flex items-center gap-3 pointer-events-auto">
-            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-            <div>
-                <h1 class="text-sm font-bold tracking-wide text-white uppercase font-sans">Kundam Market VR</h1>
-                <p class="text-[11px] text-zinc-400 font-medium tracking-wider flex items-center gap-1.5">
-                    <span>ZONE:</span>
-                    <span id="current-zone-label" class="text-amber-500 font-semibold">01. ENTRANCE PLAZA</span>
-                </p>
-            </div>
+    <!-- 1. TOP-LEFT BRANDING HEADER -->
+    <div id="brand-header" class="absolute top-5 left-6 z-20 pointer-events-auto flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center shadow-lg shadow-black/50">
+            <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2C6.5 2 2 6.5 2 12c0 5.5 4.5 10 10 10s10-4.5 10-10C22 6.5 17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8 0-3.3 2-6.2 5-7.4V17h6V6.6c3 1.2 5 4.1 5 7.4 0 4.4-3.6 8-8 8z" fill="rgba(245, 158, 11, 0.25)"/>
+                <path d="M12 4v14M8 17V8M16 17V8" stroke-linecap="round"/>
+            </svg>
         </div>
-
-        <!-- Right Quick Toggles & WebXR VR Launch -->
-        <div class="flex items-center gap-2 pointer-events-auto">
-            <!-- Google Maps Live Street View Toggle -->
-            <button id="btn-toggle-gmaps" class="glass-panel glass-button px-3.5 py-2 flex items-center gap-2 text-xs font-medium rounded-xl">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <span class="hidden sm:inline">Live Maps Street View</span>
-            </button>
-
-            <!-- 360 Upload Manager -->
-            <button id="btn-upload-manager" class="glass-panel glass-button px-3.5 py-2 flex items-center gap-2 text-xs font-medium rounded-xl">
-                <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                <span>360 Renders (<span id="render-count-badge">10</span>)</span>
-            </button>
-
-            <!-- Presentation Mode Quick Toggle -->
-            <button id="btn-toggle-presentation" class="glass-panel glass-button px-3.5 py-2 flex items-center gap-2 text-xs font-medium rounded-xl">
-                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                </svg>
-                <span class="hidden sm:inline">Presentation Mode</span>
-            </button>
-
-            <!-- Meta Quest WebXR Launch Button -->
-            <button id="btn-webxr-launch" class="glass-panel glass-button px-4 py-2 bg-amber-600/30 border-amber-500/40 hover:bg-amber-600/50 flex items-center gap-2 text-xs font-semibold text-amber-300 rounded-xl">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <span>ENTER VR</span>
-            </button>
+        <div>
+            <h1 class="text-sm font-black tracking-widest text-white uppercase font-sans drop-shadow-md">KUNDAM MARKET</h1>
+            <p class="text-[10px] font-semibold text-zinc-300 uppercase tracking-widest -mt-0.5 opacity-90 drop-shadow">VR ARCHITECTURAL EXPERIENCE</p>
         </div>
-    </header>
+    </div>
 
-    <!-- COMPACT CONTROL DOCK (BOTTOM CENTER UI) -->
-    <div id="dock-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-all duration-300 max-w-full px-2">
-        <div class="glass-panel p-2 flex items-center gap-1 sm:gap-1.5 pointer-events-auto rounded-2xl shadow-2xl overflow-x-auto">
-            
+    <!-- 2. TOP-RIGHT FLOATING NAVIGATION BAR -->
+    <div id="top-nav-bar" class="absolute top-5 right-6 z-20 pointer-events-auto">
+        <div class="glass-panel px-3 py-1.5 flex items-center gap-1 sm:gap-2 rounded-full shadow-2xl">
             <!-- Home -->
-            <button id="dock-btn-home" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1 active">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">HOME</span>
-                <span class="tooltip">Reset View & Zone 01</span>
-            </button>
-
-            <!-- Menu -->
-            <button id="dock-btn-menu" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">MENU</span>
-                <span class="tooltip">Zone Directory</span>
+            <button id="nav-btn-home" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Home</span>
             </button>
 
             <!-- Map -->
-            <button id="dock-btn-map" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">MAP</span>
-                <span class="tooltip">2D Architectural Plan</span>
-            </button>
-
-            <!-- Teleport Mode -->
-            <button id="dock-btn-teleport" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1 active">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">TELEPORT</span>
-                <span class="tooltip">Toggle 3D Hotspot Nodes</span>
-            </button>
-
-            <!-- Walk Mode -->
-            <button id="dock-btn-walk" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">WALK</span>
-                <span class="tooltip">Toggle Auto Orbit Rotation</span>
-            </button>
-
-            <div class="w-[1px] h-8 bg-white/10 mx-0.5"></div>
-
-            <!-- Settings -->
-            <button id="dock-btn-settings" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">SETTINGS</span>
-                <span class="tooltip">Lighting & Comfort</span>
-            </button>
-
-            <!-- Info -->
-            <button id="dock-btn-info" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">INFO</span>
-                <span class="tooltip">Project Overview</span>
+            <button id="nav-btn-map" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer group">
+                <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center transition-all">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <span>Map</span>
             </button>
 
             <!-- Layers -->
-            <button id="dock-btn-layers" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">LAYERS</span>
-                <span class="tooltip">Structural Systems</span>
+            <button id="nav-btn-layers" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                <span>Layers</span>
             </button>
 
-            <!-- Camera / Views -->
-            <button id="dock-btn-camera" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">CAMERA</span>
-                <span class="tooltip">Key Perspectives</span>
+            <!-- Settings -->
+            <button id="nav-btn-settings" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span>Settings</span>
+            </button>
+
+            <!-- Camera -->
+            <button id="nav-btn-camera" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span>Camera</span>
             </button>
 
             <!-- Help -->
-            <button id="dock-btn-help" class="dock-item has-tooltip glass-button p-2.5 rounded-xl flex flex-col items-center gap-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span class="text-[9px] font-semibold tracking-wider">HELP</span>
-                <span class="tooltip">Navigation Guide</span>
+            <button id="nav-btn-help" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Help</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. COMPACT LEFT-SIDE DYNAMIC ZONE INFORMATION CARD -->
+    <div id="left-zone-card" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 pointer-events-auto w-72 sm:w-80 transition-all duration-300">
+        <div class="glass-panel p-4 rounded-3xl flex flex-col gap-3 shadow-2xl relative border border-white/15">
+            <div class="flex items-center justify-between">
+                <div id="zone-card-icon" class="w-10 h-10 rounded-full bg-black/60 border border-amber-500/40 flex items-center justify-center text-lg text-amber-400 shadow-md">
+                    🍎
+                </div>
+                <button id="btn-close-zone-card" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/15 text-zinc-400 hover:text-white flex items-center justify-center text-xs transition-all cursor-pointer">
+                    ✕
+                </button>
+            </div>
+
+            <div>
+                <h2 id="zone-card-title" class="text-base font-extrabold text-white tracking-wide">Fruit Market</h2>
+                <p id="zone-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed font-normal">
+                    Fresh fruits, local produce and seasonal items.
+                </p>
+            </div>
+
+            <div class="w-full h-28 rounded-2xl overflow-hidden bg-zinc-900 relative border border-white/10 group">
+                <img id="zone-card-img" src="" alt="Zone Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                <div id="zone-card-type-tag" class="absolute bottom-2 left-2 text.text-[10px] bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-full text-amber-300 font-semibold uppercase tracking-wider border border-white/10">
+                    Fresh Produce
+                </div>
+            </div>
+
+            <button id="btn-zone-card-view" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-950/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
+                <span>View Zone</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 4. BOTTOM-LEFT FLOOR LEVEL SELECTOR & JOYSTICK -->
+    <div id="bottom-left-controls" class="absolute bottom-6 left-6 z-20 pointer-events-auto flex items-end gap-3">
+        <div class="w-20 h-20 rounded-full glass-panel border border-white/20 flex items-center justify-center relative p-1 shadow-2xl">
+            <button id="joy-up" class="absolute top-1 left-1/2 -translate-x-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">▲</button>
+            <button id="joy-down" class="absolute bottom-1 left-1/2 -translate-x-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">▼</button>
+            <button id="joy-left" class="absolute left-1 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">◄</button>
+            <button id="joy-right" class="absolute right-1 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">►</button>
+            <div class="w-6 h-6 rounded-full bg-amber-500/30 border border-amber-400 flex items-center justify-center text-[8px] text-amber-300">
+                ●
+            </div>
+        </div>
+
+        <div class="glass-panel px-4 py-2.5 rounded-2xl flex items-center gap-3 border border-white/15">
+            <div class="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div>
+                <div class="text-[10px] text-zinc-400 font-medium">Floor Level</div>
+                <select id="floor-level-select" class="bg-transparent text-xs font-bold text-white border-none outline-none cursor-pointer p-0 -mt-0.5">
+                    <option value="Ground Floor" class="bg-zinc-900 text-white">Ground Floor</option>
+                    <option value="Roof Level" class="bg-zinc-900 text-white">Roof Level & Solar Canopy</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. CENTRAL GROUND PATH OVERLAY -->
+    <div id="ground-navigation-overlay" class="absolute left-1/2 top-2/3 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none flex flex-col items-center gap-2">
+        <div class="glass-panel px-4 py-2 rounded-2xl border border-amber-500/40 flex items-center gap-2.5 shadow-2xl animate-bounce">
+            <span id="ground-badge-icon" class="text-base">🍎</span>
+            <div>
+                <div id="ground-badge-title" class="text-xs font-bold text-white">Fruit Market</div>
+                <div id="ground-badge-subtitle" class="text-[9px] text-amber-400 font-semibold uppercase">Zone 03</div>
+            </div>
+            <svg class="w-4 h-4 text-amber-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </div>
+
+        <div class="w-0.5 h-8 bg-gradient-to-b from-amber-400 to-transparent"></div>
+
+        <div class="w-12 h-6 rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-lg flex items-center justify-center transform rotate-x-60">
+            <div class="w-4 h-2 rounded-full bg-amber-400 animate-ping"></div>
+        </div>
+
+        <div class="flex flex-col items-center -space-y-1 mt-2 text-amber-400/80">
+            <svg class="w-6 h-3 chevron-anim-1" fill="none" stroke="currentColor" viewBox="0 0 24 12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 2l8 8 8-8"/></svg>
+            <svg class="w-8 h-4 chevron-anim-2" fill="none" stroke="currentColor" viewBox="0 0 24 12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 2l8 8 8-8"/></svg>
+            <svg class="w-10 h-5 chevron-anim-3" fill="none" stroke="currentColor" viewBox="0 0 24 12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 2l8 8 8-8"/></svg>
+        </div>
+    </div>
+
+    <!-- 6. BOTTOM-CENTER NAVIGATION DOCK -->
+    <div id="dock-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
+        <div class="glass-panel px-5 py-2.5 flex items-center gap-4 sm:gap-6 rounded-full shadow-2xl border border-white/20">
+            
+            <button id="dock-btn-teleport" class="flex items-center gap-2.5 group cursor-pointer">
+                <div class="w-9 h-9 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold shadow-md shadow-amber-950/50 group-hover:bg-amber-400 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <span class="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">Teleport</span>
+            </button>
+
+            <div class="w-[1px] h-6 bg-white/15"></div>
+
+            <button id="dock-btn-walk" class="flex items-center gap-2.5 group cursor-pointer">
+                <div id="walk-icon-circle" class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <span id="walk-btn-text" class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Walk</span>
+            </button>
+
+            <div class="w-[1px] h-6 bg-white/15"></div>
+
+            <button id="dock-btn-info" class="flex items-center gap-2.5 group cursor-pointer">
+                <div class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <span class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Info</span>
+            </button>
+
+            <button id="dock-btn-menu" class="hidden sm:flex items-center gap-1.5 ml-2 pl-3 border-l border-white/15 text-xs text-zinc-400 hover:text-amber-400 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <span>Directory</span>
             </button>
 
         </div>
     </div>
 
-    <!-- MODAL 1: MULTI-COLUMN MAIN MENU -->
-    <div id="modal-menu" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-5xl max-h-[85vh] flex flex-col p-6 rounded-2xl relative overflow-hidden">
-            <!-- Header -->
+    <!-- 7. BOTTOM-RIGHT INTERACTIVE SITE PLAN MINIMAP -->
+    <div id="minimap-card" class="absolute bottom-6 right-6 z-20 pointer-events-auto w-72 sm:w-80 h-52 sm:h-56">
+        <div class="glass-panel w-full h-full p-3 rounded-3xl flex flex-col justify-between shadow-2xl relative border border-white/15 overflow-hidden">
+            <div class="flex items-center justify-between z-10">
+                <div class="text-[10px] font-bold tracking-wider uppercase text-amber-400 bg-black/70 px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    SITE MASTERPLAN
+                </div>
+                <div class="w-7 h-7 rounded-full bg-black/70 border border-white/20 flex flex-col items-center justify-center text-[9px] font-bold text-white shadow-md">
+                    <span class="text-amber-400 text-[8px] leading-none">▲</span>
+                    <span class="leading-none">N</span>
+                </div>
+            </div>
+
+            <div id="minimap-container" class="absolute inset-0 p-2 pt-10 pb-8 flex items-center justify-center">
+                <svg id="minimap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
+                    <rect x="20" y="20" width="560" height="320" rx="20" fill="#0c0d12" stroke="#27272a" stroke-width="2"/>
+                    <path d="M 50 160 L 550 160" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                    <path d="M 320 50 L 320 310" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                    
+                    <g id="minimap-zones-group"></g>
+
+                    <g id="minimap-user-pin" transform="translate(100,100)" class="transition-all duration-500">
+                        <circle r="12" fill="rgba(245, 158, 11, 0.35)" class="animate-ping"/>
+                        <circle r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+                        <circle r="2.5" fill="#000000"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flex items-center justify-between z-10 mt-auto">
+                <div id="minimap-current-label" class="text-[10px] text-zinc-300 font-semibold bg-black/80 px-2 py-0.5 rounded-md truncate max-w-[180px]">
+                    01. Entrance Plaza
+                </div>
+                <button id="btn-expand-minimap" class="w-7 h-7 rounded-full bg-black/70 hover:bg-amber-500 hover:text-black border border-white/20 text-zinc-300 flex items-center justify-center transition-all cursor-pointer" title="Expand Masterplan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REQUIREMENT 2 MODAL: COMPACT FLOATING TELEPORT TO ZONE DIALOGUE -->
+    <div id="modal-teleport" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl relative flex flex-col gap-4 border border-white/20 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h2 class="text-base font-bold text-white tracking-wide">TELEPORT TO ZONE</h2>
+                </div>
+                <button class="btn-close-modal glass-button w-8 h-8 rounded-full text-zinc-400 hover:text-white flex items-center justify-center">
+                    ✕
+                </button>
+            </div>
+
+            <div class="glass-panel-light p-3 rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">Current Location (From)</span>
+                    <span id="teleport-from-label" class="text-xs font-bold text-amber-400">01. Entrance Plaza</span>
+                </div>
+                <span class="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-300 rounded-full font-mono">Floor 01</span>
+            </div>
+
+            <div>
+                <label for="teleport-select-destination" class="text-[11px] font-bold text-zinc-300 uppercase tracking-wider block mb-1.5">Select Destination</label>
+                <select id="teleport-select-destination" class="w-full bg-zinc-900/90 border border-white/20 rounded-xl px-3.5 py-3 text-xs font-semibold text-white focus:outline-none focus:border-amber-500">
+                </select>
+            </div>
+
+            <div class="glass-panel-light p-3.5 rounded-2xl border border-white/10 flex flex-col gap-2">
+                <div class="flex items-center justify-between">
+                    <span id="teleport-preview-title" class="text-xs font-bold text-white flex items-center gap-2">
+                        <span id="teleport-preview-icon">🍎</span> Fruit Market
+                    </span>
+                    <span id="teleport-preview-type" class="text-[10px] text-amber-400 font-mono uppercase bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/30">Fresh Produce</span>
+                </div>
+
+                <div class="w-full h-28 rounded-xl overflow-hidden bg-zinc-950 relative border border-white/10">
+                    <img id="teleport-preview-img" src="" alt="Destination Preview" class="w-full h-full object-cover">
+                </div>
+
+                <p id="teleport-preview-desc" class="text-[11px] text-zinc-300 leading-relaxed">
+                    Fresh fruits, local produce and seasonal items displayed on modular timber stalls.
+                </p>
+            </div>
+
+            <button id="btn-execute-teleport" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-2xl shadow-xl shadow-amber-950/50 border border-amber-300/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>TELEPORT TO SELECTED ZONE</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 1: ARCHITECTURAL SPACE DIRECTORY MENU -->
+    <div id="modal-menu" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-5xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative overflow-hidden">
             <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
                 <div>
-                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                        <span class="w-2 h-5 bg-amber-600 rounded-sm"></span>
+                    <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                        <span class="w-2 h-5 bg-amber-500 rounded-sm"></span>
                         Architectural Space Directory
                     </h2>
-                    <p class="text-xs text-zinc-400 mt-0.5">Select any market sector, administration room, or courtyard to jump to spatial preview</p>
+                    <p class="text-xs text-zinc-400 mt-0.5">Select any market sector, administration room, or courtyard to teleport instantly</p>
                 </div>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
-            <!-- Multi-Column Grid -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto pr-1">
-                <!-- Column 1: Explore & Maps -->
                 <div class="flex flex-col gap-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Overview & Navigation</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Navigation Actions</h3>
                     <button id="menu-btn-explore" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl flex items-center gap-3">
                         <div class="p-2 rounded-lg bg-amber-500/20 text-amber-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -406,56 +550,34 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                         </div>
                         <div>
-                            <div class="text-sm font-semibold text-white">Interactive 2D Plan</div>
-                            <div class="text-[11px] text-zinc-400">Synchronized masterplan</div>
+                            <div class="text-sm font-semibold text-white">Interactive Masterplan</div>
+                            <div class="text-[11px] text-zinc-400">Full 2D schematic plan</div>
                         </div>
                     </button>
                 </div>
 
-                <!-- Column 2: Market Zones -->
-                <div class="flex flex-col gap-1.5">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Market Sectors</h3>
-                    <div id="zone-list-container" class="flex flex-col gap-1 text-xs max-h-72 overflow-y-auto pr-1">
-                        <!-- Dynamically filled with zone list -->
+                <div class="md:col-span-2 flex flex-col gap-1.5">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">All Market Sectors (14 Zones)</h3>
+                    <div id="zone-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-80 overflow-y-auto pr-1">
                     </div>
                 </div>
 
-                <!-- Column 3: Administration -->
                 <div class="flex flex-col gap-1.5">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Administration</h3>
-                    <div id="admin-list-container" class="flex flex-col gap-1 text-xs max-h-72 overflow-y-auto pr-1">
-                        <!-- Dynamically filled with admin list -->
+                    <div id="admin-list-container" class="flex flex-col gap-1 text-xs max-h-80 overflow-y-auto pr-1">
                     </div>
                 </div>
-
-                <!-- Column 4: Courtyards & Materials -->
-                <div class="flex flex-col gap-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Special Architecture</h3>
-                    <button id="menu-btn-courtyards" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl">
-                        <div class="text-xs font-semibold text-white">Central Banyan Courtyard</div>
-                        <div class="text-[10px] text-zinc-400 mt-0.5">Passive cooling & gathering spine</div>
-                    </button>
-                    <button id="menu-btn-materials" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl">
-                        <div class="text-xs font-semibold text-white">Materials & Finishes</div>
-                        <div class="text-[10px] text-zinc-400 mt-0.5">Bamboo, earth blocks & timber</div>
-                    </button>
-                    <button id="menu-btn-roofscape" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl">
-                        <div class="text-xs font-semibold text-white">Roofscape & Solar Canopy</div>
-                        <div class="text-[10px] text-zinc-400 mt-0.5">Polycarbonate & light capture</div>
-                    </button>
-                </div>
-
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: INTERACTIVE 2D MARKET MAP WITH WAYFINDING -->
-    <div id="modal-map" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-4xl max-h-[90vh] flex flex-col p-6 rounded-2xl relative">
+    <!-- MODAL 2: INTERACTIVE 2D MASTERPLAN & WAYFINDING MAP -->
+    <div id="modal-map" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-5xl max-h-[90vh] flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
                 <div class="flex items-center gap-3">
-                    <h2 class="text-lg font-bold text-white">2D Architectural Masterplan & Wayfinding</h2>
-                    <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-medium">Synchronized WebXR Map</span>
+                    <h2 class="text-lg font-extrabold text-white">2D Architectural Masterplan & Circulation Network</h2>
+                    <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30">Interactive Wayfinding</span>
                 </div>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -463,49 +585,66 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 overflow-hidden">
-                <!-- 2D Schematic Vector Canvas -->
-                <div class="md:col-span-2 bg-zinc-950/80 rounded-xl p-3 border border-white/10 relative flex items-center justify-center min-h-[320px]">
-                    <canvas id="map-canvas" class="w-full h-full object-contain cursor-pointer"></canvas>
-                    <div class="absolute bottom-3 left-3 text-[10px] text-zinc-400 bg-black/80 px-2.5 py-1 rounded-md border border-white/10">
-                        Click zone block on map to select and calculate wayfinding
+                <div class="md:col-span-2 bg-zinc-950/90 rounded-2xl p-4 border border-white/10 relative flex items-center justify-center min-h-[340px] overflow-hidden">
+                    <svg id="fullmap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
+                        <rect x="10" y="10" width="580" height="340" rx="16" fill="#090a0f" stroke="#27272a" stroke-width="2"/>
+                        <path id="route-line-main" d="M 50 130 L 550 130" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                        <path id="route-line-cross" d="M 330 50 L 330 310" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                        
+                        <path id="wayfinding-active-path" d="" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6,6" fill="none" class="animate-pulse"/>
+
+                        <g id="fullmap-zones-group"></g>
+
+                        <g id="fullmap-user-pin" transform="translate(100,100)">
+                            <circle r="14" fill="rgba(245, 158, 11, 0.35)" class="animate-ping"/>
+                            <circle r="8" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <div class="absolute bottom-3 left-3 text-[10px] text-zinc-300 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
+                        Click any zone polygon to select and calculate wayfinding route
                     </div>
                 </div>
 
-                <!-- Zone Details & Target Info Card -->
                 <div class="flex flex-col gap-3 justify-between">
-                    <div class="glass-panel-light p-4 rounded-xl flex flex-col gap-2">
-                        <div class="text-xs font-bold text-amber-500 tracking-wider uppercase">Selected Zone Info</div>
-                        <h3 id="map-target-title" class="text-base font-bold text-white">Fruit Market - Zone Z2</h3>
+                    <div class="glass-panel-light p-4 rounded-2xl flex flex-col gap-2.5">
+                        <div class="text-[10px] font-bold text-amber-400 tracking-wider uppercase">Selected Target Zone</div>
+                        <h3 id="map-target-title" class="text-base font-extrabold text-white">Fruit Market</h3>
+                        
+                        <div class="w-full h-28 rounded-xl overflow-hidden bg-zinc-900 border border-white/10 my-1">
+                            <img id="map-target-img" src="" class="w-full h-full object-cover">
+                        </div>
+
                         <p id="map-target-desc" class="text-xs text-zinc-300 leading-relaxed">
-                            Dedicated high-ventilation stalls featuring modular terracotta counters, timber framing, and integrated bio-waste drainage.
+                            Fresh fruits, local produce and seasonal items displayed on modular timber stalls.
                         </p>
-                        <div class="mt-2 text-[11px] text-zinc-400 space-y-1 border-t border-white/10 pt-2">
-                            <div><strong class="text-zinc-200">Floor Area:</strong> 480 sq.m</div>
-                            <div><strong class="text-zinc-200">Ventilation:</strong> Cross-breeze chimney effect</div>
-                            <div><strong class="text-zinc-200">Capacity:</strong> 34 Vendor Stalls</div>
+                        
+                        <div class="text-[11px] text-zinc-400 space-y-1 border-t border-white/10 pt-2.5 mt-1">
+                            <div><strong class="text-zinc-200">Category:</strong> <span id="map-target-type">Fresh Produce</span></div>
+                            <div><strong class="text-zinc-200">Ventilation:</strong> <span id="map-target-vent">Cross-breeze naturally shaded roof</span></div>
+                            <div><strong class="text-zinc-200">Materials:</strong> <span id="map-target-mat">Hardwood counters, Bamboo trusses</span></div>
                         </div>
                     </div>
 
-                    <button id="btn-map-enter-zone" class="w-full py-3 px-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span>TELEPORT TO ZONE</span>
+                    <button id="btn-map-enter-zone" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>TELEPORT TO THIS ZONE</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 3: GOOGLE MAPS STREET VIEW EMBED INTEGRATION -->
-    <div id="modal-gmaps" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-5xl h-[85vh] flex flex-col p-4 rounded-2xl relative">
+    <!-- MODAL 3: GOOGLE MAPS STREET VIEW REFERENCE -->
+    <div id="modal-gmaps" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-5xl h-[85vh] flex flex-col p-4 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3 px-2">
                 <div class="flex items-center gap-3">
                     <div class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                     </div>
                     <div>
-                        <h2 class="text-base font-bold text-white">Google Maps Live Street View Reference</h2>
-                        <p class="text-xs text-zinc-400">Contextual location reference of existing urban market condition</p>
+                        <h2 class="text-base font-bold text-white">Google Maps Live Street View Context</h2>
+                        <p class="text-xs text-zinc-400">Contextual location reference of urban market surroundings</p>
                     </div>
                 </div>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
@@ -513,47 +652,43 @@
                 </button>
             </div>
 
-            <!-- Iframe Container -->
-            <div class="w-full h-full rounded-xl overflow-hidden border border-white/10 bg-black">
+            <div class="w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-black">
                 <iframe src="https://www.google.com/maps/embed?pb=!4v1790571719627!6m8!1m7!1ssPH0xDYpF_L7Etbg7z6Yfg!2m2!1d41.38648617027214!2d2.177974428108236!3f37.78321299381413!4f-0.9707329137192175!5f0.7820865974627469" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 4: CUSTOM 360 RENDER UPLOADER & MANAGER -->
-    <div id="modal-upload" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-3xl max-h-[85vh] flex flex-col p-6 rounded-2xl relative">
+    <!-- MODAL 4: CUSTOM 360 RENDER UPLOADER & GALLERY -->
+    <div id="modal-upload" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-3xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
                 <div>
-                    <h2 class="text-lg font-bold text-white">360° Enscape Render Manager</h2>
-                    <p class="text-xs text-zinc-400">Upload equirectangular 360 images from Enscape or select active scene presets</p>
+                    <h2 class="text-lg font-extrabold text-white">360° Enscape / VR Render Manager</h2>
+                    <p class="text-xs text-zinc-400">Upload equirectangular 360 panoramas or load preset market renders</p>
                 </div>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
-            <!-- Upload Area -->
-            <div id="drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-xl p-6 text-center transition-all bg-white/5 cursor-pointer mb-4">
+            <div id="drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-6 text-center transition-all bg-white/5 cursor-pointer mb-4">
                 <input type="file" id="file-input-360" accept="image/jpeg, image/png, image/webp" multiple class="hidden">
-                <svg class="w-10 h-10 text-zinc-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                <div class="text-sm font-semibold text-white">Click or drag & drop Enscape 360° JPEG/PNG files</div>
+                <svg class="w-10 h-10 text-amber-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <div class="text-sm font-bold text-white">Click or drag & drop 360° Enscape JPEG/PNG files</div>
                 <div class="text-xs text-zinc-400 mt-1">Supports standard 2:1 ratio Equirectangular panoramic renders</div>
             </div>
 
-            <!-- Gallery Grid -->
             <div class="overflow-y-auto flex-1 pr-1">
-                <h3 class="text-xs font-bold uppercase text-zinc-400 tracking-wider mb-2">Active Scene Gallery (Click to Teleport)</h3>
+                <h3 class="text-xs font-bold uppercase text-amber-400 tracking-wider mb-2">Active Zone Panoramas (Click to Render)</h3>
                 <div id="renders-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <!-- Dynamic slots filled by JS -->
                 </div>
             </div>
         </div>
     </div>
 
     <!-- MODAL 5: LAYERS & MATERIALS EXPLORER -->
-    <div id="modal-layers" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-2xl relative">
+    <div id="modal-layers" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
                 <h2 class="text-lg font-bold text-white">Architectural Layers & Material Explorer</h2>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
@@ -562,15 +697,12 @@
             </div>
 
             <div class="space-y-4 overflow-y-auto pr-1">
-                <!-- Layers Toggles -->
                 <div>
-                    <h3 class="text-xs font-bold uppercase text-amber-500 tracking-wider mb-2">BIM Layer Visibility</h3>
+                    <h3 class="text-xs font-bold uppercase text-amber-500 tracking-wider mb-2">BIM System Layer Visibility</h3>
                     <div id="layers-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                        <!-- Filled dynamically -->
                     </div>
                 </div>
 
-                <!-- Materials List -->
                 <div>
                     <h3 class="text-xs font-bold uppercase text-amber-500 tracking-wider mb-2">Sustainable Material Palette</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -596,9 +728,9 @@
         </div>
     </div>
 
-    <!-- MODAL 6: VR COMFORT & GRAPHICS SETTINGS -->
-    <div id="modal-settings" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-2xl relative">
+    <!-- MODAL 6: SETTINGS -->
+    <div id="modal-settings" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
                 <h2 class="text-lg font-bold text-white">Comfort & Visual Settings</h2>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
@@ -607,7 +739,6 @@
             </div>
 
             <div class="space-y-4 text-xs">
-                <!-- Snap Turning -->
                 <div class="flex items-center justify-between glass-panel-light p-3 rounded-xl">
                     <div>
                         <div class="font-bold text-white">Snap Turn Angle</div>
@@ -621,7 +752,6 @@
                     </select>
                 </div>
 
-                <!-- Time of Day Lighting -->
                 <div class="glass-panel-light p-3 rounded-xl space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-white">Time of Day Simulation</span>
@@ -630,7 +760,6 @@
                     <input type="range" id="setting-time-slider" min="6" max="18" step="0.5" value="12" class="w-full accent-amber-500 bg-zinc-800 rounded-lg cursor-pointer">
                 </div>
 
-                <!-- Environmental Analysis Overlay -->
                 <div class="glass-panel-light p-3 rounded-xl flex items-center justify-between">
                     <div>
                         <div class="font-bold text-white">Design Analysis Overlay</div>
@@ -638,7 +767,7 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="setting-toggle-analysis" class="sr-only peer">
-                        <div class="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-600"></div>
+                        <div class="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
                     </label>
                 </div>
             </div>
@@ -646,8 +775,8 @@
     </div>
 
     <!-- MODAL 7: PROJECT OVERVIEW (INFO DOCK BUTTON) -->
-    <div id="modal-info" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-2xl relative">
+    <div id="modal-info" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
                 <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
@@ -689,9 +818,9 @@
         </div>
     </div>
 
-    <!-- MODAL 8: NAVIGATION CONTROLS & HELP (HELP DOCK BUTTON) -->
-    <div id="modal-help" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-2xl relative">
+    <!-- MODAL 8: NAVIGATION CONTROLS & HELP -->
+    <div id="modal-help" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
                 <h2 class="text-lg font-bold text-white">Controls & Navigation Guide</h2>
                 <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
@@ -706,24 +835,19 @@
                 </div>
 
                 <div class="glass-panel-light p-3 rounded-xl flex items-center gap-3">
-                    <div class="p-2 bg-sky-500/20 text-sky-400 rounded-lg font-bold">📍 3D Teleport Nodes</div>
-                    <div class="text-zinc-300">Click any pulsing orange circular button inside the 360 environment to smoothly travel to adjacent market sectors.</div>
+                    <div class="p-2 bg-amber-500/20 text-amber-400 rounded-lg font-bold">📍 Teleport Dialogue</div>
+                    <div class="text-zinc-300">Click the <b>TELEPORT</b> dock button to select any of the 14 market zones and jump directly to that sector.</div>
                 </div>
 
                 <div class="glass-panel-light p-3 rounded-xl flex items-center gap-3">
-                    <div class="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg font-bold">🗺 2D Architectural Plan</div>
-                    <div class="text-zinc-300">Use the <b>MAP</b> dock button to view schematic floor plans, preview sector details, and compute wayfinding routes.</div>
-                </div>
-
-                <div class="glass-panel-light p-3 rounded-xl flex items-center gap-3">
-                    <div class="p-2 bg-purple-500/20 text-purple-400 rounded-lg font-bold">🥽 Meta Quest VR</div>
-                    <div class="text-zinc-300">Press the <b>ENTER VR</b> button in the top bar on WebXR browsers to launch stereoscopic head tracking.</div>
+                    <div class="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg font-bold">🗺 Interactive Minimap</div>
+                    <div class="text-zinc-300">Click zone blocks on the bottom-right minimap or full masterplan to trigger wayfinding routes and zone switching.</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PRESENTATION MODE FLOATING NAVIGATOR -->
+    <!-- PRESENTATION HUD -->
     <div id="presentation-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-8">
         <div class="glass-panel p-3 min-w-[340px] max-w-md flex flex-col gap-2.5 pointer-events-auto rounded-2xl shadow-2xl">
             <div class="flex items-center justify-between border-b border-white/10 pb-2">
@@ -734,9 +858,7 @@
                 <button id="btn-exit-presentation" class="text-[10px] text-amber-400 hover:underline font-semibold cursor-pointer">EXIT PRESENTATION</button>
             </div>
 
-            <!-- Viewpoints Quick Selector list -->
             <div id="presentation-views-container" class="flex flex-col gap-1.5 max-h-48 overflow-y-auto">
-                <!-- Dynamically populated camera viewpoints -->
             </div>
         </div>
     </div>
@@ -744,12 +866,12 @@
     <!-- HOTSPOT ARCHITECTURAL INFO POPUP CARD -->
     <div id="hotspot-card" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 glass-panel p-5 max-w-sm w-full rounded-2xl modal-fade modal-hidden">
         <div class="flex items-center justify-between pb-2 border-b border-white/10 mb-2">
-            <span id="hotspot-card-category" class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Architectural Element</span>
+            <span id="hotspot-card-category" class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Architectural Feature</span>
             <button id="btn-close-hotspot-card" class="text-zinc-400 hover:text-white text-xs cursor-pointer">✕</button>
         </div>
-        <h3 id="hotspot-card-title" class="text-base font-bold text-white">Courtyard 01</h3>
+        <h3 id="hotspot-card-title" class="text-base font-bold text-white">Courtyard Feature</h3>
         <p id="hotspot-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed">Passive cooling atrium designed to naturally draw hot air upwards through high clerestory vents.</p>
-        <button id="btn-hotspot-action" class="mt-4 w-full py-2 bg-amber-600/40 border border-amber-500/50 hover:bg-amber-600 text-white font-semibold text-xs rounded-xl transition-all cursor-pointer">
+        <button id="btn-hotspot-action" class="mt-4 w-full py-2 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl transition-all cursor-pointer">
             CLOSE DETAILS
         </button>
     </div>
@@ -758,12 +880,10 @@
     <div id="toast-container" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2"></div>
 
     <script>
-        // EMBEDDED REAL IMAGE DATA FOR ENTRANCE PLAZA (ZONE 01)
-        const ENTRANCE_PLAZA_IMAGE = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDEyMDL/wAARCAKAAasDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi42P19vf4+fr5APKe/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAFC/9oADAMBAAIR3A0AAB30U7mO/I3s/M8/yqO93M3488+m003e003102123M21m4/v3430s1/c888v/APfO2p3430s3M2488+/f/9k=";
-
-        // Global Application State & Architectural Presets
+        // Global Application State
         const STATE = {
             currentZoneIndex: 0,
+            selectedMapZoneIndex: 0,
             activeTab: 'HOME',
             isPresentationMode: false,
             isAnalysisActive: false,
@@ -776,18 +896,204 @@
             cameraPitch: 0
         };
 
-        // Complete Market Zones Directory Data
+        // Complete Centralized Market Zones Directory Data (Requirement 6 - All 14 Zones)
         const ZONES_DATA = [
-            { id: 'z1', name: '01. Entrance Plaza', type: 'Entrance', desc: 'Main public arrival plaza with covered waiting area, signage and taxi drop-off.', image: ENTRANCE_PLAZA_IMAGE },
-            { id: 'z2', name: '02. Vegetable Market Z1', type: 'Market', desc: '42 stalls for green leaf vegetables with wet drainage channels and terraced racks.' },
-            { id: 'z3', name: '03. Fruit Market Z2', type: 'Market', desc: 'High-ventilation stalls featuring modular terracotta counters and timber framing.' },
-            { id: 'z4', name: '04. Banana & Produce', type: 'Market', desc: 'Shaded storage and display space designed for bulk produce distribution.' },
-            { id: 'z5', name: '05. Central Banyan Courtyard', type: 'Courtyard', desc: 'Microclimate spine centered around preserved Banyan tree with seating steps.' },
-            { id: 'z6', name: '06. Fish & Seafood Wing', type: 'Market', desc: 'Hygiene-focused wet market with stainless steel counters and odor extraction.' },
-            { id: 'z7', name: '07. Meat & Poultry Market', type: 'Market', desc: 'Enclosed refrigerated sections with automated washdown systems.' },
-            { id: 'z8', name: '08. Flower & Garland Market', type: 'Market', desc: 'Aromatic open stalls at central promenade for ceremonial garland weaving.' },
-            { id: 'z9', name: '09. Spice & Dry Produce', type: 'Market', desc: 'Low-humidity timber-shelved arcade for dry goods and traditional spices.' },
-            { id: 'z10', name: '10. Roofscape & Solar Roof', type: 'Roof', desc: 'Polycarbonate translucent roofing with integrated rainwater collection gutters.' }
+            {
+                id: 'z1',
+                name: 'Entrance Plaza',
+                type: 'Arrival & Circulation',
+                desc: 'Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.',
+                icon: '🏛️',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/entrance_plaza.jpg',
+                panorama: 'assets/panoramas/entrance_plaza_360.jpg',
+                mapPos: { x: 40, y: 50, w: 100, h: 65 },
+                materials: 'Compressed Earth Blocks, Teak Timbers',
+                activities: 'Pedestrian arrival, ticketing, orientation',
+                ventilation: 'Open-air breeze corridor'
+            },
+            {
+                id: 'z2',
+                name: 'Vegetable Market',
+                type: 'Fresh Produce',
+                desc: 'Dedicated stalls for green leaf vegetables with wet drainage channels and terraced wooden racks.',
+                icon: '🥬',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/vegetable_market.jpg',
+                panorama: 'assets/panoramas/vegetable_market_360.jpg',
+                mapPos: { x: 155, y: 50, w: 90, h: 65 },
+                materials: 'Terracotta tile, Stainless steel drainage',
+                activities: 'Fresh veg sales, daily sorting',
+                ventilation: 'High clerestory stack effect'
+            },
+            {
+                id: 'z3',
+                name: 'Fruit Market',
+                type: 'Fresh Produce',
+                desc: 'Fresh fruits, local produce, and seasonal items displayed on modular timber fruit stalls.',
+                icon: '🍎',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/fruit_market.jpg',
+                panorama: 'assets/panoramas/fruit_market_360.jpg',
+                mapPos: { x: 260, y: 50, w: 90, h: 65 },
+                materials: 'Hardwood counters, Bamboo trusses',
+                activities: 'Fruit vendors, juice bars, retail',
+                ventilation: 'Cross-breeze naturally shaded roof'
+            },
+            {
+                id: 'z4',
+                name: 'Banana and Bulk Produce Market',
+                type: 'Wholesale & Storage',
+                desc: 'Shaded bulk storage and distribution bay for bananas, tubers, and heavy produce.',
+                icon: '🍌',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/banana_market.jpg',
+                panorama: 'assets/panoramas/banana_market_360.jpg',
+                mapPos: { x: 365, y: 50, w: 90, h: 65 },
+                materials: 'Rammed earth, Timber rafters',
+                activities: 'Bulk unloading, ripening racks',
+                ventilation: 'Thermal chimneys & louvers'
+            },
+            {
+                id: 'z5',
+                name: 'Staples Market',
+                type: 'Dry Goods',
+                desc: 'Dedicated stalls for grains, pulses, rice, oil, and essential dry provisions.',
+                icon: '🌾',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/staples_market.jpg',
+                panorama: 'assets/panoramas/staples_market_360.jpg',
+                mapPos: { x: 470, y: 50, w: 90, h: 65 },
+                materials: 'Sealed timber bins, Earthen plaster',
+                activities: 'Grain weighing, dry storage',
+                ventilation: 'Humidity-controlled screened vents'
+            },
+            {
+                id: 'z6',
+                name: 'Cross Street',
+                type: 'Circulation Spine',
+                desc: 'Main pedestrian circulation spine connecting the different market sectors and courtyards.',
+                icon: '🚶',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/cross_street.jpg',
+                panorama: 'assets/panoramas/cross_street_360.jpg',
+                mapPos: { x: 40, y: 130, w: 520, h: 35 },
+                materials: 'Stone pavers, Covered timber canopy',
+                activities: 'Pedestrian transit, street seating',
+                ventilation: 'Funneled linear wind corridor'
+            },
+            {
+                id: 'z7',
+                name: 'Spice and Dry Produce Market',
+                type: 'Dry Goods',
+                desc: 'Organized stalls for aromatic spices, dry produce, herbs, and traditional ingredients.',
+                icon: '🌶️',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/spice_market.jpg',
+                panorama: 'assets/panoramas/spice_market_360.jpg',
+                mapPos: { x: 40, y: 180, w: 105, h: 70 },
+                materials: 'Teak shelving, Clay jars, Brass accents',
+                activities: 'Spice grinding, custom blending',
+                ventilation: 'Exhaust louver roof monitors'
+            },
+            {
+                id: 'z8',
+                name: 'Food Court',
+                type: 'Dining & Hospitality',
+                desc: 'A shared eating area with local food stalls, communal seating, and connections to the main market.',
+                icon: '🍜',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/food_court.jpg',
+                panorama: 'assets/panoramas/food_court_360.jpg',
+                mapPos: { x: 160, y: 180, w: 120, h: 70 },
+                materials: 'Terracotta tiles, Recycled wood tables',
+                activities: 'Hot food stalls, dining, social hub',
+                ventilation: 'High volume roof exhaust hood'
+            },
+            {
+                id: 'z9',
+                name: 'Central Courtyard',
+                type: 'Public Open Space',
+                desc: 'A shaded community space with Banyan trees, terraced seating, and natural microclimate cooling.',
+                icon: '🌳',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/central_courtyard.jpg',
+                panorama: 'assets/panoramas/central_courtyard_360.jpg',
+                mapPos: { x: 295, y: 180, w: 110, h: 70 },
+                materials: 'Native stone, Terraced brick amphitheater',
+                activities: 'Community gathering, outdoor events',
+                ventilation: 'Evaporative tree canopy cooling'
+            },
+            {
+                id: 'z10',
+                name: 'Flower and Garland Market',
+                type: 'Specialty Retail',
+                desc: 'Aromatic open stalls for ceremonial flower garlands, fresh blooms, and ceremonial crafts.',
+                icon: '💐',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/flower_market.jpg',
+                panorama: 'assets/panoramas/flower_market_360.jpg',
+                mapPos: { x: 420, y: 180, w: 140, h: 70 },
+                materials: 'Water misting counters, Bamboo lattice',
+                activities: 'Garland weaving, flower display',
+                ventilation: 'Shaded humidified breeze'
+            },
+            {
+                id: 'z11',
+                name: 'Fish and Seafood Market',
+                type: 'Wet Market',
+                desc: 'Hygienic wet market section with stainless steel counters, ice storage, and automated washdown.',
+                icon: '🐟',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/fish_market.jpg',
+                panorama: 'assets/panoramas/fish_market_360.jpg',
+                mapPos: { x: 40, y: 265, w: 130, h: 70 },
+                materials: 'Glazed ceramic tile, Stainless steel',
+                activities: 'Seafood sales, cleaning stations',
+                ventilation: 'Negative pressure mechanical exhaust'
+            },
+            {
+                id: 'z12',
+                name: 'Meat and Poultry Market',
+                type: 'Wet Market',
+                desc: 'Enclosed, climate-controlled meat and poultry processing and retail section.',
+                icon: '🥩',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/meat_market.jpg',
+                panorama: 'assets/panoramas/meat_market_360.jpg',
+                mapPos: { x: 185, y: 265, w: 120, h: 70 },
+                materials: 'Stainless steel, Antimicrobial floors',
+                activities: 'Poultry & meat butcher stalls',
+                ventilation: 'Chilled air supply & HEPA filtration'
+            },
+            {
+                id: 'z13',
+                name: 'Administration and Service Areas',
+                type: 'Management & Logistics',
+                desc: 'Market administrative offices, sanitary inspector desk, security command, vendor facilities, and waste sorting.',
+                icon: '🏢',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/admin_services.jpg',
+                panorama: 'assets/panoramas/admin_services_360.jpg',
+                mapPos: { x: 320, y: 265, w: 110, h: 70 },
+                materials: 'Earth blocks, Solar glass windows',
+                activities: 'Market management, security, lockers',
+                ventilation: 'Dual-mode natural & ceiling fans'
+            },
+            {
+                id: 'z14',
+                name: 'Roofscape and Solar Canopy',
+                type: 'Sustainability Infrastructure',
+                desc: 'Lightweight solar canopy roofing, rainwater harvesting gutters, and sky viewing deck.',
+                icon: '☀️',
+                floor: 'Roof Level',
+                thumbnail: 'assets/thumbnails/roofscape.jpg',
+                panorama: 'assets/panoramas/roofscape_360.jpg',
+                mapPos: { x: 445, y: 265, w: 115, h: 70 },
+                materials: 'BIPV solar glass, Steel truss, Polycarbonate',
+                activities: 'Clean energy generation, rainwater collection',
+                ventilation: 'Unrestricted rooftop breeze'
+            }
         ];
 
         // Administration Directory
@@ -803,50 +1109,67 @@
         // Teleportation connections and Info hotspots per zone
         const ZONE_HOTSPOTS = {
             0: [
-                { yaw: 0.35, pitch: 0.0, targetZone: 1, label: 'Teleport to Vegetable Market Z1', type: 'teleport' },
-                { yaw: -0.4, pitch: -0.05, targetZone: 4, label: 'Teleport to Central Banyan Courtyard', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 1, label: 'Vegetable Market', type: 'teleport' },
+                { yaw: -0.4, pitch: -0.05, targetZone: 5, label: 'Cross Street Spine', type: 'teleport' },
                 { yaw: 0.1, pitch: 0.15, icon: '💨', title: 'Passive Cross-Ventilation', desc: 'High ceilings induce stack effect, pulling air across open stalls.', type: 'info' }
             ],
             1: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 0, label: 'Teleport to Entrance Plaza', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 2, label: 'Teleport to Fruit Market Z2', type: 'teleport' },
-                { yaw: 0.8, pitch: -0.05, targetZone: 4, label: 'Teleport to Central Courtyard', type: 'teleport' },
-                { yaw: -0.2, pitch: 0.25, icon: '☀', title: 'Terracotta Roof Louvers', desc: 'Reduces heat radiation while allowing ambient indirect daylight.', type: 'info' }
+                { yaw: -0.5, pitch: 0.0, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
+                { yaw: -0.2, pitch: 0.25, icon: '☀️', title: 'Terracotta Roof Louvers', desc: 'Reduces heat radiation while allowing ambient indirect daylight.', type: 'info' }
             ],
             2: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 1, label: 'Teleport to Vegetable Market', type: 'teleport' },
-                { yaw: 0.3, pitch: 0.0, targetZone: 3, label: 'Teleport to Banana & Produce', type: 'teleport' },
+                { yaw: -0.4, pitch: 0.0, targetZone: 1, label: 'Vegetable Market', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 3, label: 'Banana & Bulk Produce', type: 'teleport' },
+                { yaw: 0.7, pitch: -0.05, targetZone: 7, label: 'Food Court', type: 'teleport' },
                 { yaw: 0.0, pitch: -0.1, icon: '💧', title: 'Integrated Drainage', desc: 'Sub-floor recessed slots prevent stagnant surface water.', type: 'info' }
             ],
             3: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 2, label: 'Teleport to Fruit Market Z2', type: 'teleport' },
-                { yaw: 0.35, pitch: 0.0, targetZone: 4, label: 'Teleport to Central Banyan Courtyard', type: 'teleport' }
+                { yaw: -0.5, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 4, label: 'Staples Market', type: 'teleport' }
             ],
             4: [
-                { yaw: -0.6, pitch: 0.0, targetZone: 0, label: 'Teleport to Entrance Plaza', type: 'teleport' },
-                { yaw: 0.2, pitch: 0.0, targetZone: 5, label: 'Teleport to Fish & Seafood Wing', type: 'teleport' },
-                { yaw: 0.6, pitch: 0.0, targetZone: 7, label: 'Teleport to Flower Market', type: 'teleport' },
-                { yaw: -0.1, pitch: 0.2, icon: '🌿', title: 'Preserved Banyan Tree', desc: 'Natural shade canopy providing microclimate cooling.', type: 'info' }
+                { yaw: -0.5, pitch: 0.0, targetZone: 3, label: 'Banana Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
             ],
             5: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 4, label: 'Teleport to Central Courtyard', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 6, label: 'Teleport to Meat & Poultry', type: 'teleport' }
+                { yaw: -0.6, pitch: 0.0, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
+                { yaw: -0.2, pitch: 0.0, targetZone: 6, label: 'Spice Market', type: 'teleport' },
+                { yaw: 0.2, pitch: 0.0, targetZone: 7, label: 'Food Court', type: 'teleport' },
+                { yaw: 0.6, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
             ],
             6: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 5, label: 'Teleport to Fish Market', type: 'teleport' },
-                { yaw: 0.3, pitch: 0.0, targetZone: 8, label: 'Teleport to Spice Market', type: 'teleport' }
+                { yaw: -0.4, pitch: 0.0, targetZone: 5, label: 'Cross Street', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 10, label: 'Fish & Seafood', type: 'teleport' }
             ],
             7: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 4, label: 'Teleport to Central Courtyard', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Teleport to Spice Market', type: 'teleport' }
+                { yaw: -0.4, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
             ],
             8: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 7, label: 'Teleport to Flower Market', type: 'teleport' },
-                { yaw: 0.3, pitch: 0.1, targetZone: 9, label: 'Teleport to Roofscape & Solar Roof', type: 'teleport' }
+                { yaw: -0.5, pitch: 0.0, targetZone: 7, label: 'Food Court', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 9, label: 'Flower Market', type: 'teleport' },
+                { yaw: -0.1, pitch: 0.2, icon: '🌿', title: 'Preserved Banyan Tree', desc: 'Natural shade canopy providing microclimate cooling.', type: 'info' }
             ],
             9: [
-                { yaw: -0.4, pitch: -0.1, targetZone: 8, label: 'Teleport to Spice Market', type: 'teleport' },
-                { yaw: 0.5, pitch: -0.1, targetZone: 0, label: 'Teleport to Main Entrance Plaza', type: 'teleport' },
+                { yaw: -0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 13, label: 'Roofscape & Solar Roof', type: 'teleport' }
+            ],
+            10: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 6, label: 'Spice Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 11, label: 'Meat & Poultry', type: 'teleport' }
+            ],
+            11: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 10, label: 'Fish Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 12, label: 'Administration', type: 'teleport' }
+            ],
+            12: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 11, label: 'Meat Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 13, label: 'Roofscape', type: 'teleport' }
+            ],
+            13: [
+                { yaw: -0.4, pitch: -0.1, targetZone: 12, label: 'Administration', type: 'teleport' },
+                { yaw: 0.5, pitch: -0.1, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
                 { yaw: 0.0, pitch: 0.1, icon: '⚡', title: 'Photovoltaic Glass Roof', desc: 'Generates clean electricity for market lighting.', type: 'info' }
             ]
         };
@@ -857,49 +1180,37 @@
         let onPointerDownMouseX = 0, onPointerDownMouseY = 0;
         let lon = 0, lat = 0, onPointerDownLon = 0, onPointerDownLat = 0;
 
-        // Initialize Three.js Viewport
         function initWebGL() {
             container = document.getElementById('canvas-container');
             canvas = document.getElementById('webgl-canvas');
 
-            // Scene
             scene = new THREE.Scene();
 
-            // Camera
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
             camera.target = new THREE.Vector3(0, 0, 0);
 
-            // Sphere Geometry for 360 Panorama
             const geometry = new THREE.SphereGeometry(500, 60, 40);
-            geometry.scale(-1, 1, 1); // Invert texture inwards
+            geometry.scale(-1, 1, 1);
 
-            // Create Initial Entrance Plaza Texture
-            textureLoader = new THREE.TextureLoader();
-            const initialTexture = textureLoader.load(ENTRANCE_PLAZA_IMAGE);
+            const initialTexture = createProcedural360Texture(ZONES_DATA[0].name, 0);
 
-            const material = new THREE.MeshBasicMaterial({
-                map: initialTexture
-            });
+            const material = new THREE.MeshBasicMaterial({ map: initialTexture });
 
             sphereMesh = new THREE.Mesh(geometry, material);
             scene.add(sphereMesh);
 
-            // Renderer
             renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Event Listeners for Interaction
             canvas.addEventListener('pointerdown', onPointerDown);
             canvas.addEventListener('wheel', onDocumentMouseWheel);
 
             window.addEventListener('resize', onWindowResize);
 
-            // Start Render Loop
             animate();
         }
 
-        // Procedural 360 texture generator giving unique architectural themes per zone
         function createProcedural360Texture(titleText, zoneIdx) {
             const canvas = document.createElement('canvas');
             canvas.width = 2048;
@@ -907,31 +1218,33 @@
             const ctx = canvas.getContext('2d');
 
             const colorPalettes = [
-                ['#0f172a', '#1e293b', '#334155'], // Plaza
-                ['#14532d', '#166534', '#15803d'], // Veg
-                ['#713f12', '#854d0e', '#a16207'], // Fruit
-                ['#365314', '#3f6212', '#4d7c0f'], // Produce
-                ['#064e3b', '#047857', '#059669'], // Courtyard
-                ['#1e3a8a', '#1d4ed8', '#2563eb'], // Fish
-                ['#7f1d1d', '#991b1b', '#b91c1c'], // Meat
-                ['#701a75', '#86198f', '#a21caf'], // Flower
-                ['#78350f', '#92400e', '#b45309'], // Spice
-                ['#0c4a6e', '#0369a1', '#0284c7']  // Roof
+                ['#0f172a', '#1e293b', '#334155'],
+                ['#14532d', '#166534', '#15803d'],
+                ['#713f12', '#854d0e', '#a16207'],
+                ['#365314', '#3f6212', '#4d7c0f'],
+                ['#78350f', '#854d0e', '#92400e'],
+                ['#1e293b', '#334155', '#475569'],
+                ['#7f1d1d', '#991b1b', '#b91c1c'],
+                ['#831843', '#9d174d', '#be185d'],
+                ['#064e3b', '#047857', '#059669'],
+                ['#701a75', '#86198f', '#a21caf'],
+                ['#1e3a8a', '#1d4ed8', '#2563eb'],
+                ['#450a0a', '#7f1d1d', '#991b1b'],
+                ['#134e4a', '#0f766e', '#14b8a6'],
+                ['#0c4a6e', '#0369a1', '#0284c7']
             ];
 
             const palette = colorPalettes[zoneIdx % colorPalettes.length];
 
-            // Sky & Horizon Gradient
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#09090b');
+            gradient.addColorStop(0, '#09090d');
             gradient.addColorStop(0.38, palette[0]);
-            gradient.addColorStop(0.5, palette[1]); // Horizon
+            gradient.addColorStop(0.5, palette[1]);
             gradient.addColorStop(0.65, palette[2]);
-            gradient.addColorStop(1, '#09090b');
+            gradient.addColorStop(1, '#09090d');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Perspective Grid Lines
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
             ctx.lineWidth = 2;
             const horizonY = canvas.height / 2;
@@ -950,8 +1263,7 @@
                 ctx.stroke();
             }
 
-            // Timber Roof Arches Simulation
-            ctx.strokeStyle = 'rgba(200, 90, 50, 0.35)';
+            ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
             ctx.lineWidth = 8;
             for (let i = 0; i < 8; i++) {
                 let x = (canvas.width / 8) * i;
@@ -960,27 +1272,24 @@
                 ctx.stroke();
             }
 
-            // Central Zone Label Banner inside Panorama
-            ctx.fillStyle = 'rgba(244, 244, 246, 0.9)';
+            ctx.fillStyle = 'rgba(244, 244, 246, 0.95)';
             ctx.font = 'bold 44px Inter, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText("KUNDAM MARKET VR ARCH-VIZ", canvas.width / 2, horizonY - 50);
 
-            ctx.fillStyle = '#C85A32';
-            ctx.font = 'bold 30px Inter, sans-serif';
-            ctx.fillText(titleText, canvas.width / 2, horizonY + 10);
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 32px Inter, sans-serif';
+            ctx.fillText((zoneIdx + 1 < 10 ? "0" : "") + (zoneIdx + 1) + ". " + titleText.toUpperCase(), canvas.width / 2, horizonY + 10);
 
-            ctx.fillStyle = 'rgba(225, 225, 235, 0.7)';
+            ctx.fillStyle = 'rgba(225, 225, 235, 0.75)';
             ctx.font = '18px Inter, sans-serif';
-            ctx.fillText("[ Click Pulsing 3D Hotspot Buttons to Teleport Between Sectors ]", canvas.width / 2, horizonY + 55);
+            ctx.fillText("[ Kundam Sustainable Market Architectural Prototype ]", canvas.width / 2, horizonY + 55);
 
-            const texture = new THREE.CanvasTexture(canvas);
-            return texture;
+            return new THREE.CanvasTexture(canvas);
         }
 
         function onPointerDown(event) {
-            // Prevent camera interaction if clicking UI elements
-            if (event.target.closest('#top-hud, #dock-hud, .modal-fade:not(.modal-hidden), #presentation-hud, #hotspot-card')) {
+            if (event.target.closest('#top-nav-bar, #brand-header, #left-zone-card, #bottom-left-controls, #dock-hud, #minimap-card, .modal-fade:not(.modal-hidden), #presentation-hud, #hotspot-card')) {
                 return;
             }
 
@@ -1022,7 +1331,6 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Auto Walk Rotation Mode
             if (STATE.isAutoWalk && !isUserInteracting) {
                 lon += 0.08;
             }
@@ -1042,7 +1350,6 @@
             camera.lookAt(camera.target);
             renderer.render(scene, camera);
 
-            // Update 3D Hotspot DOM projections
             updateHotspotsProjection();
         }
 
@@ -1055,7 +1362,6 @@
             const currentHotspots = ZONE_HOTSPOTS[STATE.currentZoneIndex] || [];
 
             currentHotspots.forEach((hs) => {
-                // Spherical to Cartesian position
                 const phi = THREE.MathUtils.degToRad(90 - hs.pitch * 50);
                 const theta = THREE.MathUtils.degToRad(hs.yaw * 180);
                 const pos = new THREE.Vector3(
@@ -1064,10 +1370,8 @@
                     400 * Math.sin(phi) * Math.sin(theta)
                 );
 
-                // Project onto screen coordinate space
                 const vector = pos.clone().project(camera);
 
-                // Ensure hotspot is in camera front frustum
                 if (vector.z < 1) {
                     const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
                     const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
@@ -1078,13 +1382,13 @@
                     hotspotEl.style.top = `${y}px`;
 
                     if (hs.type === 'teleport') {
-                        const targetZoneName = ZONES_DATA[hs.targetZone]?.name || `Zone 0${hs.targetZone + 1}`;
+                        const targetZoneName = ZONES_DATA[hs.targetZone]?.name || `Zone ${hs.targetZone + 1}`;
                         hotspotEl.innerHTML = `
                             <div class="relative flex items-center justify-center group">
-                                <div class="w-10 h-10 rounded-full bg-amber-600/90 border-2 border-amber-300 text-white flex items-center justify-center shadow-xl shadow-amber-900/60 hotspot-ring">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <div class="w-10 h-10 rounded-full bg-amber-500 border-2 border-white text-black flex items-center justify-center shadow-xl shadow-amber-950/60 hotspot-ring font-bold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 </div>
-                                <div class="absolute left-12 bg-black/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-xs font-semibold text-amber-300 whitespace-nowrap shadow-2xl transition-all opacity-90 group-hover:opacity-100 group-hover:scale-105">
+                                <div class="absolute left-12 bg-black/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-xs font-bold text-amber-300 whitespace-nowrap shadow-2xl transition-all opacity-90 group-hover:opacity-100 group-hover:scale-105">
                                     ${hs.label || targetZoneName}
                                 </div>
                             </div>
@@ -1097,7 +1401,7 @@
                     } else {
                         hotspotEl.innerHTML = `
                             <div class="relative flex items-center justify-center">
-                                <div class="w-9 h-9 rounded-full bg-emerald-600/80 border border-emerald-400 text-white flex items-center justify-center text-sm font-bold shadow-lg hotspot-ring">
+                                <div class="w-9 h-9 rounded-full bg-emerald-600 border border-emerald-300 text-white flex items-center justify-center text-sm font-bold shadow-lg hotspot-ring">
                                     ${hs.icon || 'ℹ'}
                                 </div>
                                 <div class="absolute left-11 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10 text-[11px] font-medium text-white whitespace-nowrap hidden sm:block">
@@ -1130,39 +1434,42 @@
             const transitionOverlay = document.getElementById('transition-overlay');
             transitionOverlay.classList.add('active');
 
-            // Quick zoom effect for camera depth perception
             const initialFov = camera.fov;
-            camera.fov = Math.max(30, camera.fov - 15);
+            camera.fov = Math.max(30, camera.fov - 12);
             camera.updateProjectionMatrix();
 
             setTimeout(() => {
                 STATE.currentZoneIndex = index;
+                STATE.selectedMapZoneIndex = index;
                 const zone = ZONES_DATA[index];
-                document.getElementById('current-zone-label').innerText = zone.name.toUpperCase();
 
-                // Swap spherical texture
-                textureLoader = textureLoader || new THREE.TextureLoader();
+                document.getElementById('zone-card-icon').innerText = zone.icon;
+                document.getElementById('zone-card-title').innerText = zone.name;
+                document.getElementById('zone-card-desc').innerText = zone.desc;
+                document.getElementById('zone-card-type-tag').innerText = zone.type;
                 
-                if (zone.image) {
-                    textureLoader.load(zone.image, (tex) => {
-                        sphereMesh.material.map = tex;
-                        sphereMesh.material.needsUpdate = true;
-                    });
-                } else if (STATE.userUploads[index]) {
-                    textureLoader.load(STATE.userUploads[index].url, (tex) => {
-                        sphereMesh.material.map = tex;
-                        sphereMesh.material.needsUpdate = true;
-                    });
-                } else {
-                    sphereMesh.material.map = createProcedural360Texture(zone.name, index);
-                    sphereMesh.material.needsUpdate = true;
-                }
+                const imgEl = document.getElementById('zone-card-img');
+                imgEl.onerror = () => {
+                    imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(zone.name)}</text></svg>`;
+                };
+                imgEl.src = zone.thumbnail;
 
-                // Restore FOV
+                document.getElementById('ground-badge-icon').innerText = zone.icon;
+                document.getElementById('ground-badge-title').innerText = zone.name;
+                document.getElementById('ground-badge-subtitle').innerText = `Zone ${(index + 1 < 10 ? '0' : '') + (index + 1)}`;
+
+                document.getElementById('teleport-from-label').innerText = `${(index + 1 < 10 ? '0' : '') + (index + 1)}. ${zone.name}`;
+
+                document.getElementById('minimap-current-label').innerText = zone.name;
+                updateMinimapPin();
+
+                renderMasterplanSVGs();
+
+                loadZonePanorama(zone, index);
+
                 camera.fov = initialFov;
                 camera.updateProjectionMatrix();
 
-                // Fade back in
                 setTimeout(() => {
                     transitionOverlay.classList.remove('active');
                 }, 150);
@@ -1171,82 +1478,138 @@
             }, 300);
         }
 
-        function drawMarketMapCanvas() {
-            const mapCanvas = document.getElementById('map-canvas');
-            if (!mapCanvas) return;
-            const ctx = mapCanvas.getContext('2d');
-            mapCanvas.width = 600;
-            mapCanvas.height = 400;
+        function loadZonePanorama(zone, index) {
+            textureLoader = textureLoader || new THREE.TextureLoader();
 
-            // Background
-            ctx.fillStyle = '#0a0a0f';
-            ctx.fillRect(0, 0, mapCanvas.width, mapCanvas.height);
+            textureLoader.load(
+                zone.panorama,
+                (texture) => {
+                    texture.needsUpdate = true;
+                    sphereMesh.material.map = texture;
+                    sphereMesh.material.needsUpdate = true;
+                },
+                undefined,
+                (err) => {
+                    sphereMesh.material.map = createProcedural360Texture(zone.name, index);
+                    sphereMesh.material.needsUpdate = true;
+                }
+            );
+        }
 
-            // Grid Lines
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i < mapCanvas.width; i += 30) {
-                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, mapCanvas.height); ctx.stroke();
-            }
-            for (let j = 0; j < mapCanvas.height; j += 30) {
-                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(mapCanvas.width, j); ctx.stroke();
-            }
+        function renderMasterplanSVGs() {
+            const minimapGroup = document.getElementById('minimap-zones-group');
+            const fullmapGroup = document.getElementById('fullmap-zones-group');
+            if (!minimapGroup || !fullmapGroup) return;
 
-            // Market Blocks (A, B, C, D)
-            const blocks = [
-                { name: '01. ENTRANCE & VEG', x: 50, y: 50, w: 220, h: 120, color: 'rgba(200, 90, 50, 0.25)', zoneIdx: 0 },
-                { name: '03. FRUIT & PRODUCE', x: 330, y: 50, w: 220, h: 120, color: 'rgba(234, 179, 8, 0.25)', zoneIdx: 2 },
-                { name: '06. FISH & MEAT WING', x: 50, y: 230, w: 220, h: 120, color: 'rgba(16, 185, 129, 0.25)', zoneIdx: 5 },
-                { name: '09. SPICE & ROOF CANOPY', x: 330, y: 230, w: 220, h: 120, color: 'rgba(59, 130, 246, 0.25)', zoneIdx: 8 }
-            ];
+            minimapGroup.innerHTML = '';
+            fullmapGroup.innerHTML = '';
 
-            blocks.forEach(b => {
-                const isCurrent = STATE.currentZoneIndex === b.zoneIdx;
-                ctx.fillStyle = isCurrent ? 'rgba(200, 90, 50, 0.55)' : b.color;
-                ctx.fillRect(b.x, b.y, b.w, b.h);
-                ctx.strokeStyle = isCurrent ? '#f97316' : 'rgba(255, 255, 255, 0.2)';
-                ctx.lineWidth = isCurrent ? 2.5 : 1.5;
-                ctx.strokeRect(b.x, b.y, b.w, b.h);
+            ZONES_DATA.forEach((z, idx) => {
+                const isCurrent = idx === STATE.currentZoneIndex;
+                const isSelected = idx === STATE.selectedMapZoneIndex;
 
-                ctx.fillStyle = '#F4F4F6';
-                ctx.font = 'bold 11px Inter';
-                ctx.fillText(b.name, b.x + 12, b.y + 25);
+                let fill = 'rgba(39, 39, 42, 0.75)';
+                let stroke = 'rgba(255, 255, 255, 0.2)';
+                let strokeWidth = '1.5';
+
+                if (isCurrent) {
+                    fill = 'rgba(245, 158, 11, 0.65)';
+                    stroke = '#ffffff';
+                    strokeWidth = '2.5';
+                } else if (isSelected) {
+                    fill = 'rgba(245, 158, 11, 0.35)';
+                    stroke = '#f59e0b';
+                    strokeWidth = '2';
+                }
+
+                const rectMarkup = `
+                    <rect x="${z.mapPos.x}" y="${z.mapPos.y}" width="${z.mapPos.w}" height="${z.mapPos.h}" rx="6"
+                          fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" class="map-zone-polygon" data-idx="${idx}"/>
+                    <text x="${z.mapPos.x + z.mapPos.w / 2}" y="${z.mapPos.y + z.mapPos.h / 2 + 4}" 
+                          fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle" pointer-events="none">
+                        ${z.icon}
+                    </text>
+                `;
+
+                minimapGroup.innerHTML += rectMarkup;
+                fullmapGroup.innerHTML += rectMarkup;
             });
 
-            // Central Courtyard Spine
-            ctx.fillStyle = 'rgba(34, 197, 94, 0.18)';
-            ctx.fillRect(280, 40, 40, 320);
-            ctx.strokeStyle = '#22c55e';
-            ctx.setLineDash([4, 4]);
-            ctx.strokeRect(280, 40, 40, 320);
-            ctx.setLineDash([]);
-
-            ctx.fillStyle = '#4ade80';
-            ctx.font = 'bold 10px Inter';
-            ctx.fillText('05. COURTYARD', 255, 200);
-
-            // Click listener on Map Canvas to jump to zone
-            mapCanvas.onclick = (evt) => {
-                const rect = mapCanvas.getBoundingClientRect();
-                const scaleX = mapCanvas.width / rect.width;
-                const scaleY = mapCanvas.height / rect.height;
-                const clickX = (evt.clientX - rect.left) * scaleX;
-                const clickY = (evt.clientY - rect.top) * scaleY;
-
-                blocks.forEach(b => {
-                    if (clickX >= b.x && clickX <= b.x + b.w && clickY >= b.y && clickY <= b.y + b.h) {
-                        switchZone(b.zoneIdx);
-                        closeAllModals();
+            document.querySelectorAll('.map-zone-polygon').forEach(poly => {
+                poly.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    STATE.selectedMapZoneIndex = idx;
+                    updateMapTargetDetails(idx);
+                    
+                    if (e.target.closest('#minimap-svg')) {
+                        switchZone(idx);
+                    } else {
+                        renderMasterplanSVGs();
                     }
                 });
+            });
+
+            updateMinimapPin();
+            drawWayfindingPath();
+        }
+
+        function updateMinimapPin() {
+            const currentZone = ZONES_DATA[STATE.currentZoneIndex];
+            if (!currentZone) return;
+
+            const cx = currentZone.mapPos.x + currentZone.mapPos.w / 2;
+            const cy = currentZone.mapPos.y + currentZone.mapPos.h / 2;
+
+            const miniPin = document.getElementById('minimap-user-pin');
+            const fullPin = document.getElementById('fullmap-user-pin');
+
+            if (miniPin) miniPin.setAttribute('transform', `translate(${cx}, ${cy})`);
+            if (fullPin) fullPin.setAttribute('transform', `translate(${cx}, ${cy})`);
+        }
+
+        function drawWayfindingPath() {
+            const pathEl = document.getElementById('wayfinding-active-path');
+            if (!pathEl) return;
+
+            const curr = ZONES_DATA[STATE.currentZoneIndex];
+            const target = ZONES_DATA[STATE.selectedMapZoneIndex];
+
+            if (STATE.currentZoneIndex === STATE.selectedMapZoneIndex) {
+                pathEl.setAttribute('d', '');
+                return;
+            }
+
+            const x1 = curr.mapPos.x + curr.mapPos.w / 2;
+            const y1 = curr.mapPos.y + curr.mapPos.h / 2;
+            const x2 = target.mapPos.x + target.mapPos.w / 2;
+            const y2 = target.mapPos.y + target.mapPos.h / 2;
+
+            const d = `M ${x1} ${y1} L ${x1} 147 L ${x2} 147 L ${x2} ${y2}`;
+            pathEl.setAttribute('d', d);
+        }
+
+        function updateMapTargetDetails(idx) {
+            const z = ZONES_DATA[idx];
+            if (!z) return;
+
+            document.getElementById('map-target-title').innerText = z.name;
+            document.getElementById('map-target-desc').innerText = z.desc;
+            document.getElementById('map-target-type').innerText = z.type;
+            document.getElementById('map-target-vent').innerText = z.ventilation;
+            document.getElementById('map-target-mat').innerText = z.materials;
+
+            const imgEl = document.getElementById('map-target-img');
+            imgEl.onerror = () => {
+                imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(z.name)}</text></svg>`;
             };
+            imgEl.src = z.thumbnail;
         }
 
         function showToast(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = 'glass-panel px-4 py-2 rounded-xl text-xs font-semibold text-white border border-amber-500/40 shadow-xl transition-all transform translate-y-4 opacity-0';
-            toast.innerText = message;
+            toast.className = 'glass-panel px-4 py-2 rounded-xl text-xs font-bold text-white border border-amber-500/50 shadow-2xl transition-all transform translate-y-4 opacity-0 flex items-center gap-2';
+            toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span>${message}`;
             container.appendChild(toast);
 
             setTimeout(() => {
@@ -1259,19 +1622,7 @@
             }, 3000);
         }
 
-        function updateDockActiveState(activeId) {
-            const dockButtons = document.querySelectorAll('.dock-item');
-            dockButtons.forEach(btn => {
-                if (btn.id === activeId) {
-                    btn.classList.add('active');
-                } else if (btn.id !== 'dock-btn-teleport' && btn.id !== 'dock-btn-walk') {
-                    btn.classList.remove('active');
-                }
-            });
-        }
-
         function setupModalsAndEvents() {
-            // Pre-Enter Landing Page Button
             document.getElementById('btn-enter-experience').addEventListener('click', () => {
                 const landing = document.getElementById('landing-screen');
                 landing.classList.add('opacity-0', 'pointer-events-none');
@@ -1279,98 +1630,88 @@
                 showToast("Welcome to Kundam Market VR Architectural Experience");
             });
 
-            // Dock Buttons Handlers
-            document.getElementById('dock-btn-home').addEventListener('click', () => {
-                closeAllModals();
-                lon = 0; lat = 0;
-                camera.fov = 75;
-                camera.updateProjectionMatrix();
-                if (STATE.isPresentationMode) togglePresentationMode();
-                if (STATE.isAutoWalk) {
-                    STATE.isAutoWalk = false;
-                    document.getElementById('dock-btn-walk').classList.remove('active');
-                }
-                switchZone(0);
-                updateDockActiveState('dock-btn-home');
-            });
-
-            document.getElementById('dock-btn-menu').addEventListener('click', () => {
-                openModal('modal-menu');
-                updateDockActiveState('dock-btn-menu');
-            });
-
-            document.getElementById('dock-btn-map').addEventListener('click', () => {
+            document.getElementById('nav-btn-home').addEventListener('click', () => switchZone(0));
+            document.getElementById('nav-btn-map').addEventListener('click', () => {
                 openModal('modal-map');
-                drawMarketMapCanvas();
-                updateDockActiveState('dock-btn-map');
+                renderMasterplanSVGs();
+                updateMapTargetDetails(STATE.currentZoneIndex);
+            });
+            document.getElementById('nav-btn-layers').addEventListener('click', () => openModal('modal-layers'));
+            document.getElementById('nav-btn-settings').addEventListener('click', () => openModal('modal-settings'));
+            document.getElementById('nav-btn-camera').addEventListener('click', togglePresentationMode);
+            document.getElementById('nav-btn-help').addEventListener('click', () => openModal('modal-help'));
+
+            document.getElementById('btn-close-zone-card').addEventListener('click', () => {
+                document.getElementById('left-zone-card').classList.add('opacity-0', 'pointer-events-none');
+            });
+            document.getElementById('btn-zone-card-view').addEventListener('click', () => {
+                openModal('modal-teleport');
+                updateTeleportDialoguePreview();
             });
 
             document.getElementById('dock-btn-teleport').addEventListener('click', () => {
-                STATE.showTeleportHotspots = !STATE.showTeleportHotspots;
-                const btn = document.getElementById('dock-btn-teleport');
-                if (STATE.showTeleportHotspots) {
-                    btn.classList.add('active');
-                    showToast("Teleport 3D Nodes Enabled");
-                } else {
-                    btn.classList.remove('active');
-                    showToast("Teleport 3D Nodes Hidden");
-                }
+                openModal('modal-teleport');
+                updateTeleportDialoguePreview();
             });
 
             document.getElementById('dock-btn-walk').addEventListener('click', () => {
                 STATE.isAutoWalk = !STATE.isAutoWalk;
-                const btn = document.getElementById('dock-btn-walk');
+                const iconCircle = document.getElementById('walk-icon-circle');
+                const textEl = document.getElementById('walk-btn-text');
                 if (STATE.isAutoWalk) {
-                    btn.classList.add('active');
-                    showToast("Auto Orbit Walkthrough Started");
+                    iconCircle.classList.add('bg-amber-500', 'text-black');
+                    textEl.innerText = 'Walking';
+                    showToast("Auto Walk Orbit Mode Active");
                 } else {
-                    btn.classList.remove('active');
-                    showToast("Auto Walk Orbit Paused");
+                    iconCircle.classList.remove('bg-amber-500', 'text-black');
+                    textEl.innerText = 'Walk';
+                    showToast("Auto Walk Mode Paused");
                 }
             });
 
-            document.getElementById('dock-btn-settings').addEventListener('click', () => {
-                openModal('modal-settings');
-                updateDockActiveState('dock-btn-settings');
-            });
-            
-            document.getElementById('dock-btn-info').addEventListener('click', () => {
-                openModal('modal-info');
-                updateDockActiveState('dock-btn-info');
-            });
+            document.getElementById('dock-btn-info').addEventListener('click', () => openModal('modal-info'));
+            document.getElementById('dock-btn-menu').addEventListener('click', () => openModal('modal-menu'));
 
-            document.getElementById('dock-btn-layers').addEventListener('click', () => {
-                openModal('modal-layers');
-                updateDockActiveState('dock-btn-layers');
+            document.getElementById('btn-expand-minimap').addEventListener('click', () => {
+                openModal('modal-map');
+                renderMasterplanSVGs();
+                updateMapTargetDetails(STATE.currentZoneIndex);
             });
 
-            document.getElementById('dock-btn-camera').addEventListener('click', () => {
-                togglePresentationMode();
-                updateDockActiveState('dock-btn-camera');
+            document.getElementById('joy-up').addEventListener('click', () => { lat += 10; });
+            document.getElementById('joy-down').addEventListener('click', () => { lat -= 10; });
+            document.getElementById('joy-left').addEventListener('click', () => { lon -= 15; });
+            document.getElementById('joy-right').addEventListener('click', () => { lon += 15; });
+
+            document.getElementById('floor-level-select').addEventListener('change', (e) => {
+                if (e.target.value === 'Roof Level') {
+                    switchZone(13);
+                } else {
+                    switchZone(0);
+                }
             });
 
-            document.getElementById('dock-btn-help').addEventListener('click', () => {
-                openModal('modal-help');
-                updateDockActiveState('dock-btn-help');
+            const destSelect = document.getElementById('teleport-select-destination');
+            destSelect.addEventListener('change', updateTeleportDialoguePreview);
+
+            document.getElementById('btn-execute-teleport').addEventListener('click', () => {
+                const targetIdx = parseInt(destSelect.value);
+                switchZone(targetIdx);
+                closeAllModals();
             });
 
-            // Top HUD Buttons
-            document.getElementById('btn-toggle-gmaps').addEventListener('click', () => openModal('modal-gmaps'));
-            document.getElementById('btn-upload-manager').addEventListener('click', () => openModal('modal-upload'));
-            document.getElementById('btn-toggle-presentation').addEventListener('click', togglePresentationMode);
-            document.getElementById('btn-exit-presentation').addEventListener('click', togglePresentationMode);
+            document.getElementById('btn-map-enter-zone').addEventListener('click', () => {
+                switchZone(STATE.selectedMapZoneIndex);
+                closeAllModals();
+            });
 
-            // Close Modals
             document.querySelectorAll('.btn-close-modal').forEach(btn => {
                 btn.addEventListener('click', closeAllModals);
             });
 
-            // Backdrop click closes modals
             document.querySelectorAll('.modal-fade').forEach(modal => {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeAllModals();
-                    }
+                    if (e.target === modal) closeAllModals();
                 });
             });
 
@@ -1381,27 +1722,44 @@
                 document.getElementById('hotspot-card').classList.add('modal-hidden');
             });
 
-            document.getElementById('btn-map-enter-zone').addEventListener('click', () => {
-                switchZone(STATE.currentZoneIndex);
-                closeAllModals();
-            });
-
-            // Populate Lists & Galleries
+            populateTeleportDropdown();
             populateMenuLists();
             populateLayersGrid();
             populatePresentationViews();
             setup360Uploader();
 
-            // WebXR Launch Button
-            document.getElementById('btn-webxr-launch').addEventListener('click', () => {
-                showToast("Entering WebXR VR Mode... Put on Meta Quest headset.");
-            });
-
-            // Time Slider Event
             document.getElementById('setting-time-slider').addEventListener('input', (e) => {
-                const val = e.target.value;
-                document.getElementById('time-display').innerText = `${val}:00`;
+                document.getElementById('time-display').innerText = `${e.target.value}:00`;
             });
+        }
+
+        function populateTeleportDropdown() {
+            const select = document.getElementById('teleport-select-destination');
+            select.innerHTML = '';
+            ZONES_DATA.forEach((zone, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.innerText = `${(idx + 1 < 10 ? '0' : '') + (idx + 1)}. ${zone.name} (${zone.type})`;
+                opt.className = 'bg-zinc-900 text-white';
+                select.appendChild(opt);
+            });
+        }
+
+        function updateTeleportDialoguePreview() {
+            const select = document.getElementById('teleport-select-destination');
+            const idx = parseInt(select.value || STATE.currentZoneIndex);
+            const zone = ZONES_DATA[idx];
+
+            document.getElementById('teleport-preview-icon').innerText = zone.icon;
+            document.getElementById('teleport-preview-title').innerText = zone.name;
+            document.getElementById('teleport-preview-type').innerText = zone.type;
+            document.getElementById('teleport-preview-desc').innerText = zone.desc;
+
+            const imgEl = document.getElementById('teleport-preview-img');
+            imgEl.onerror = () => {
+                imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(zone.name)}</text></svg>`;
+            };
+            imgEl.src = zone.thumbnail;
         }
 
         function openModal(id) {
@@ -1426,10 +1784,13 @@
 
             ZONES_DATA.forEach((zone, index) => {
                 const btn = document.createElement('button');
-                btn.className = 'w-full text-left p-2 rounded-lg glass-panel-light hover:border-amber-500/50 text-white transition-all flex items-center justify-between cursor-pointer';
+                btn.className = 'w-full text-left p-2.5 rounded-xl glass-panel-light hover:border-amber-500/50 text-white transition-all flex items-center justify-between cursor-pointer';
                 btn.innerHTML = `
-                    <span class="font-medium">${zone.name}</span>
-                    <span class="text-[10px] text-amber-400 uppercase font-mono">${zone.type}</span>
+                    <div class="flex items-center gap-2 truncate">
+                        <span>${zone.icon}</span>
+                        <span class="font-bold truncate">${zone.name}</span>
+                    </div>
+                    <span class="text-[9px] text-amber-400 font-mono uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">${zone.floor.substring(0,6)}</span>
                 `;
                 btn.addEventListener('click', () => {
                     switchZone(index);
@@ -1444,7 +1805,7 @@
                 const div = document.createElement('div');
                 div.className = 'p-2 rounded-lg glass-panel-light text-zinc-300 flex items-center justify-between';
                 div.innerHTML = `
-                    <span>${admin.name}</span>
+                    <span class="font-medium">${admin.name}</span>
                     <span class="text-[10px] text-zinc-500 font-mono">${admin.code}</span>
                 `;
                 adminContainer.appendChild(div);
@@ -1476,11 +1837,11 @@
             const container = document.getElementById('presentation-views-container');
             container.innerHTML = '';
 
-            ZONES_DATA.slice(0, 5).forEach((z, i) => {
+            ZONES_DATA.slice(0, 6).forEach((z, i) => {
                 const item = document.createElement('button');
                 item.className = 'w-full p-2 rounded-xl glass-panel-light hover:bg-white/10 flex items-center justify-between text-left text-xs text-white transition-all cursor-pointer';
                 item.innerHTML = `
-                    <span>${z.name}</span>
+                    <span>${z.icon} ${z.name}</span>
                     <span class="text-[10px] text-amber-400 font-mono">0${i+1}</span>
                 `;
                 item.addEventListener('click', () => switchZone(i));
@@ -1496,7 +1857,7 @@
 
             fileInput.addEventListener('change', (e) => {
                 handleFiles(e.target.files);
-                fileInput.value = ''; // Reset file input so same file can be uploaded again
+                fileInput.value = '';
             });
 
             dropZone.addEventListener('dragover', (e) => {
@@ -1520,96 +1881,60 @@
         function handleFiles(files) {
             if (!files || files.length === 0) return;
 
-            let newlyAddedCount = 0;
+            let count = 0;
             Array.from(files).forEach((file) => {
                 if (!file.type.startsWith('image/')) return;
                 const url = URL.createObjectURL(file);
-                STATE.userUploads.push({
-                    name: file.name,
-                    url: url
-                });
-                newlyAddedCount++;
+                STATE.userUploads.push({ name: file.name, url: url });
+                count++;
             });
 
-            if (newlyAddedCount > 0) {
-                const latestIndex = STATE.userUploads.length - 1;
-                document.getElementById('render-count-badge').innerText = ZONES_DATA.length + STATE.userUploads.length;
-                
+            if (count > 0) {
                 updateRendersGrid();
-                applyCustomUploadToViewport(latestIndex);
-                showToast(`Loaded ${newlyAddedCount} custom 360 image(s). Rendering viewport!`);
+                showToast(`Loaded ${count} custom 360 image(s).`);
             }
-        }
-
-        function applyCustomUploadToViewport(uploadIndex) {
-            if (!STATE.userUploads[uploadIndex]) return;
-
-            const upload = STATE.userUploads[uploadIndex];
-            textureLoader = textureLoader || new THREE.TextureLoader();
-
-            textureLoader.load(
-                upload.url,
-                (texture) => {
-                    texture.needsUpdate = true;
-                    sphereMesh.material.map = texture;
-                    sphereMesh.material.needsUpdate = true;
-                    document.getElementById('current-zone-label').innerText = `CUSTOM: ${upload.name.toUpperCase()}`;
-                    showToast(`Active View: ${upload.name}`);
-                },
-                undefined,
-                (err) => {
-                    console.error("Error loading uploaded image texture:", err);
-                    showToast("Failed to render uploaded image.");
-                }
-            );
         }
 
         function updateRendersGrid() {
             const grid = document.getElementById('renders-grid');
             grid.innerHTML = '';
 
-            // 1. Render uploaded user images first
             STATE.userUploads.forEach((upload, index) => {
                 const item = document.createElement('div');
-                item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-sky-500/50 hover:border-sky-400 cursor-pointer transition-all';
-
+                item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-amber-500/50 hover:border-amber-400 cursor-pointer transition-all';
                 item.innerHTML = `
-                    <div class="w-full h-24 rounded-lg bg-zinc-900 overflow-hidden relative flex items-center justify-center">
+                    <div class="w-full h-24 rounded-lg bg-zinc-900 overflow-hidden relative">
                         <img src="${upload.url}" class="w-full h-full object-cover">
-                        <span class="absolute top-1 left-1 text-[9px] bg-sky-600 px-1.5 py-0.5 rounded text-white font-bold uppercase">Uploaded</span>
-                        <span class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1.5 py-0.5 rounded text-amber-400 font-mono">U${index + 1}</span>
+                        <span class="absolute top-1 left-1 text-[9px] bg-amber-500 text-black px-1.5 py-0.5 rounded font-bold uppercase">Uploaded</span>
                     </div>
-                    <div class="text-[11px] font-semibold text-white truncate" title="${upload.name}">${upload.name}</div>
+                    <div class="text-[11px] font-semibold text-white truncate">${upload.name}</div>
                 `;
-
                 item.addEventListener('click', () => {
-                    applyCustomUploadToViewport(index);
-                    closeAllModals();
+                    textureLoader = textureLoader || new THREE.TextureLoader();
+                    textureLoader.load(upload.url, (tex) => {
+                        sphereMesh.material.map = tex;
+                        sphereMesh.material.needsUpdate = true;
+                        closeAllModals();
+                        showToast(`Rendering custom image: ${upload.name}`);
+                    });
                 });
-
                 grid.appendChild(item);
             });
 
-            // 2. Render default zone presets
             ZONES_DATA.forEach((zone, index) => {
                 const item = document.createElement('div');
                 item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-white/10 hover:border-amber-500 cursor-pointer transition-all';
-
-                const thumbnailHtml = zone.image ? `<img src="${zone.image}" class="w-full h-full object-cover">` : `<span class="text-[10px] text-zinc-400 font-medium text-center px-2">Preset 360 Panorama</span>`;
-
                 item.innerHTML = `
                     <div class="w-full h-24 rounded-lg bg-zinc-900 overflow-hidden relative flex items-center justify-center">
-                        ${thumbnailHtml}
+                        <span class="text-2xl">${zone.icon}</span>
                         <span class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1.5 py-0.5 rounded text-amber-400 font-mono">Z${index + 1}</span>
                     </div>
-                    <div class="text-[11px] font-semibold text-white truncate">${zone.name}</div>
+                    <div class="text-[11px] font-bold text-white truncate">${zone.name}</div>
                 `;
-
                 item.addEventListener('click', () => {
                     switchZone(index);
                     closeAllModals();
                 });
-
                 grid.appendChild(item);
             });
         }
@@ -1617,19 +1942,21 @@
         function togglePresentationMode() {
             STATE.isPresentationMode = !STATE.isPresentationMode;
 
-            const topHud = document.getElementById('top-hud');
-            const dockHud = document.getElementById('dock-hud');
+            const topNav = document.getElementById('top-nav-bar');
+            const brand = document.getElementById('brand-header');
+            const leftCard = document.getElementById('left-zone-card');
+            const botLeft = document.getElementById('bottom-left-controls');
+            const dock = document.getElementById('dock-hud');
+            const minimap = document.getElementById('minimap-card');
             const presHud = document.getElementById('presentation-hud');
 
             if (STATE.isPresentationMode) {
-                topHud.classList.add('opacity-0', 'pointer-events-none');
-                dockHud.classList.add('opacity-0', 'pointer-events-none');
+                [topNav, brand, leftCard, botLeft, dock, minimap].forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
                 presHud.classList.remove('opacity-0', 'translate-y-8');
                 presHud.classList.add('opacity-100', 'translate-y-0');
                 showToast("Presentation Mode Active. Clean View.");
             } else {
-                topHud.classList.remove('opacity-0', 'pointer-events-none');
-                dockHud.classList.remove('opacity-0', 'pointer-events-none');
+                [topNav, brand, leftCard, botLeft, dock, minimap].forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
                 presHud.classList.add('opacity-0', 'translate-y-8');
                 presHud.classList.remove('opacity-100', 'translate-y-0');
             }
@@ -1638,6 +1965,7 @@
         window.addEventListener('load', () => {
             initWebGL();
             setupModalsAndEvents();
+            switchZone(0);
         });
     </script>
 </body>
