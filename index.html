@@ -275,6 +275,14 @@
                 <span>Map</span>
             </button>
 
+            <!-- Upload Assets (NEW FEATURE 1) -->
+            <button id="nav-btn-upload-assets" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-amber-400 hover:text-amber-300 hover:bg-white/10 transition-all text-[11px] font-bold cursor-pointer group">
+                <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center transition-all">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                </div>
+                <span>Upload Assets</span>
+            </button>
+
             <!-- Layers -->
             <button id="nav-btn-layers" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
@@ -323,10 +331,13 @@
             <div class="w-full h-28 rounded-2xl overflow-hidden bg-zinc-900 relative border border-white/10 group">
                 <img id="zone-card-img" src="" alt="Zone Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-                <div id="zone-card-type-tag" class="absolute bottom-2 left-2 text.text-[10px] bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-full text-amber-300 font-semibold uppercase tracking-wider border border-white/10">
+                <div id="zone-card-type-tag" class="absolute bottom-2 left-2 text-[10px] bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-full text-amber-300 font-semibold uppercase tracking-wider border border-white/10">
                     Fresh Produce
                 </div>
             </div>
+
+            <!-- Optional Zone Gallery Strip (populated when multiple images are assigned) -->
+            <div id="zone-card-gallery-strip" class="hidden flex items-center gap-1.5 overflow-x-auto py-1 pr-1"></div>
 
             <button id="btn-zone-card-view" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-950/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
                 <span>View Zone</span>
@@ -439,8 +450,14 @@
             <div id="minimap-container" class="absolute inset-0 p-2 pt-10 pb-8 flex items-center justify-center">
                 <svg id="minimap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
                     <rect x="20" y="20" width="560" height="320" rx="20" fill="#0c0d12" stroke="#27272a" stroke-width="2"/>
-                    <path d="M 50 160 L 550 160" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
-                    <path d="M 320 50 L 320 310" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                    
+                    <!-- Dynamic Site Plan Image Placement -->
+                    <image id="minimap-custom-bg" x="20" y="20" width="560" height="320" preserveAspectRatio="xMidYMid meet" class="hidden"/>
+
+                    <g id="minimap-schematic-grid">
+                        <path d="M 50 160 L 550 160" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                        <path d="M 320 50 L 320 310" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                    </g>
                     
                     <g id="minimap-zones-group"></g>
 
@@ -516,6 +533,99 @@
         </div>
     </div>
 
+    <!-- NEW MODAL: MARKET ASSET MANAGER (Requirement 1, 2, 3, 4, 8, 9) -->
+    <div id="modal-asset-manager" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-4xl max-h-[90vh] flex flex-col p-6 rounded-3xl relative overflow-hidden shadow-2xl border border-white/20">
+            <!-- Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-black text-white uppercase tracking-wide">MARKET ASSET MANAGER</h2>
+                        <p class="text-xs text-zinc-400 mt-0.5">Upload site plans and zone images to personalize your VR market experience.</p>
+                    </div>
+                </div>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Scrollable Content Container -->
+            <div class="flex-1 overflow-y-auto pr-2 space-y-6">
+                
+                <!-- SECTION 1: SITE PLAN UPLOAD -->
+                <div class="glass-panel-light p-5 rounded-2xl border border-white/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">UPLOAD MASTER SITE PLAN</h3>
+                        </div>
+                        <span class="text-[10px] text-zinc-400 font-mono">PNG, JPG, WEBP, SVG</span>
+                    </div>
+
+                    <!-- Dropzone for Site Plan -->
+                    <div id="siteplan-drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-5 text-center transition-all bg-white/5 cursor-pointer flex flex-col items-center justify-center gap-2">
+                        <input type="file" id="file-input-siteplan" accept="image/png, image/jpeg, image/webp, image/svg+xml" class="hidden">
+                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                        <div class="text-xs font-bold text-white">Drag & drop Master Site Plan or <span class="text-amber-400 underline">Browse File</span></div>
+                        <p class="text-[10px] text-zinc-400">Renders directly on bottom-right minimap and 2D masterplan view.</p>
+                    </div>
+
+                    <!-- Site Plan Preview & Controls -->
+                    <div id="siteplan-preview-container" class="mt-4 hidden glass-panel p-4 rounded-xl border border-white/10 flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-full sm:w-48 h-28 bg-zinc-950 rounded-lg overflow-hidden border border-white/10 relative flex items-center justify-center">
+                            <img id="siteplan-preview-img" src="" alt="Site Plan Preview" class="w-full h-full object-contain">
+                        </div>
+                        <div class="flex-1 space-y-1 text-center sm:text-left">
+                            <div id="siteplan-filename" class="text-xs font-bold text-white truncate">site_plan.png</div>
+                            <div id="siteplan-filesize" class="text-[10px] text-amber-400 font-mono">0 KB</div>
+                            <p class="text-[11px] text-zinc-400">Currently displayed as custom masterplan background.</p>
+                            <div class="flex items-center justify-center sm:justify-start gap-2 pt-2">
+                                <button id="btn-replace-siteplan" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-all cursor-pointer">Replace Plan</button>
+                                <button id="btn-remove-siteplan" class="px-3.5 py-1.5 bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold rounded-lg transition-all cursor-pointer">Remove Plan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: MARKET ZONE IMAGES UPLOAD -->
+                <div class="glass-panel-light p-5 rounded-2xl border border-white/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">UPLOAD MARKET ZONE IMAGES</h3>
+                        </div>
+                        <span id="zone-images-count-badge" class="text-xs px-2.5 py-1 bg-amber-500/20 text-amber-300 font-mono font-bold rounded-full border border-amber-500/30">0 / 20 uploaded</span>
+                    </div>
+
+                    <!-- Dropzone for Zone Images -->
+                    <div id="zone-images-drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-5 text-center transition-all bg-white/5 cursor-pointer flex flex-col items-center justify-center gap-2">
+                        <input type="file" id="file-input-zone-images" accept="image/png, image/jpeg, image/webp" multiple class="hidden">
+                        <input type="file" id="file-input-zone-folder" accept="image/png, image/jpeg, image/webp" webkitdirectory directory multiple class="hidden">
+                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <div class="text-xs font-bold text-white">Drag & drop zone photos/renders or select below</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <button id="btn-browse-zone-files" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-xl transition-all cursor-pointer">Browse Files</button>
+                            <button id="btn-browse-zone-folder" class="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 transition-all cursor-pointer">Upload Folder</button>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 mt-1">Maximum 20 images total (JPG, PNG, WEBP). Folder uploads auto-assign matching zones!</p>
+                    </div>
+
+                    <!-- List of Uploaded Zone Images -->
+                    <div class="mt-4 space-y-2">
+                        <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider">Uploaded Zone Assets</h4>
+                        <div id="zone-images-list" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+                            <p id="zone-images-empty-text" class="text-xs text-zinc-500 italic text-center py-4">No zone images uploaded yet. Upload images to personalize market sectors.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL 1: ARCHITECTURAL SPACE DIRECTORY MENU -->
     <div id="modal-menu" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
         <div class="glass-panel w-full max-w-5xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative overflow-hidden">
@@ -588,8 +698,14 @@
                 <div class="md:col-span-2 bg-zinc-950/90 rounded-2xl p-4 border border-white/10 relative flex items-center justify-center min-h-[340px] overflow-hidden">
                     <svg id="fullmap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
                         <rect x="10" y="10" width="580" height="340" rx="16" fill="#090a0f" stroke="#27272a" stroke-width="2"/>
-                        <path id="route-line-main" d="M 50 130 L 550 130" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
-                        <path id="route-line-cross" d="M 330 50 L 330 310" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                        
+                        <!-- Dynamic Site Plan Image Placement -->
+                        <image id="fullmap-custom-bg" x="10" y="10" width="580" height="340" preserveAspectRatio="xMidYMid meet" class="hidden"/>
+
+                        <g id="fullmap-schematic-grid">
+                            <path id="route-line-main" d="M 50 130 L 550 130" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                            <path id="route-line-cross" d="M 330 50 L 330 310" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                        </g>
                         
                         <path id="wayfinding-active-path" d="" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6,6" fill="none" class="animate-pulse"/>
 
@@ -893,10 +1009,14 @@
             timeOfDay: 12,
             userUploads: [],
             cameraYaw: 0,
-            cameraPitch: 0
+            cameraPitch: 0,
+            
+            // Assets & Persistence State (Requirement 7)
+            sitePlanAsset: null, // { url, filename, size, blob }
+            zoneImagesAssets: [] // Array of { id, filename, size, zoneId, role, isPrimary, url, blob }
         };
 
-        // Complete Centralized Market Zones Directory Data (Requirement 6 - All 14 Zones)
+        // Complete Centralized Market Zones Directory Data (Source of truth)
         const ZONES_DATA = [
             {
                 id: 'z1',
@@ -1174,6 +1294,155 @@
             ]
         };
 
+        // --- INDEXEDDB PERSISTENCE MODULE (Requirement 7) ---
+        const DB_NAME = 'KundamMarketVRDB';
+        const DB_VERSION = 1;
+        let dbPromise = null;
+
+        function getDB() {
+            if (!dbPromise) {
+                dbPromise = new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+                    request.onerror = (e) => reject("IndexedDB error: " + e.target.errorCode);
+                    request.onsuccess = (e) => resolve(e.target.result);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('sitePlan')) {
+                            db.createObjectStore('sitePlan', { keyPath: 'id' });
+                        }
+                        if (!db.objectStoreNames.contains('zoneImages')) {
+                            db.createObjectStore('zoneImages', { keyPath: 'id' });
+                        }
+                    };
+                });
+            }
+            return dbPromise;
+        }
+
+        async function dbSaveSitePlan(file) {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('sitePlan', 'readwrite');
+                const store = tx.objectStore('sitePlan');
+                const record = {
+                    id: 'masterSitePlan',
+                    filename: file.name,
+                    size: file.size,
+                    type: file.type,
+                    blob: file,
+                    timestamp: Date.now()
+                };
+                const req = store.put(record);
+                req.onsuccess = () => resolve(record);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbGetSitePlan() {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('sitePlan', 'readonly');
+                const store = tx.objectStore('sitePlan');
+                const req = store.get('masterSitePlan');
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbDeleteSitePlan() {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('sitePlan', 'readwrite');
+                const store = tx.objectStore('sitePlan');
+                const req = store.delete('masterSitePlan');
+                req.onsuccess = () => resolve();
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbSaveZoneImage(asset) {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('zoneImages', 'readwrite');
+                const store = tx.objectStore('zoneImages');
+                const record = {
+                    id: asset.id,
+                    filename: asset.filename,
+                    size: asset.size,
+                    zoneId: asset.zoneId,
+                    role: asset.role || 'gallery',
+                    isPrimary: !!asset.isPrimary,
+                    blob: asset.blob,
+                    timestamp: Date.now()
+                };
+                const req = store.put(record);
+                req.onsuccess = () => resolve(record);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbGetAllZoneImages() {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('zoneImages', 'readonly');
+                const store = tx.objectStore('zoneImages');
+                const req = store.getAll();
+                req.onsuccess = () => resolve(req.result || []);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbDeleteZoneImage(id) {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('zoneImages', 'readwrite');
+                const store = tx.objectStore('zoneImages');
+                const req = store.delete(id);
+                req.onsuccess = () => resolve();
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function loadStoredAssets() {
+            try {
+                // 1. Load Stored Site Plan
+                const planRecord = await dbGetSitePlan();
+                if (planRecord && planRecord.blob) {
+                    if (STATE.sitePlanAsset && STATE.sitePlanAsset.url) {
+                        URL.revokeObjectURL(STATE.sitePlanAsset.url);
+                    }
+                    STATE.sitePlanAsset = {
+                        filename: planRecord.filename,
+                        size: planRecord.size,
+                        blob: planRecord.blob,
+                        url: URL.createObjectURL(planRecord.blob)
+                    };
+                    updateSitePlanUI();
+                }
+
+                // 2. Load Stored Zone Images
+                const imagesRecords = await dbGetAllZoneImages();
+                STATE.zoneImagesAssets.forEach(img => {
+                    if (img.url) URL.revokeObjectURL(img.url);
+                });
+                STATE.zoneImagesAssets = imagesRecords.map(rec => ({
+                    id: rec.id,
+                    filename: rec.filename,
+                    size: rec.size,
+                    zoneId: rec.zoneId,
+                    role: rec.role,
+                    isPrimary: rec.isPrimary,
+                    blob: rec.blob,
+                    url: URL.createObjectURL(rec.blob)
+                }));
+
+                updateZoneImagesUI();
+                updateActiveZoneDisplay();
+            } catch (err) {
+                console.warn("Could not load stored assets from IndexedDB:", err);
+            }
+        }
+
         let scene, camera, renderer, sphereMesh, textureLoader;
         let canvas, container;
         let isUserInteracting = false;
@@ -1428,6 +1697,7 @@
             document.getElementById('hotspot-card').classList.add('modal-visible');
         }
 
+        // --- REQUIREMENT 5: AUTOMATICALLY DISPLAY CORRECT IMAGE AFTER TELEPORTATION ---
         function switchZone(index) {
             if (index < 0 || index >= ZONES_DATA.length) return;
 
@@ -1448,11 +1718,8 @@
                 document.getElementById('zone-card-desc').innerText = zone.desc;
                 document.getElementById('zone-card-type-tag').innerText = zone.type;
                 
-                const imgEl = document.getElementById('zone-card-img');
-                imgEl.onerror = () => {
-                    imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(zone.name)}</text></svg>`;
-                };
-                imgEl.src = zone.thumbnail;
+                // Update active zone UI elements including uploaded assets
+                updateActiveZoneDisplay();
 
                 document.getElementById('ground-badge-icon').innerText = zone.icon;
                 document.getElementById('ground-badge-title').innerText = zone.name;
@@ -1465,6 +1732,7 @@
 
                 renderMasterplanSVGs();
 
+                // Load standard panorama or user uploaded panorama
                 loadZonePanorama(zone, index);
 
                 camera.fov = initialFov;
@@ -1478,11 +1746,65 @@
             }, 300);
         }
 
+        function updateActiveZoneDisplay() {
+            const zone = ZONES_DATA[STATE.currentZoneIndex];
+            if (!zone) return;
+
+            // Find uploaded assets assigned to this zone ID
+            const assignedAssets = STATE.zoneImagesAssets.filter(img => img.zoneId === zone.id);
+            const primaryAsset = assignedAssets.find(img => img.isPrimary) || assignedAssets[0];
+
+            const imgEl = document.getElementById('zone-card-img');
+            const galleryStrip = document.getElementById('zone-card-gallery-strip');
+
+            if (primaryAsset) {
+                imgEl.src = primaryAsset.url;
+            } else {
+                imgEl.onerror = () => {
+                    imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(zone.name)}</text></svg>`;
+                };
+                imgEl.src = zone.thumbnail;
+            }
+
+            // Render gallery strip if multiple assets exist for this zone
+            if (assignedAssets.length > 1) {
+                galleryStrip.innerHTML = '';
+                galleryStrip.classList.remove('hidden');
+                assignedAssets.forEach(asset => {
+                    const thumb = document.createElement('div');
+                    thumb.className = `w-12 h-10 rounded-lg overflow-hidden border cursor-pointer flex-shrink-0 transition-all ${asset === primaryAsset ? 'border-amber-400 scale-105' : 'border-white/20 opacity-70 hover:opacity-100'}`;
+                    thumb.innerHTML = `<img src="${asset.url}" class="w-full h-full object-cover">`;
+                    thumb.addEventListener('click', () => {
+                        imgEl.src = asset.url;
+                        document.querySelectorAll('#zone-card-gallery-strip > div').forEach(d => d.classList.remove('border-amber-400', 'scale-105'));
+                        thumb.classList.add('border-amber-400', 'scale-105');
+                    });
+                    galleryStrip.appendChild(thumb);
+                });
+            } else {
+                galleryStrip.classList.add('hidden');
+            }
+
+            // Update Teleport dialogue preview image
+            const teleportImg = document.getElementById('teleport-preview-img');
+            if (teleportImg) teleportImg.src = primaryAsset ? primaryAsset.url : zone.thumbnail;
+
+            // Update Masterplan modal preview image
+            const mapImg = document.getElementById('map-target-img');
+            if (mapImg) mapImg.src = primaryAsset ? primaryAsset.url : zone.thumbnail;
+        }
+
         function loadZonePanorama(zone, index) {
             textureLoader = textureLoader || new THREE.TextureLoader();
 
+            // Check if user uploaded a 360 panorama for this zone
+            const assignedAssets = STATE.zoneImagesAssets.filter(img => img.zoneId === zone.id);
+            const panoramaAsset = assignedAssets.find(img => img.role === 'panorama');
+
+            const panUrl = panoramaAsset ? panoramaAsset.url : zone.panorama;
+
             textureLoader.load(
-                zone.panorama,
+                panUrl,
                 (texture) => {
                     texture.needsUpdate = true;
                     sphereMesh.material.map = texture;
@@ -1494,6 +1816,44 @@
                     sphereMesh.material.needsUpdate = true;
                 }
             );
+        }
+
+        // --- REQUIREMENT 2 & 7: SITE PLAN RENDER & MAP SYNC ---
+        function updateSitePlanUI() {
+            const previewContainer = document.getElementById('siteplan-preview-container');
+            const previewImg = document.getElementById('siteplan-preview-img');
+            const filenameEl = document.getElementById('siteplan-filename');
+            const filesizeEl = document.getElementById('siteplan-filesize');
+
+            const miniBg = document.getElementById('minimap-custom-bg');
+            const fullBg = document.getElementById('fullmap-custom-bg');
+            const miniGrid = document.getElementById('minimap-schematic-grid');
+            const fullGrid = document.getElementById('fullmap-schematic-grid');
+
+            if (STATE.sitePlanAsset && STATE.sitePlanAsset.url) {
+                previewContainer.classList.remove('hidden');
+                previewImg.src = STATE.sitePlanAsset.url;
+                filenameEl.innerText = STATE.sitePlanAsset.filename;
+                filesizeEl.innerText = `${Math.round(STATE.sitePlanAsset.size / 1024)} KB`;
+
+                // Display custom site plan on minimap and masterplan SVG
+                if (miniBg) {
+                    miniBg.setAttribute('href', STATE.sitePlanAsset.url);
+                    miniBg.classList.remove('hidden');
+                }
+                if (fullBg) {
+                    fullBg.setAttribute('href', STATE.sitePlanAsset.url);
+                    fullBg.classList.remove('hidden');
+                }
+                if (miniGrid) miniGrid.style.opacity = '0.35';
+                if (fullGrid) fullGrid.style.opacity = '0.35';
+            } else {
+                previewContainer.classList.add('hidden');
+                if (miniBg) miniBg.classList.add('hidden');
+                if (fullBg) fullBg.classList.add('hidden');
+                if (miniGrid) miniGrid.style.opacity = '1';
+                if (fullGrid) fullGrid.style.opacity = '1';
+            }
         }
 
         function renderMasterplanSVGs() {
@@ -1598,11 +1958,14 @@
             document.getElementById('map-target-vent').innerText = z.ventilation;
             document.getElementById('map-target-mat').innerText = z.materials;
 
+            const assignedAssets = STATE.zoneImagesAssets.filter(img => img.zoneId === z.id);
+            const primaryAsset = assignedAssets.find(img => img.isPrimary) || assignedAssets[0];
+
             const imgEl = document.getElementById('map-target-img');
             imgEl.onerror = () => {
                 imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(z.name)}</text></svg>`;
             };
-            imgEl.src = z.thumbnail;
+            imgEl.src = primaryAsset ? primaryAsset.url : z.thumbnail;
         }
 
         function showToast(message) {
@@ -1636,6 +1999,7 @@
                 renderMasterplanSVGs();
                 updateMapTargetDetails(STATE.currentZoneIndex);
             });
+            document.getElementById('nav-btn-upload-assets').addEventListener('click', () => openModal('modal-asset-manager'));
             document.getElementById('nav-btn-layers').addEventListener('click', () => openModal('modal-layers'));
             document.getElementById('nav-btn-settings').addEventListener('click', () => openModal('modal-settings'));
             document.getElementById('nav-btn-camera').addEventListener('click', togglePresentationMode);
@@ -1727,9 +2091,256 @@
             populateLayersGrid();
             populatePresentationViews();
             setup360Uploader();
+            setupAssetManagerHandlers(); // Initialize Asset Manager Uploads
 
             document.getElementById('setting-time-slider').addEventListener('input', (e) => {
                 document.getElementById('time-display').innerText = `${e.target.value}:00`;
+            });
+        }
+
+        // --- REQUIREMENT 1, 2, 3, 4, 8: ASSET MANAGER UPLOAD HANDLERS ---
+        function setupAssetManagerHandlers() {
+            // Site Plan Upload Handlers
+            const siteplanDrop = document.getElementById('siteplan-drop-zone');
+            const siteplanInput = document.getElementById('file-input-siteplan');
+
+            siteplanDrop.addEventListener('click', () => siteplanInput.click());
+            siteplanInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) handleSitePlanFile(e.target.files[0]);
+                siteplanInput.value = '';
+            });
+
+            siteplanDrop.addEventListener('dragover', (e) => { e.preventDefault(); siteplanDrop.classList.add('border-amber-500'); });
+            siteplanDrop.addEventListener('dragleave', () => siteplanDrop.classList.remove('border-amber-500'));
+            siteplanDrop.addEventListener('drop', (e) => {
+                e.preventDefault();
+                siteplanDrop.classList.remove('border-amber-500');
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) handleSitePlanFile(e.dataTransfer.files[0]);
+            });
+
+            document.getElementById('btn-replace-siteplan').addEventListener('click', (e) => {
+                e.stopPropagation();
+                siteplanInput.click();
+            });
+
+            document.getElementById('btn-remove-siteplan').addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (STATE.sitePlanAsset && STATE.sitePlanAsset.url) {
+                    URL.revokeObjectURL(STATE.sitePlanAsset.url);
+                }
+                STATE.sitePlanAsset = null;
+                await dbDeleteSitePlan();
+                updateSitePlanUI();
+                showToast("Master site plan removed.");
+            });
+
+            // Zone Images Upload Handlers
+            const zoneDrop = document.getElementById('zone-images-drop-zone');
+            const zoneFilesInput = document.getElementById('file-input-zone-images');
+            const zoneFolderInput = document.getElementById('file-input-zone-folder');
+
+            document.getElementById('btn-browse-zone-files').addEventListener('click', (e) => {
+                e.stopPropagation();
+                zoneFilesInput.click();
+            });
+
+            document.getElementById('btn-browse-zone-folder').addEventListener('click', (e) => {
+                e.stopPropagation();
+                zoneFolderInput.click();
+            });
+
+            zoneFilesInput.addEventListener('change', (e) => {
+                handleZoneImageFiles(e.target.files);
+                zoneFilesInput.value = '';
+            });
+
+            zoneFolderInput.addEventListener('change', (e) => {
+                handleZoneImageFiles(e.target.files);
+                zoneFolderInput.value = '';
+            });
+
+            zoneDrop.addEventListener('dragover', (e) => { e.preventDefault(); zoneDrop.classList.add('border-amber-500'); });
+            zoneDrop.addEventListener('dragleave', () => zoneDrop.classList.remove('border-amber-500'));
+            zoneDrop.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zoneDrop.classList.remove('border-amber-500');
+                if (e.dataTransfer.files) handleZoneImageFiles(e.dataTransfer.files);
+            });
+        }
+
+        async function handleSitePlanFile(file) {
+            const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'];
+            if (!validTypes.includes(file.type)) {
+                showToast("Unsupported file format! Select PNG, JPG, WEBP, or SVG.");
+                return;
+            }
+
+            if (STATE.sitePlanAsset && STATE.sitePlanAsset.url) {
+                URL.revokeObjectURL(STATE.sitePlanAsset.url);
+            }
+
+            STATE.sitePlanAsset = {
+                filename: file.name,
+                size: file.size,
+                blob: file,
+                url: URL.createObjectURL(file)
+            };
+
+            await dbSaveSitePlan(file);
+            updateSitePlanUI();
+            showToast("Master Site Plan updated successfully!");
+        }
+
+        async function handleZoneImageFiles(files) {
+            if (!files || files.length === 0) return;
+
+            const remainingQuota = 20 - STATE.zoneImagesAssets.length;
+            if (remainingQuota <= 0) {
+                showToast("Maximum limit of 20 zone images reached! Remove existing images first.");
+                return;
+            }
+
+            const filesArray = Array.from(files).filter(f => f.type.startsWith('image/'));
+            if (filesArray.length === 0) return;
+
+            if (filesArray.length > remainingQuota) {
+                showToast(`Limit enforced: Only uploading first ${remainingQuota} file(s) to stay within 20 limit.`);
+            }
+
+            const filesToProcess = filesArray.slice(0, remainingQuota);
+
+            for (let file of filesToProcess) {
+                const autoZoneId = guessZoneIdFromPath(file.webkitRelativePath || file.name);
+                const asset = {
+                    id: 'zone_img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                    filename: file.name,
+                    size: file.size,
+                    zoneId: autoZoneId,
+                    role: 'gallery',
+                    isPrimary: false,
+                    blob: file,
+                    url: URL.createObjectURL(file)
+                };
+
+                STATE.zoneImagesAssets.push(asset);
+                await dbSaveZoneImage(asset);
+            }
+
+            updateZoneImagesUI();
+            updateActiveZoneDisplay();
+            showToast(`Uploaded ${filesToProcess.length} zone image(s).`);
+        }
+
+        function guessZoneIdFromPath(path) {
+            const p = path.toLowerCase();
+            if (p.includes('entrance')) return 'z1';
+            if (p.includes('vegetable') || p.includes('veg')) return 'z2';
+            if (p.includes('fruit')) return 'z3';
+            if (p.includes('banana') || p.includes('bulk')) return 'z4';
+            if (p.includes('staple') || p.includes('grain')) return 'z5';
+            if (p.includes('cross') || p.includes('street')) return 'z6';
+            if (p.includes('spice')) return 'z7';
+            if (p.includes('food') || p.includes('court') || p.includes('dining')) return 'z8';
+            if (p.includes('courtyard') || p.includes('banyan')) return 'z9';
+            if (p.includes('flower') || p.includes('garland')) return 'z10';
+            if (p.includes('fish') || p.includes('seafood')) return 'z11';
+            if (p.includes('meat') || p.includes('poultry')) return 'z12';
+            if (p.includes('admin') || p.includes('service')) return 'z13';
+            if (p.includes('roof') || p.includes('solar')) return 'z14';
+            return ZONES_DATA[STATE.currentZoneIndex].id; // Fallback to current zone
+        }
+
+        function updateZoneImagesUI() {
+            const countBadge = document.getElementById('zone-images-count-badge');
+            const listContainer = document.getElementById('zone-images-list');
+
+            countBadge.innerText = `${STATE.zoneImagesAssets.length} / 20 uploaded`;
+
+            if (STATE.zoneImagesAssets.length === 0) {
+                listContainer.innerHTML = '<p id="zone-images-empty-text" class="text-xs text-zinc-500 italic text-center py-4">No zone images uploaded yet. Upload images to personalize market sectors.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+
+            STATE.zoneImagesAssets.forEach((asset, idx) => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel-light p-3 rounded-xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3';
+                
+                const zoneOptions = ZONES_DATA.map(z => `<option value="${z.id}" ${asset.zoneId === z.id ? 'selected' : ''} class="bg-zinc-900 text-white">${z.name}</option>`).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <div class="w-16 h-12 bg-zinc-950 rounded-lg overflow-hidden border border-white/10 flex-shrink-0">
+                            <img src="${asset.url}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="truncate max-w-[160px]">
+                            <div class="text-xs font-bold text-white truncate">${asset.filename}</div>
+                            <div class="text-[10px] text-amber-400 font-mono">${Math.round(asset.size / 1024)} KB</div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+                        <!-- Zone Assignment Select -->
+                        <select class="zone-assign-select bg-black/80 border border-white/20 rounded-lg text-xs font-bold text-white px-2 py-1 focus:border-amber-500 outline-none">
+                            ${zoneOptions}
+                        </select>
+
+                        <!-- Display Role Select -->
+                        <select class="role-assign-select bg-black/80 border border-white/20 rounded-lg text-xs font-semibold text-zinc-300 px-2 py-1 outline-none">
+                            <option value="gallery" ${asset.role === 'gallery' ? 'selected' : ''}>Photo / Gallery</option>
+                            <option value="panorama" ${asset.role === 'panorama' ? 'selected' : ''}>360° VR Panorama</option>
+                        </select>
+
+                        <!-- Primary Toggle Button -->
+                        <button class="btn-toggle-primary text-[10px] px-2 py-1 rounded-lg border ${asset.isPrimary ? 'bg-amber-500 text-black font-bold border-amber-400' : 'bg-white/5 text-zinc-400 border-white/10 hover:text-white'}">
+                            ${asset.isPrimary ? 'Primary' : 'Set Primary'}
+                        </button>
+
+                        <!-- Delete Button -->
+                        <button class="btn-delete-asset p-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    </div>
+                `;
+
+                // Reassign Zone Event
+                card.querySelector('.zone-assign-select').addEventListener('change', async (e) => {
+                    asset.zoneId = e.target.value;
+                    await dbSaveZoneImage(asset);
+                    updateActiveZoneDisplay();
+                    showToast(`Image reassigned to ${ZONES_DATA.find(z => z.id === asset.zoneId).name}`);
+                });
+
+                // Change Role Event
+                card.querySelector('.role-assign-select').addEventListener('change', async (e) => {
+                    asset.role = e.target.value;
+                    await dbSaveZoneImage(asset);
+                    updateActiveZoneDisplay();
+                    showToast(`Role changed to ${asset.role}`);
+                });
+
+                // Set Primary Event
+                card.querySelector('.btn-toggle-primary').addEventListener('click', async () => {
+                    STATE.zoneImagesAssets.filter(a => a.zoneId === asset.zoneId).forEach(a => a.isPrimary = false);
+                    asset.isPrimary = true;
+                    for (let a of STATE.zoneImagesAssets) await dbSaveZoneImage(a);
+                    updateZoneImagesUI();
+                    updateActiveZoneDisplay();
+                    showToast("Primary zone image updated.");
+                });
+
+                // Delete Asset Event
+                card.querySelector('.btn-delete-asset').addEventListener('click', async () => {
+                    if (asset.url) URL.revokeObjectURL(asset.url);
+                    STATE.zoneImagesAssets = STATE.zoneImagesAssets.filter(a => a.id !== asset.id);
+                    await dbDeleteZoneImage(asset.id);
+                    updateZoneImagesUI();
+                    updateActiveZoneDisplay();
+                    showToast("Zone asset deleted.");
+                });
+
+                listContainer.appendChild(card);
             });
         }
 
@@ -1755,11 +2366,14 @@
             document.getElementById('teleport-preview-type').innerText = zone.type;
             document.getElementById('teleport-preview-desc').innerText = zone.desc;
 
+            const assignedAssets = STATE.zoneImagesAssets.filter(img => img.zoneId === zone.id);
+            const primaryAsset = assignedAssets.find(img => img.isPrimary) || assignedAssets[0];
+
             const imgEl = document.getElementById('teleport-preview-img');
             imgEl.onerror = () => {
                 imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(zone.name)}</text></svg>`;
             };
-            imgEl.src = zone.thumbnail;
+            imgEl.src = primaryAsset ? primaryAsset.url : zone.thumbnail;
         }
 
         function openModal(id) {
@@ -1962,9 +2576,10 @@
             }
         }
 
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
             initWebGL();
             setupModalsAndEvents();
+            await loadStoredAssets(); // Load persisted assets from IndexedDB
             switchZone(0);
         });
     </script>
