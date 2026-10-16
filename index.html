@@ -68,6 +68,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-main);
             transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
         }
 
         .glass-button:hover {
@@ -730,7 +731,7 @@
                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
                     <span class="text-xs font-bold text-white uppercase tracking-wider">PREDEFINED PRESENTATION VIEWS</span>
                 </div>
-                <button id="btn-exit-presentation" class="text-[10px] text-amber-400 hover:underline font-semibold">EXIT PRESENTATION</button>
+                <button id="btn-exit-presentation" class="text-[10px] text-amber-400 hover:underline font-semibold cursor-pointer">EXIT PRESENTATION</button>
             </div>
 
             <!-- Viewpoints Quick Selector list -->
@@ -744,11 +745,11 @@
     <div id="hotspot-card" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 glass-panel p-5 max-w-sm w-full rounded-2xl modal-fade modal-hidden">
         <div class="flex items-center justify-between pb-2 border-b border-white/10 mb-2">
             <span id="hotspot-card-category" class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Architectural Element</span>
-            <button id="btn-close-hotspot-card" class="text-zinc-400 hover:text-white text-xs">✕</button>
+            <button id="btn-close-hotspot-card" class="text-zinc-400 hover:text-white text-xs cursor-pointer">✕</button>
         </div>
         <h3 id="hotspot-card-title" class="text-base font-bold text-white">Courtyard 01</h3>
         <p id="hotspot-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed">Passive cooling atrium designed to naturally draw hot air upwards through high clerestory vents.</p>
-        <button id="btn-hotspot-action" class="mt-4 w-full py-2 bg-amber-600/40 border border-amber-500/50 hover:bg-amber-600 text-white font-semibold text-xs rounded-xl transition-all">
+        <button id="btn-hotspot-action" class="mt-4 w-full py-2 bg-amber-600/40 border border-amber-500/50 hover:bg-amber-600 text-white font-semibold text-xs rounded-xl transition-all cursor-pointer">
             CLOSE DETAILS
         </button>
     </div>
@@ -886,8 +887,6 @@
 
             // Event Listeners for Interaction
             canvas.addEventListener('pointerdown', onPointerDown);
-            canvas.addEventListener('pointermove', onPointerMove);
-            canvas.addEventListener('pointerup', onPointerUp);
             canvas.addEventListener('wheel', onDocumentMouseWheel);
 
             window.addEventListener('resize', onWindowResize);
@@ -976,11 +975,19 @@
         }
 
         function onPointerDown(event) {
+            // Prevent camera interaction if clicking UI elements
+            if (event.target.closest('#top-hud, #dock-hud, .modal-fade:not(.modal-hidden), #presentation-hud, #hotspot-card')) {
+                return;
+            }
+
             isUserInteracting = true;
             onPointerDownMouseX = event.clientX;
             onPointerDownMouseY = event.clientY;
             onPointerDownLon = lon;
             onPointerDownLat = lat;
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
         }
 
         function onPointerMove(event) {
@@ -992,6 +999,8 @@
 
         function onPointerUp() {
             isUserInteracting = false;
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
         }
 
         function onDocumentMouseWheel(event) {
@@ -1128,16 +1137,8 @@
                 document.getElementById('current-zone-label').innerText = zone.name.toUpperCase();
 
                 // Swap spherical texture
-                if (STATE.userUploads[index]) {
-                    textureLoader = textureLoader || new THREE.TextureLoader();
-                    textureLoader.load(STATE.userUploads[index].url, (tex) => {
-                        sphereMesh.material.map = tex;
-                        sphereMesh.material.needsUpdate = true;
-                    });
-                } else {
-                    sphereMesh.material.map = createProcedural360Texture(zone.name, index);
-                    sphereMesh.material.needsUpdate = true;
-                }
+                sphereMesh.material.map = createProcedural360Texture(zone.name, index);
+                sphereMesh.material.needsUpdate = true;
 
                 // Restore FOV
                 camera.fov = initialFov;
@@ -1240,6 +1241,17 @@
             }, 3000);
         }
 
+        function updateDockActiveState(activeId) {
+            const dockButtons = document.querySelectorAll('.dock-item');
+            dockButtons.forEach(btn => {
+                if (btn.id === activeId) {
+                    btn.classList.add('active');
+                } else if (btn.id !== 'dock-btn-teleport' && btn.id !== 'dock-btn-walk') {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
         function setupModalsAndEvents() {
             // Pre-Enter Landing Page Button
             document.getElementById('btn-enter-experience').addEventListener('click', () => {
@@ -1251,20 +1263,31 @@
 
             // Dock Buttons Handlers
             document.getElementById('dock-btn-home').addEventListener('click', () => {
+                closeAllModals();
                 lon = 0; lat = 0;
                 camera.fov = 75;
                 camera.updateProjectionMatrix();
+                if (STATE.isPresentationMode) togglePresentationMode();
+                if (STATE.isAutoWalk) {
+                    STATE.isAutoWalk = false;
+                    document.getElementById('dock-btn-walk').classList.remove('active');
+                }
                 switchZone(0);
+                updateDockActiveState('dock-btn-home');
             });
 
-            document.getElementById('dock-btn-menu').addEventListener('click', () => openModal('modal-menu'));
+            document.getElementById('dock-btn-menu').addEventListener('click', () => {
+                openModal('modal-menu');
+                updateDockActiveState('dock-btn-menu');
+            });
 
             document.getElementById('dock-btn-map').addEventListener('click', () => {
                 openModal('modal-map');
                 drawMarketMapCanvas();
+                updateDockActiveState('dock-btn-map');
             });
 
-            document.getElementById('dock-btn-teleport').addEventListener('click', (e) => {
+            document.getElementById('dock-btn-teleport').addEventListener('click', () => {
                 STATE.showTeleportHotspots = !STATE.showTeleportHotspots;
                 const btn = document.getElementById('dock-btn-teleport');
                 if (STATE.showTeleportHotspots) {
@@ -1288,11 +1311,30 @@
                 }
             });
 
-            document.getElementById('dock-btn-settings').addEventListener('click', () => openModal('modal-settings'));
-            document.getElementById('dock-btn-info').addEventListener('click', () => openModal('modal-info'));
-            document.getElementById('dock-btn-layers').addEventListener('click', () => openModal('modal-layers'));
-            document.getElementById('dock-btn-camera').addEventListener('click', togglePresentationMode);
-            document.getElementById('dock-btn-help').addEventListener('click', () => openModal('modal-help'));
+            document.getElementById('dock-btn-settings').addEventListener('click', () => {
+                openModal('modal-settings');
+                updateDockActiveState('dock-btn-settings');
+            });
+            
+            document.getElementById('dock-btn-info').addEventListener('click', () => {
+                openModal('modal-info');
+                updateDockActiveState('dock-btn-info');
+            });
+
+            document.getElementById('dock-btn-layers').addEventListener('click', () => {
+                openModal('modal-layers');
+                updateDockActiveState('dock-btn-layers');
+            });
+
+            document.getElementById('dock-btn-camera').addEventListener('click', () => {
+                togglePresentationMode();
+                updateDockActiveState('dock-btn-camera');
+            });
+
+            document.getElementById('dock-btn-help').addEventListener('click', () => {
+                openModal('modal-help');
+                updateDockActiveState('dock-btn-help');
+            });
 
             // Top HUD Buttons
             document.getElementById('btn-toggle-gmaps').addEventListener('click', () => openModal('modal-gmaps'));
@@ -1303,6 +1345,15 @@
             // Close Modals
             document.querySelectorAll('.btn-close-modal').forEach(btn => {
                 btn.addEventListener('click', closeAllModals);
+            });
+
+            // Backdrop click closes modals
+            document.querySelectorAll('.modal-fade').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeAllModals();
+                    }
+                });
             });
 
             document.getElementById('btn-close-hotspot-card').addEventListener('click', () => {
@@ -1357,7 +1408,7 @@
 
             ZONES_DATA.forEach((zone, index) => {
                 const btn = document.createElement('button');
-                btn.className = 'w-full text-left p-2 rounded-lg glass-panel-light hover:border-amber-500/50 text-white transition-all flex items-center justify-between';
+                btn.className = 'w-full text-left p-2 rounded-lg glass-panel-light hover:border-amber-500/50 text-white transition-all flex items-center justify-between cursor-pointer';
                 btn.innerHTML = `
                     <span class="font-medium">${zone.name}</span>
                     <span class="text-[10px] text-amber-400 uppercase font-mono">${zone.type}</span>
@@ -1409,7 +1460,7 @@
 
             ZONES_DATA.slice(0, 5).forEach((z, i) => {
                 const item = document.createElement('button');
-                item.className = 'w-full p-2 rounded-xl glass-panel-light hover:bg-white/10 flex items-center justify-between text-left text-xs text-white transition-all';
+                item.className = 'w-full p-2 rounded-xl glass-panel-light hover:bg-white/10 flex items-center justify-between text-left text-xs text-white transition-all cursor-pointer';
                 item.innerHTML = `
                     <span>${z.name}</span>
                     <span class="text-[10px] text-amber-400 font-mono">0${i+1}</span>
@@ -1427,6 +1478,7 @@
 
             fileInput.addEventListener('change', (e) => {
                 handleFiles(e.target.files);
+                fileInput.value = ''; // Reset file input so same file can be uploaded again
             });
 
             dropZone.addEventListener('dragover', (e) => {
@@ -1448,43 +1500,98 @@
         }
 
         function handleFiles(files) {
+            if (!files || files.length === 0) return;
+
+            let newlyAddedCount = 0;
             Array.from(files).forEach((file) => {
-                if (STATE.userUploads.length >= 10) return;
+                if (!file.type.startsWith('image/')) return;
                 const url = URL.createObjectURL(file);
-                STATE.userUploads.push({ name: file.name, url: url });
+                STATE.userUploads.push({
+                    name: file.name,
+                    url: url
+                });
+                newlyAddedCount++;
             });
 
-            document.getElementById('render-count-badge').innerText = Math.max(10, STATE.userUploads.length);
-            updateRendersGrid();
-            showToast(`Loaded custom Enscape 360 renders (${STATE.userUploads.length} active)`);
+            if (newlyAddedCount > 0) {
+                const latestIndex = STATE.userUploads.length - 1;
+                document.getElementById('render-count-badge').innerText = ZONES_DATA.length + STATE.userUploads.length;
+                
+                updateRendersGrid();
+                applyCustomUploadToViewport(latestIndex);
+                showToast(`Loaded ${newlyAddedCount} custom 360 image(s). Rendering viewport!`);
+            }
+        }
+
+        function applyCustomUploadToViewport(uploadIndex) {
+            if (!STATE.userUploads[uploadIndex]) return;
+
+            const upload = STATE.userUploads[uploadIndex];
+            textureLoader = textureLoader || new THREE.TextureLoader();
+
+            textureLoader.load(
+                upload.url,
+                (texture) => {
+                    texture.needsUpdate = true;
+                    sphereMesh.material.map = texture;
+                    sphereMesh.material.needsUpdate = true;
+                    document.getElementById('current-zone-label').innerText = `CUSTOM: ${upload.name.toUpperCase()}`;
+                    showToast(`Active View: ${upload.name}`);
+                },
+                undefined,
+                (err) => {
+                    console.error("Error loading uploaded image texture:", err);
+                    showToast("Failed to render uploaded image.");
+                }
+            );
         }
 
         function updateRendersGrid() {
             const grid = document.getElementById('renders-grid');
             grid.innerHTML = '';
 
-            for (let i = 0; i < 6; i++) {
+            // 1. Render uploaded user images first
+            STATE.userUploads.forEach((upload, index) => {
                 const item = document.createElement('div');
-                item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-white/10 hover:border-amber-500 cursor-pointer';
-
-                const uploaded = STATE.userUploads[i];
-                const zone = ZONES_DATA[i] || { name: `Custom Slot ${i+1}` };
+                item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-sky-500/50 hover:border-sky-400 cursor-pointer transition-all';
 
                 item.innerHTML = `
-                    <div class="w-full h-20 rounded-lg bg-zinc-900 overflow-hidden relative flex items-center justify-center">
-                        ${uploaded ? `<img src="${uploaded.url}" class="w-full h-full object-cover">` : `<span class="text-[10px] text-zinc-500">Preset 360 View</span>`}
-                        <span class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1.5 py-0.5 rounded text-amber-400">0${i+1}</span>
+                    <div class="w-full h-24 rounded-lg bg-zinc-900 overflow-hidden relative flex items-center justify-center">
+                        <img src="${upload.url}" class="w-full h-full object-cover">
+                        <span class="absolute top-1 left-1 text-[9px] bg-sky-600 px-1.5 py-0.5 rounded text-white font-bold uppercase">Uploaded</span>
+                        <span class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1.5 py-0.5 rounded text-amber-400 font-mono">U${index + 1}</span>
                     </div>
-                    <div class="text-[11px] font-semibold text-white truncate">${uploaded ? uploaded.name : zone.name}</div>
+                    <div class="text-[11px] font-semibold text-white truncate" title="${upload.name}">${upload.name}</div>
                 `;
 
                 item.addEventListener('click', () => {
-                    switchZone(i);
+                    applyCustomUploadToViewport(index);
                     closeAllModals();
                 });
 
                 grid.appendChild(item);
-            }
+            });
+
+            // 2. Render default zone presets
+            ZONES_DATA.forEach((zone, index) => {
+                const item = document.createElement('div');
+                item.className = 'glass-panel-light p-2 rounded-xl relative flex flex-col gap-1 border border-white/10 hover:border-amber-500 cursor-pointer transition-all';
+
+                item.innerHTML = `
+                    <div class="w-full h-24 rounded-lg bg-zinc-900 overflow-hidden relative flex items-center justify-center">
+                        <span class="text-[10px] text-zinc-400 font-medium text-center px-2">Preset 360 Panorama</span>
+                        <span class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1.5 py-0.5 rounded text-amber-400 font-mono">Z${index + 1}</span>
+                    </div>
+                    <div class="text-[11px] font-semibold text-white truncate">${zone.name}</div>
+                `;
+
+                item.addEventListener('click', () => {
+                    switchZone(index);
+                    closeAllModals();
+                });
+
+                grid.appendChild(item);
+            });
         }
 
         function togglePresentationMode() {
