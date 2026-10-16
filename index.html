@@ -1,932 +1,704 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Kundam Market VR Architectural Experience</title>
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Three.js Library CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <!-- Inter & Plus Jakarta Sans Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg-dark: #09090d;
-            --glass-bg: rgba(15, 15, 22, 0.82);
-            --glass-card: rgba(20, 20, 30, 0.88);
-            --glass-border: rgba(255, 255, 255, 0.14);
-            --amber-main: #f59e0b;
-            --amber-hover: #d97706;
-            --amber-glow: rgba(245, 158, 11, 0.4);
-            --text-main: #f4f4f6;
-            --text-muted: #9ca3af;
-        }
-
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: var(--bg-dark);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
-        }
-
-        /* Glassmorphism Panel Standard */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .glass-panel-light {
-            background: rgba(30, 30, 45, 0.72);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 14px;
-        }
-
-        .glass-button {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-main);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-        }
-
-        .glass-button:hover {
-            background: rgba(255, 255, 255, 0.16);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .glass-button.active {
-            background: var(--amber-main);
-            border-color: var(--amber-hover);
-            box-shadow: 0 0 18px var(--amber-glow);
-            color: #000000;
-            font-weight: 700;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--amber-main);
-        }
-
-        /* Hotspot Pulse */
-        @keyframes pulse-ring {
-            0% { transform: scale(0.88); opacity: 0.95; }
-            50% { transform: scale(1.22); opacity: 0.4; }
-            100% { transform: scale(0.88); opacity: 0.95; }
-        }
-
-        .hotspot-ring {
-            animation: pulse-ring 2.2s infinite ease-in-out;
-        }
-
-        /* Chevrons Flow Animation */
-        @keyframes chevron-flow {
-            0% { opacity: 0.2; transform: translateY(6px); }
-            50% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0.2; transform: translateY(-6px); }
-        }
-
-        .chevron-anim-1 { animation: chevron-flow 1.8s infinite ease-in-out; }
-        .chevron-anim-2 { animation: chevron-flow 1.8s infinite ease-in-out 0.3s; }
-        .chevron-anim-3 { animation: chevron-flow 1.8s infinite ease-in-out 0.6s; }
-
-        /* Modal Transitions */
-        .modal-fade {
-            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .modal-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.96) translateY(10px);
-        }
-        .modal-visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1) translateY(0);
-        }
-
-        /* Teleport Transition Overlay */
-        #transition-overlay {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle, rgba(245,158,11,0.35) 0%, rgba(9,9,13,0.98) 75%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.38s ease-in-out;
-            z-index: 60;
-        }
-        #transition-overlay.active {
-            opacity: 1;
-        }
-
-        #webgl-canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            touch-action: none;
-        }
-
-        /* Dynamic SVG Map Styling */
-        .map-zone-polygon {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .map-zone-polygon:hover {
-            fill-opacity: 0.85 !important;
-            stroke: #f59e0b !important;
-            stroke-width: 2.5px !important;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kundam Market | VR Architectural Experience</title>
+<style>
+:root{--bg:#090a10;--panel:rgba(17,18,27,.94);--line:#343541;--gold:#f5a500;--text:#f6f6f8;--muted:#a6a7b2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif;overflow:hidden}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button:disabled{opacity:.45;cursor:not-allowed}
+#app{height:100dvh;width:100%;position:relative;overflow:hidden;background:#121725}
+#scene{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#354052,#141a29 70%);overflow:hidden}
+#sceneImage{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none}
+#sceneImage.visible{display:block}
+#emptyScene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px;background:linear-gradient(145deg,#111725,#29364a)}
+#emptyScene h2{font-size:clamp(23px,4vw,42px);margin:0 0 12px}
+#emptyScene p{max-width:420px;color:#c2c5ce;line-height:1.6}
+#topbar{position:absolute;top:12px;left:14px;right:14px;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
+#brand{pointer-events:auto;font-weight:800;letter-spacing:2px;font-size:15px}
+#brand small{display:block;font-size:10px;letter-spacing:1.2px;color:#c1c2ca;margin-top:4px}
+.nav{pointer-events:auto;display:flex;gap:3px;padding:7px;background:var(--panel);border:1px solid var(--line);border-radius:40px;max-width:100%;overflow-x:auto}
+.nav button{border:0;background:transparent;color:#eee;padding:10px 12px;border-radius:30px;white-space:nowrap;font-size:11px}
+.nav button:hover,.nav button.active{background:#493512;color:#ffc64b}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 36px #0007;backdrop-filter:blur(16px)}
+#zoneCard{position:absolute;z-index:5;top:50%;left:16px;transform:translateY(-50%);width:330px;max-width:calc(100vw - 32px);padding:17px}
+.close{float:right;background:#282a35;color:white;border:0;border-radius:50%;width:30px;height:30px}
+#zoneIcon{color:var(--gold);font-size:23px}
+#zoneTitle{font-size:20px;margin:13px 0 8px}
+#zoneDescription{color:#c1c2cc;line-height:1.55;margin:0 0 12px}
+#zonePreview{width:100%;height:135px;object-fit:cover;border-radius:12px;background:#242633;display:none}
+#zonePreview.visible{display:block}
+#previewFallback{height:105px;display:grid;place-items:center;background:#242633;border-radius:12px;color:#aaa}
+.primary{background:var(--gold);color:#17120a;font-weight:800;border:0;border-radius:12px;padding:12px 15px}
+.primary:hover{background:#ffc34b}
+.full{width:100%;margin-top:12px}
+#zoneCard .small{font-size:11px;color:#aeb0bb;margin-top:10px}
+#bottomControls{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:5px;padding:8px;border-radius:40px;white-space:nowrap}
+#bottomControls button{background:transparent;color:#eee;border:0;padding:12px 15px;border-radius:30px}
+#bottomControls button:hover{background:#493512;color:#ffc64b}
+#minimap{position:absolute;right:16px;bottom:18px;z-index:5;width:300px;max-width:34vw;padding:12px}
+#mapHeader{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:bold;color:#ffc64b;margin-bottom:9px}
+#mapImage{width:100%;height:150px;object-fit:contain;background:#252733;border-radius:9px;display:none}
+#mapImage.visible{display:block}
+#mapFallback{height:150px;background:#202532;border-radius:9px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#aaa;font-size:11px}
+#mapZoneButtons{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;max-height:100px;overflow:auto}
+.mapZone{background:#292b36;color:#eee;border:1px solid #454653;border-radius:7px;padding:6px 4px;font-size:10px}
+.mapZone.active{border-color:var(--gold);color:#ffc64b}
+#mapCaption{font-size:10px;color:#bbb;margin-top:8px}
+#hotspots{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hotspot{position:absolute;pointer-events:auto;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:25px;background:#0a0b10eF;color:#ffc64b;padding:9px 12px;font-size:11px;font-weight:bold;box-shadow:0 3px 20px #0007;max-width:170px}
+.hotspot::before{content:"➜";display:inline-grid;place-items:center;background:var(--gold);color:#111;border-radius:50%;width:23px;height:23px;margin-right:7px}
+#dialogBackdrop{position:absolute;inset:0;background:#0009;z-index:20;display:none;align-items:center;justify-content:center;padding:15px}
+#dialogBackdrop.open{display:flex}
+.dialog{width:600px;max-width:100%;max-height:90dvh;overflow:auto;padding:20px}
+.dialog h2{margin:0 0 8px;font-size:20px}
+.muted{color:var(--muted);line-height:1.5;font-size:12px}
+.dialogHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section{border-top:1px solid var(--line);padding-top:15px;margin-top:15px}
+.section h3{font-size:14px;margin:0 0 10px}
+.uploadArea{border:1px dashed #696b78;border-radius:12px;padding:17px;text-align:center;background:#20212b}
+.uploadArea input{max-width:100%;margin-top:12px;color:#ddd}
+.assetRow{display:grid;grid-template-columns:75px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid #353641}
+.assetRow img{width:75px;height:65px;object-fit:cover;border-radius:8px;background:#252633}
+.assetRow select{width:100%;margin:7px 0;background:#20212a;color:white;border:1px solid #555;border-radius:7px;padding:8px}
+.assetRow button,.secondary{border:1px solid #555;background:#292b36;color:#eee;border-radius:7px;padding:7px 9px;font-size:11px}
+.assetName{font-size:12px;overflow-wrap:anywhere}
+#assetList{max-height:260px;overflow:auto}
+#toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);z-index:40;background:#101117;border:1px solid var(--gold);padding:12px 18px;border-radius:12px;display:none;max-width:90%;text-align:center}
+#toast.show{display:block}
+#loading{position:absolute;inset:0;z-index:15;background:#090a10cc;display:none;align-items:center;justify-content:center;font-weight:bold;color:var(--gold)}
+#loading.show{display:flex}
+@media(max-width:700px){
+ #topbar{align-items:flex-start;flex-direction:column}
+ .nav{width:100%;justify-content:flex-start}
+ #brand{padding:3px}
+ #zoneCard{top:auto;bottom:125px;left:10px;width:245px;padding:12px;transform:none}
+ #zoneTitle{font-size:16px;margin-top:7px}
+ #zonePreview{height:85px}
+ #previewFallback{height:65px}
+ #zoneDescription{font-size:12px}
+ #minimap{right:10px;bottom:120px;width:155px;max-width:42vw;padding:8px}
+ #mapImage,#mapFallback{height:75px}
+ #mapZoneButtons{grid-template-columns:1fr;max-height:65px}
+ #bottomControls{bottom:10px;width:max-content;max-width:96vw}
+ #bottomControls button{padding:11px 9px;font-size:11px}
+}
+</style>
 </head>
-<body class="bg-black text-slate-100 overflow-hidden select-none font-sans">
-
-    <!-- PRE-ENTER LANDING PAGE MODAL OVERLAY -->
-    <div id="landing-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-zinc-950 via-black to-zinc-900 transition-opacity duration-500">
-        <div class="glass-panel w-full max-w-3xl p-8 sm:p-10 rounded-3xl border border-white/15 relative overflow-hidden flex flex-col items-center text-center shadow-2xl">
-            <div class="absolute -top-24 -right-24 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-amber-600/15 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wider uppercase mb-4">
-                <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-                Kundam Market VR Experience
-            </div>
-
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3 font-sans">
-                KUNDAM MARKET VR ARCHITECTURAL EXPERIENCE
-            </h1>
-            <p class="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed mb-6">
-                Explore an immersive architectural vision for Kundam Sustainable Public Market. Discover 14 specialized sectors, passive climate design, central courtyard, and wayfinding.
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8 text-left">
-                <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
-                    <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
-                        <span>⚡</span> Interactive Teleport
-                    </div>
-                    <div class="text-[11px] text-zinc-400">Teleport between 14 market sectors using on-screen hotspots and masterplan.</div>
-                </div>
-
-                <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
-                    <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
-                        <span>🏛</span> Climate Resilient
-                    </div>
-                    <div class="text-[11px] text-zinc-400">Passive ventilation chimneys, compressed earth blocks, and solar canopy.</div>
-                </div>
-
-                <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
-                    <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
-                        <span>📁</span> Asset Personalization
-                    </div>
-                    <div class="text-[11px] text-zinc-400">Upload site plans and zone photographs/360 renders stored persistently.</div>
-                </div>
-            </div>
-
-            <button id="btn-enter-experience" class="w-full sm:w-auto px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm rounded-2xl shadow-xl shadow-amber-950/50 border border-amber-300/40 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer">
-                <span>ENTER ARCHITECTURAL EXPERIENCE</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- Screen Transition Overlay Effect Element -->
-    <div id="transition-overlay"></div>
-
-    <!-- 360 / Flat Viewport Canvas Container -->
-    <div id="canvas-container" class="relative w-full h-full bg-zinc-950 overflow-hidden">
-        <!-- Three.js 360 Panorama Canvas -->
-        <canvas id="webgl-canvas" class="w-full h-full block"></canvas>
-
-        <!-- Main Viewport Flat Architectural Image Layer (Issue 1 Fix) -->
-        <img id="viewport-flat-image" src="" alt="Main Viewport Architectural View" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-5 pointer-events-none hidden" />
-
-        <!-- Placeholder when no image is uploaded for current zone -->
-        <div id="viewport-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/90 text-center p-6 z-5 pointer-events-none hidden">
-            <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-2xl mb-3 shadow-xl">
-                📷
-            </div>
-            <h2 id="placeholder-zone-title" class="text-lg font-bold text-white tracking-wide">Zone View Unassigned</h2>
-            <p class="text-xs text-zinc-400 max-w-md mt-1 leading-relaxed">
-                No custom photo or render uploaded for this sector yet. Click <span class="text-amber-400 font-bold">Upload Assets</span> at top-right to attach a photo or 360 render.
-            </p>
-        </div>
-
-        <!-- Dynamic 3D Hotspot DOM Projection Layer -->
-        <div id="hotspots-overlay" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
-    </div>
-
-    <!-- 1. TOP-LEFT BRANDING HEADER -->
-    <div id="brand-header" class="absolute top-5 left-6 z-20 pointer-events-auto flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center shadow-lg shadow-black/50">
-            <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M12 2C6.5 2 2 6.5 2 12c0 5.5 4.5 10 10 10s10-4.5 10-10C22 6.5 17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8 0-3.3 2-6.2 5-7.4V17h6V6.6c3 1.2 5 4.1 5 7.4 0 4.4-3.6 8-8 8z" fill="rgba(245, 158, 11, 0.25)"/>
-                <path d="M12 4v14M8 17V8M16 17V8" stroke-linecap="round"/>
-            </svg>
-        </div>
-        <div>
-            <h1 class="text-sm font-black tracking-widest text-white uppercase font-sans drop-shadow-md">KUNDAM MARKET</h1>
-            <p class="text-[10px] font-semibold text-zinc-300 uppercase tracking-widest -mt-0.5 opacity-90 drop-shadow">VR ARCHITECTURAL EXPERIENCE</p>
-        </div>
-    </div>
-
-    <!-- 2. TOP-RIGHT FLOATING NAVIGATION BAR -->
-    <div id="top-nav-bar" class="absolute top-5 right-6 z-20 pointer-events-auto">
-        <div class="glass-panel px-3 py-1.5 flex items-center gap-1 sm:gap-2 rounded-full shadow-2xl">
-            <button id="nav-btn-home" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                <span>Home</span>
-            </button>
-
-            <button id="nav-btn-map" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer group">
-                <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center transition-all">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                </div>
-                <span>Map</span>
-            </button>
-
-            <button id="nav-btn-upload-assets" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-amber-400 hover:text-amber-300 hover:bg-white/10 transition-all text-[11px] font-bold cursor-pointer group">
-                <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center transition-all">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                </div>
-                <span>Upload Assets</span>
-            </button>
-
-            <button id="nav-btn-layers" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                <span>Layers</span>
-            </button>
-
-            <button id="nav-btn-settings" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span>Settings</span>
-            </button>
-
-            <button id="nav-btn-camera" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span>Camera</span>
-            </button>
-
-            <button id="nav-btn-help" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span>Help</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- 3. COMPACT LEFT-SIDE DYNAMIC ZONE INFORMATION CARD -->
-    <div id="left-zone-card" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 pointer-events-auto w-72 sm:w-80 transition-all duration-300">
-        <div class="glass-panel p-4 rounded-3xl flex flex-col gap-3 shadow-2xl relative border border-white/15">
-            <div class="flex items-center justify-between">
-                <div id="zone-card-icon" class="w-10 h-10 rounded-full bg-black/60 border border-amber-500/40 flex items-center justify-center text-lg text-amber-400 shadow-md">
-                    🏛️
-                </div>
-                <button id="btn-close-zone-card" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/15 text-zinc-400 hover:text-white flex items-center justify-center text-xs transition-all cursor-pointer">
-                    ✕
-                </button>
-            </div>
-
-            <div>
-                <h2 id="zone-card-title" class="text-base font-extrabold text-white tracking-wide">Entrance Plaza</h2>
-                <p id="zone-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed font-normal">
-                    Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
-                </p>
-            </div>
-
-            <div class="w-full h-28 rounded-2xl overflow-hidden bg-zinc-900 relative border border-white/10 group">
-                <img id="zone-card-img" src="" alt="Zone Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-                <div id="zone-card-type-tag" class="absolute bottom-2 left-2 text-[10px] bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-full text-amber-300 font-semibold uppercase tracking-wider border border-white/10">
-                    Arrival & Circulation
-                </div>
-            </div>
-
-            <!-- Zone Gallery Strip -->
-            <div id="zone-card-gallery-strip" class="hidden flex items-center gap-1.5 overflow-x-auto py-1 pr-1"></div>
-
-            <button id="btn-zone-card-view" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-950/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
-                <span>View Zone</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- 4. BOTTOM-LEFT CONTROLS -->
-    <div id="bottom-left-controls" class="absolute bottom-6 left-6 z-20 pointer-events-auto flex items-end gap-3">
-        <div class="w-20 h-20 rounded-full glass-panel border border-white/20 flex items-center justify-center relative p-1 shadow-2xl">
-            <button id="joy-up" class="absolute top-1 left-1/2 -translate-x-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">▲</button>
-            <button id="joy-down" class="absolute bottom-1 left-1/2 -translate-x-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">▼</button>
-            <button id="joy-left" class="absolute left-1 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">◄</button>
-            <button id="joy-right" class="absolute right-1 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">►</button>
-            <div class="w-6 h-6 rounded-full bg-amber-500/30 border border-amber-400 flex items-center justify-center text-[8px] text-amber-300">
-                ●
-            </div>
-        </div>
-
-        <div class="glass-panel px-4 py-2.5 rounded-2xl flex items-center gap-3 border border-white/15">
-            <div class="p-2 rounded-xl bg-amber-500/20 text-amber-400">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-            </div>
-            <div>
-                <div class="text-[10px] text-zinc-400 font-medium">Floor Level</div>
-                <select id="floor-level-select" class="bg-transparent text-xs font-bold text-white border-none outline-none cursor-pointer p-0 -mt-0.5">
-                    <option value="Ground Floor" class="bg-zinc-900 text-white">Ground Floor</option>
-                    <option value="Roof Level" class="bg-zinc-900 text-white">Roof Level & Solar Canopy</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. CENTRAL GROUND PATH OVERLAY -->
-    <div id="ground-navigation-overlay" class="absolute left-1/2 top-2/3 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none flex flex-col items-center gap-2">
-        <div class="glass-panel px-4 py-2 rounded-2xl border border-amber-500/40 flex items-center gap-2.5 shadow-2xl animate-bounce">
-            <span id="ground-badge-icon" class="text-base">🏛️</span>
-            <div>
-                <div id="ground-badge-title" class="text-xs font-bold text-white">Entrance Plaza</div>
-                <div id="ground-badge-subtitle" class="text-[9px] text-amber-400 font-semibold uppercase">Zone 01</div>
-            </div>
-            <svg class="w-4 h-4 text-amber-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-        </div>
-
-        <div class="w-0.5 h-8 bg-gradient-to-b from-amber-400 to-transparent"></div>
-
-        <div class="w-12 h-6 rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-lg flex items-center justify-center transform rotate-x-60">
-            <div class="w-4 h-2 rounded-full bg-amber-400 animate-ping"></div>
-        </div>
-
-        <div class="flex flex-col items-center -space-y-1 mt-2 text-amber-400/80">
-            <svg class="w-6 h-3 chevron-anim-1" fill="none" stroke="currentColor" viewBox="0 0 24 12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 2l8 8 8-8"/></svg>
-            <svg class="w-8 h-4 chevron-anim-2" fill="none" stroke="currentColor" viewBox="0 0 24 12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 2l8 8 8-8"/></svg>
-            <svg class="w-10 h-5 chevron-anim-3" fill="none" stroke="currentColor" viewBox="0 0 24 12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 2l8 8 8-8"/></svg>
-        </div>
-    </div>
-
-    <!-- 6. BOTTOM-CENTER NAVIGATION DOCK -->
-    <div id="dock-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
-        <div class="glass-panel px-5 py-2.5 flex items-center gap-4 sm:gap-6 rounded-full shadow-2xl border border-white/20">
-            <button id="dock-btn-teleport" class="flex items-center gap-2.5 group cursor-pointer">
-                <div class="w-9 h-9 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold shadow-md shadow-amber-950/50 group-hover:bg-amber-400 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                </div>
-                <span class="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">Teleport</span>
-            </button>
-
-            <div class="w-[1px] h-6 bg-white/15"></div>
-
-            <button id="dock-btn-walk" class="flex items-center gap-2.5 group cursor-pointer">
-                <div id="walk-icon-circle" class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                </div>
-                <span id="walk-btn-text" class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Walk</span>
-            </button>
-
-            <div class="w-[1px] h-6 bg-white/15"></div>
-
-            <button id="dock-btn-info" class="flex items-center gap-2.5 group cursor-pointer">
-                <div class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Info</span>
-            </button>
-
-            <button id="dock-btn-menu" class="hidden sm:flex items-center gap-1.5 ml-2 pl-3 border-l border-white/15 text-xs text-zinc-400 hover:text-amber-400 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                <span>Directory</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- 7. BOTTOM-RIGHT INTERACTIVE SITE PLAN MINIMAP -->
-    <div id="minimap-card" class="absolute bottom-6 right-6 z-20 pointer-events-auto w-72 sm:w-80 h-52 sm:h-56">
-        <div class="glass-panel w-full h-full p-3 rounded-3xl flex flex-col justify-between shadow-2xl relative border border-white/15 overflow-hidden">
-            <div class="flex items-center justify-between z-10">
-                <div class="text-[10px] font-bold tracking-wider uppercase text-amber-400 bg-black/70 px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    SITE MASTERPLAN
-                </div>
-                <div class="w-7 h-7 rounded-full bg-black/70 border border-white/20 flex flex-col items-center justify-center text-[9px] font-bold text-white shadow-md">
-                    <span class="text-amber-400 text-[8px] leading-none">▲</span>
-                    <span class="leading-none">N</span>
-                </div>
-            </div>
-
-            <div id="minimap-container" class="absolute inset-0 p-2 pt-10 pb-8 flex items-center justify-center">
-                <svg id="minimap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
-                    <rect x="20" y="20" width="560" height="320" rx="20" fill="#0c0d12" stroke="#27272a" stroke-width="2"/>
-                    <image id="minimap-custom-bg" x="20" y="20" width="560" height="320" preserveAspectRatio="xMidYMid meet" class="hidden"/>
-
-                    <g id="minimap-schematic-grid">
-                        <path d="M 50 160 L 550 160" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
-                        <path d="M 320 50 L 320 310" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
-                    </g>
-                    
-                    <g id="minimap-zones-group"></g>
-
-                    <g id="minimap-user-pin" transform="translate(100,100)" class="transition-all duration-500">
-                        <circle r="12" fill="rgba(245, 158, 11, 0.35)" class="animate-ping"/>
-                        <circle r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
-                        <circle r="2.5" fill="#000000"/>
-                    </g>
-                </svg>
-            </div>
-
-            <div class="flex items-center justify-between z-10 mt-auto">
-                <div id="minimap-current-label" class="text-[10px] text-zinc-300 font-semibold bg-black/80 px-2 py-0.5 rounded-md truncate max-w-[180px]">
-                    01. Entrance Plaza
-                </div>
-                <button id="btn-expand-minimap" class="w-7 h-7 rounded-full bg-black/70 hover:bg-amber-500 hover:text-black border border-white/20 text-zinc-300 flex items-center justify-center transition-all cursor-pointer" title="Expand Masterplan">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- REQUIREMENT 2 MODAL: COMPACT TELEPORT DIALOGUE -->
-    <div id="modal-teleport" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-md p-6 rounded-3xl relative flex flex-col gap-4 border border-white/20 shadow-2xl">
-            <div class="flex items-center justify-between border-b border-white/10 pb-3">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    </div>
-                    <h2 class="text-base font-bold text-white tracking-wide">TELEPORT TO ZONE</h2>
-                </div>
-                <button class="btn-close-modal glass-button w-8 h-8 rounded-full text-zinc-400 hover:text-white flex items-center justify-center">
-                    ✕
-                </button>
-            </div>
-
-            <div class="glass-panel-light p-3 rounded-2xl flex items-center justify-between">
-                <div>
-                    <span class="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">Current Location (From)</span>
-                    <span id="teleport-from-label" class="text-xs font-bold text-amber-400">01. Entrance Plaza</span>
-                </div>
-                <span class="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-300 rounded-full font-mono">Floor 01</span>
-            </div>
-
-            <div>
-                <label for="teleport-select-destination" class="text-[11px] font-bold text-zinc-300 uppercase tracking-wider block mb-1.5">Select Destination</label>
-                <select id="teleport-select-destination" class="w-full bg-zinc-900/90 border border-white/20 rounded-xl px-3.5 py-3 text-xs font-semibold text-white focus:outline-none focus:border-amber-500">
-                </select>
-            </div>
-
-            <div class="glass-panel-light p-3.5 rounded-2xl border border-white/10 flex flex-col gap-2">
-                <div class="flex items-center justify-between">
-                    <span id="teleport-preview-title" class="text-xs font-bold text-white flex items-center gap-2">
-                        <span id="teleport-preview-icon">🏛️</span> Entrance Plaza
-                    </span>
-                    <span id="teleport-preview-type" class="text-[10px] text-amber-400 font-mono uppercase bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/30">Arrival</span>
-                </div>
-
-                <div class="w-full h-28 rounded-xl overflow-hidden bg-zinc-950 relative border border-white/10">
-                    <img id="teleport-preview-img" src="" alt="Destination Preview" class="w-full h-full object-cover">
-                </div>
-
-                <p id="teleport-preview-desc" class="text-[11px] text-zinc-300 leading-relaxed">
-                    Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
-                </p>
-            </div>
-
-            <button id="btn-execute-teleport" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-2xl shadow-xl shadow-amber-950/50 border border-amber-300/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span>TELEPORT TO SELECTED ZONE</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- MARKET ASSET MANAGER MODAL -->
-    <div id="modal-asset-manager" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-4xl max-h-[90vh] flex flex-col p-6 rounded-3xl relative overflow-hidden shadow-2xl border border-white/20">
-            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-                <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-black text-white uppercase tracking-wide">MARKET ASSET MANAGER</h2>
-                        <p class="text-xs text-zinc-400 mt-0.5">Upload site plans and zone images to personalize your VR market experience.</p>
-                    </div>
-                </div>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <div class="flex-1 overflow-y-auto pr-2 space-y-6">
-                <!-- SECTION 1: SITE PLAN UPLOAD -->
-                <div class="glass-panel-light p-5 rounded-2xl border border-white/10">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">UPLOAD MASTER SITE PLAN</h3>
-                        </div>
-                        <span class="text-[10px] text-zinc-400 font-mono">PNG, JPG, WEBP, SVG</span>
-                    </div>
-
-                    <div id="siteplan-drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-5 text-center transition-all bg-white/5 cursor-pointer flex flex-col items-center justify-center gap-2">
-                        <input type="file" id="file-input-siteplan" accept="image/png, image/jpeg, image/webp, image/svg+xml" class="hidden">
-                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                        <div class="text-xs font-bold text-white">Drag & drop Master Site Plan or <span class="text-amber-400 underline">Browse File</span></div>
-                    </div>
-
-                    <div id="siteplan-preview-container" class="mt-4 hidden glass-panel p-4 rounded-xl border border-white/10 flex flex-col sm:flex-row items-center gap-4">
-                        <div class="w-full sm:w-48 h-28 bg-zinc-950 rounded-lg overflow-hidden border border-white/10 relative flex items-center justify-center">
-                            <img id="siteplan-preview-img" src="" alt="Site Plan Preview" class="w-full h-full object-contain">
-                        </div>
-                        <div class="flex-1 space-y-1 text-center sm:text-left">
-                            <div id="siteplan-filename" class="text-xs font-bold text-white truncate">site_plan.png</div>
-                            <div id="siteplan-filesize" class="text-[10px] text-amber-400 font-mono">0 KB</div>
-                            <div class="flex items-center justify-center sm:justify-start gap-2 pt-2">
-                                <button id="btn-replace-siteplan" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-all cursor-pointer">Replace Plan</button>
-                                <button id="btn-remove-siteplan" class="px-3.5 py-1.5 bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold rounded-lg transition-all cursor-pointer">Remove Plan</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 2: MARKET ZONE IMAGES UPLOAD -->
-                <div class="glass-panel-light p-5 rounded-2xl border border-white/10">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">UPLOAD MARKET ZONE IMAGES</h3>
-                        </div>
-                        <span id="zone-images-count-badge" class="text-xs px-2.5 py-1 bg-amber-500/20 text-amber-300 font-mono font-bold rounded-full border border-amber-500/30">0 / 20 uploaded</span>
-                    </div>
-
-                    <div id="zone-images-drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-5 text-center transition-all bg-white/5 cursor-pointer flex flex-col items-center justify-center gap-2">
-                        <input type="file" id="file-input-zone-images" accept="image/png, image/jpeg, image/webp" multiple class="hidden">
-                        <input type="file" id="file-input-zone-folder" accept="image/png, image/jpeg, image/webp" webkitdirectory directory multiple class="hidden">
-                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        <div class="text-xs font-bold text-white">Drag & drop zone photos/renders or select below</div>
-                        <div class="flex items-center gap-2 mt-1">
-                            <button id="btn-browse-zone-files" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-xl transition-all cursor-pointer">Browse Files</button>
-                            <button id="btn-browse-zone-folder" class="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 transition-all cursor-pointer">Upload Folder</button>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 space-y-2">
-                        <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider">Uploaded Zone Assets</h4>
-                        <div id="zone-images-list" class="space-y-2 max-h-72 overflow-y-auto pr-1">
-                            <p id="zone-images-empty-text" class="text-xs text-zinc-500 italic text-center py-4">No zone images uploaded yet.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DIRECTORY MENU MODAL -->
-    <div id="modal-menu" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-5xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative overflow-hidden">
-            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-                <div>
-                    <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
-                        <span class="w-2 h-5 bg-amber-500 rounded-sm"></span>
-                        Architectural Space Directory
-                    </h2>
-                    <p class="text-xs text-zinc-400 mt-0.5">Select any market sector, administration room, or courtyard to teleport instantly</p>
-                </div>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto pr-1">
-                <div class="flex flex-col gap-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Navigation Actions</h3>
-                    <button id="menu-btn-explore" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl flex items-center gap-3">
-                        <div class="p-2 rounded-lg bg-amber-500/20 text-amber-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">Full Guided Tour</div>
-                            <div class="text-[11px] text-zinc-400">Sequential walkthrough</div>
-                        </div>
-                    </button>
-
-                    <button id="menu-btn-open-map" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl flex items-center gap-3">
-                        <div class="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                        </div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">Interactive Masterplan</div>
-                            <div class="text-[11px] text-zinc-400">Full 2D schematic plan</div>
-                        </div>
-                    </button>
-                </div>
-
-                <div class="md:col-span-2 flex flex-col gap-1.5">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">All Market Sectors (14 Zones)</h3>
-                    <div id="zone-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-80 overflow-y-auto pr-1"></div>
-                </div>
-
-                <div class="flex flex-col gap-1.5">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Administration</h3>
-                    <div id="admin-list-container" class="flex flex-col gap-1 text-xs max-h-80 overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2D MASTERPLAN MODAL -->
-    <div id="modal-map" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-5xl max-h-[90vh] flex flex-col p-6 rounded-3xl relative">
-            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
-                <div class="flex items-center gap-3">
-                    <h2 class="text-lg font-extrabold text-white">2D Architectural Masterplan & Wayfinding</h2>
-                    <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30">Interactive Wayfinding</span>
-                </div>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 overflow-hidden">
-                <div class="md:col-span-2 bg-zinc-950/90 rounded-2xl p-4 border border-white/10 relative flex items-center justify-center min-h-[340px] overflow-hidden">
-                    <svg id="fullmap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
-                        <rect x="10" y="10" width="580" height="340" rx="16" fill="#090a0f" stroke="#27272a" stroke-width="2"/>
-                        <image id="fullmap-custom-bg" x="10" y="10" width="580" height="340" preserveAspectRatio="xMidYMid meet" class="hidden"/>
-
-                        <g id="fullmap-schematic-grid">
-                            <path id="route-line-main" d="M 50 130 L 550 130" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
-                            <path id="route-line-cross" d="M 330 50 L 330 310" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
-                        </g>
-                        
-                        <path id="wayfinding-active-path" d="" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6,6" fill="none" class="animate-pulse"/>
-
-                        <g id="fullmap-zones-group"></g>
-
-                        <g id="fullmap-user-pin" transform="translate(100,100)">
-                            <circle r="14" fill="rgba(245, 158, 11, 0.35)" class="animate-ping"/>
-                            <circle r="8" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
-                        </g>
-                    </svg>
-                </div>
-
-                <div class="flex flex-col gap-3 justify-between">
-                    <div class="glass-panel-light p-4 rounded-2xl flex flex-col gap-2.5">
-                        <div class="text-[10px] font-bold text-amber-400 tracking-wider uppercase">Selected Target Zone</div>
-                        <h3 id="map-target-title" class="text-base font-extrabold text-white">Entrance Plaza</h3>
-                        
-                        <div class="w-full h-28 rounded-xl overflow-hidden bg-zinc-900 border border-white/10 my-1">
-                            <img id="map-target-img" src="" class="w-full h-full object-cover">
-                        </div>
-
-                        <p id="map-target-desc" class="text-xs text-zinc-300 leading-relaxed">
-                            Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
-                        </p>
-                    </div>
-
-                    <button id="btn-map-enter-zone" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span>TELEPORT TO THIS ZONE</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LAYERS MODAL -->
-    <div id="modal-layers" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
-            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-                <h2 class="text-lg font-bold text-white">Architectural Layers & Material Explorer</h2>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="space-y-4 overflow-y-auto pr-1">
-                <div id="layers-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SETTINGS MODAL -->
-    <div id="modal-settings" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-3xl relative">
-            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-                <h2 class="text-lg font-bold text-white">Comfort & Visual Settings</h2>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="space-y-4 text-xs">
-                <div class="flex items-center justify-between glass-panel-light p-3 rounded-xl">
-                    <div>
-                        <div class="font-bold text-white">Snap Turn Angle</div>
-                        <div class="text-zinc-400 text-[11px]">Rotational increment for VR comfort</div>
-                    </div>
-                    <select id="setting-snap-turn" class="bg-black/80 border border-white/20 rounded-lg px-2.5 py-1.5 text-white">
-                        <option value="30">30° (Default)</option>
-                        <option value="45">45°</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- INFO MODAL -->
-    <div id="modal-info" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
-            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-                <h2 class="text-lg font-bold text-white">Project Architectural Overview</h2>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="text-xs text-zinc-300 leading-relaxed">
-                The Kundam Market redevelopment integrates traditional bazaar spatial typologies with contemporary passive climate design.
-            </div>
-        </div>
-    </div>
-
-    <!-- HELP MODAL -->
-    <div id="modal-help" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
-        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-3xl relative">
-            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-                <h2 class="text-lg font-bold text-white">Controls & Navigation Guide</h2>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="space-y-3 text-xs text-zinc-300">
-                <p>• Click yellow hotspot markers on screen to teleport to target market zones.</p>
-                <p>• Click and drag to orbit around the 360 panorama environment.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- PRESENTATION HUD -->
-    <div id="presentation-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-8">
-        <div class="glass-panel p-3 min-w-[340px] max-w-md flex flex-col gap-2.5 pointer-events-auto rounded-2xl shadow-2xl">
-            <div class="flex items-center justify-between border-b border-white/10 pb-2">
-                <span class="text-xs font-bold text-white uppercase tracking-wider">PREDEFINED PRESENTATION VIEWS</span>
-                <button id="btn-exit-presentation" class="text-[10px] text-amber-400 hover:underline font-semibold cursor-pointer">EXIT PRESENTATION</button>
-            </div>
-            <div id="presentation-views-container" class="flex flex-col gap-1.5 max-h-48 overflow-y-auto"></div>
-        </div>
-    </div>
-
-    <!-- HOTSPOT INFO CARD -->
-    <div id="hotspot-card" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 glass-panel p-5 max-w-sm w-full rounded-2xl modal-fade modal-hidden">
-        <div class="flex items-center justify-between pb-2 border-b border-white/10 mb-2">
-            <span id="hotspot-card-category" class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Architectural Feature</span>
-            <button id="btn-close-hotspot-card" class="text-zinc-400 hover:text-white text-xs cursor-pointer">✕</button>
-        </div>
-        <h3 id="hotspot-card-title" class="text-base font-bold text-white">Courtyard Feature</h3>
-        <p id="hotspot-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed">Passive cooling atrium.</p>
-        <button id="btn-hotspot-action" class="mt-4 w-full py-2 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl transition-all cursor-pointer">
-            CLOSE DETAILS
-        </button>
-    </div>
-
-    <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2"></div>
-
-    <script>
-        // Global Application State
-        const STATE = {
-            currentZoneIndex: 0,
-            selectedMapZoneIndex: 0,
-            isPresentationMode: false,
-            isAutoWalk: false,
-            showTeleportHotspots: true,
-            sitePlanAsset: null,
-            zoneImagesAssets: [],
-            cameraHotspotsDOM: [] // Hotspot DOM node cache to prevent per-frame node destruction
-        };
-
-        // Complete Centralized Market Zones Directory Data
-        const ZONES_DATA = [
-            { id: 'z1', name: 'Entrance Plaza', type: 'Arrival & Circulation', desc: 'Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.', icon: '🏛️', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/entrance_plaza.jpg', panorama: 'assets/panoramas/entrance_plaza_360.jpg', mapPos: { x: 40, y: 50, w: 100, h: 65 } },
-            { id: 'z2', name: 'Vegetable Market', type: 'Fresh Produce', desc: 'Dedicated stalls for green leaf vegetables with wet drainage channels and terraced wooden racks.', icon: '🥬', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/vegetable_market.jpg', panorama: 'assets/panoramas/vegetable_market_360.jpg', mapPos: { x: 155, y: 50, w: 90, h: 65 } },
-            { id: 'z3', name: 'Fruit Market', type: 'Fresh Produce', desc: 'Fresh fruits, local produce, and seasonal items displayed on modular timber fruit stalls.', icon: '🍎', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/fruit_market.jpg', panorama: 'assets/panoramas/fruit_market_360.jpg', mapPos: { x: 260, y: 50, w: 90, h: 65 } },
-            { id: 'z4', name: 'Banana and Bulk Produce Market', type: 'Wholesale & Storage', desc: 'Shaded bulk storage and distribution bay for bananas, tubers, and heavy produce.', icon: '🍌', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/banana_market.jpg', panorama: 'assets/panoramas/banana_market_360.jpg', mapPos: { x: 365, y: 50, w: 90, h: 65 } },
-            { id: 'z5', name: 'Staples Market', type: 'Dry Goods', desc: 'Dedicated stalls for grains, pulses, rice, oil, and essential dry provisions.', icon: '🌾', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/staples_market.jpg', panorama: 'assets/panoramas/staples_market_360.jpg', mapPos: { x: 470, y: 50, w: 90, h: 65 } },
-            { id: 'z6', name: 'Cross Street', type: 'Circulation Spine', desc: 'Main pedestrian circulation spine connecting the different market sectors and courtyards.', icon: '🚶', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/cross_street.jpg', panorama: 'assets/panoramas/cross_street_360.jpg', mapPos: { x: 40, y: 130, w: 520, h: 35 } },
-            { id: 'z7', name: 'Spice and Dry Produce Market', type: 'Dry Goods', desc: 'Organized stalls for aromatic spices, dry produce, herbs, and traditional ingredients.', icon: '🌶️', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/spice_market.jpg', panorama: 'assets/panoramas/spice_market_360.jpg', mapPos: { x: 40, y: 180, w: 105, h: 70 } },
-            { id: 'z8', name: 'Food Court', type: 'Dining & Hospitality', desc: 'A shared eating area with local food stalls, communal seating, and connections to the main market.', icon: '🍜', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/food_court.jpg', panorama: 'assets/panoramas/food_court_360.jpg', mapPos: { x: 160, y: 180, w: 120, h: 70 } },
-            { id: 'z9', name: 'Central Courtyard', type: 'Public Open Space', desc: 'A shaded community space with Banyan trees, terraced seating, and natural microclimate cooling.', icon: '🌳', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/central_courtyard.jpg', panorama: 'assets/panoramas/central_courtyard_360.jpg', mapPos: { x: 295, y: 180, w: 110, h: 70 } },
-            { id: 'z10', name: 'Flower and Garland Market', type: 'Specialty Retail', desc: 'Aromatic open stalls for ceremonial flower garlands, fresh blooms, and ceremonial crafts.', icon: '💐', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/flower_market.jpg', panorama: 'assets/panoramas/flower_market_360.jpg', mapPos: { x: 420, y: 180, w: 140, h: 70 } },
-            { id: 'z11', name: 'Fish and Seafood Market', type: 'Wet Market', desc: 'Hygienic wet market section with stainless steel counters, ice storage, and automated washdown.', icon: '🐟', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/fish_market.jpg', panorama: 'assets/panoramas/fish_market_360.jpg', mapPos: { x: 40, y: 265, w: 130, h: 70 } },
-            { id: 'z12', name: 'Meat and Poultry Market', type: 'Wet Market', desc: 'Enclosed, climate-controlled meat and poultry processing and retail section.', icon: '🥩', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/meat_market.jpg', panorama: 'assets/panoramas/meat_market_360.jpg', mapPos: { x: 185, y: 265, w: 120, h: 70 } },
-            { id: 'z13', name: 'Administration and Service Areas', type: 'Management & Logistics', desc: 'Market administrative offices, sanitary inspector desk, vendor facilities, and waste sorting.', icon: '🏢', floor: 'Ground Floor', thumbnail: 'assets/thumbnails/admin_services.jpg', panorama: 'assets/panoramas/admin_services_360.jpg', mapPos: { x: 320, y: 265, w: 110, h: 70 } },
-            { id: 'z14', name: 'Roofscape and Solar Canopy', type: 'Sustainability Infrastructure', desc: 'Lightweight solar canopy roofing, rainwater harvesting gutters, and sky viewing deck.', icon: '☀️', floor: 'Roof Level', thumbnail: 'assets/thumbnails/roofscape.jpg', panorama: 'assets/panoramas/roofscape_360.jpg', mapPos: { x: 445, y: 265, w: 115, h: 70 } }
-        ];
-
-        const ADMIN_DATA = [
-            { name: "Market Manager Office", code: "ADM-01" },
-            { name: "Sanitary Inspector Desk", code: "ADM-02" },
-            { name: "President's Room", code: "ADM-03" },
-            { name: "Security & CCTV Command", code: "ADM-04" }
-        ];
-
-        // Hotspot definitions per zone
-        const ZONE_HOTSPOTS = {
-            0: [
-                { yaw: 0.35, pitch: 0.0, targetZone: 1, label: 'Vegetable Market', type: 'teleport' },
-                { yaw: -0.4, pitch: -0.05, targetZone: 5, label: 'Cross Street Spine', type: 'teleport' },
-                { yaw: 0.1, pitch: 0.15, icon: '💨', title: 'Passive Cross-Ventilation', desc: 'High ceilings induce stack effect.', type: 'info' }
-            ],
-            1: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' }
-            ],
-            2: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 1, label: 'Vegetable Market', type: 'teleport' },
-                { yaw: 0.35, pitch: 0.0, targetZone: 3, label: 'Banana & Bulk Produce', type: 'teleport' },
-                { yaw: 0.7, pitch: -0.05, targetZone: 7, label: 'Food Court', type: 'teleport' }
-            ],
-            3: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
-                { yaw: 0.35, pitch: 0.0, targetZone: 4, label: 'Staples Market', type: 'teleport' }
-            ],
-            4: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 3, label: 'Banana Market', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
-            ],
-            5: [
-                { yaw: -0.6, pitch: 0.0, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
-                { yaw: -0.2, pitch: 0.0, targetZone: 6, label: 'Spice Market', type: 'teleport' },
-                { yaw: 0.2, pitch: 0.0, targetZone: 7, label: 'Food Court', type: 'teleport' }
-            ],
-            6: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 5, label: 'Cross Street', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 10, label: 'Fish & Seafood', type: 'teleport' }
-            ],
-            7: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
-            ],
-            8: [
-                { yaw: -0.5, pitch: 0.0, targetZone: 7, label: 'Food Court', type: 'teleport' },
-                { yaw: 0.35, pitch: 0.0, targetZone: 9, label: 'Flower Market', type: 'teleport' }
-            ],
-            9: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 13, label: 'Roofscape', type: 'teleport' }
-            ],
-            10: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 6, label: 'Spice Market', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 11, label: 'Meat & Poultry', type: 'teleport' }
-            ],
-            11: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 10, label: 'Fish Market', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 12, label: 'Administration', type: 'teleport' }
-            ],
-            12: [
-                { yaw: -0.4, pitch: 0.0, targetZone: 11, label: 'Meat Market', type: 'teleport' },
-                { yaw: 0.4, pitch: 0.0, targetZone: 13, label: 'Roofscape', type: 'teleport' }
-            ],
-            13: [
-                { yaw: -0.4, pitch: -0.1, targetZone: 12, label: 'Administration', type: 'teleport' },
-                { yaw: 0.5, pitch: -0.1, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' }
-            ]
-        };
-
-        // INDEXEDDB PERSISTENCE MODULE
-        const DB_NAME = 'KundamMarketVRDB';
-        const DB_VERSION = 1;
-        let dbPromise = null;
-
-        function getDB() {
-            if (!dbPromise) {
-                dbPromise = new Promise((resolve, reject) => {
-                    const request = indexedDB.open(DB_NAME, DB_VERSION);
-                    request.onerror = (e) => reject("IndexedDB error");
-                    request.onsuccess = (e) => resolve(e.target.result);
-                    request.onupgradeneeded =
+<body>
+<div id="app">
+ <div id="scene">
+  <img id="sceneImage" alt="Selected market zone">
+  <div id="emptyScene">
+   <div>
+    <div style="font-size:42px;margin-bottom:12px">🏛️</div>
+    <h2 id="emptyTitle">Kundam Market</h2>
+    <p id="emptyText">Upload architectural photographs for your market zones, then select a destination to explore your design.</p>
+    <button class="primary" id="emptyUpload">Upload Architectural Images</button>
+   </div>
+  </div>
+ </div>
+
+ <header id="topbar">
+  <div id="brand">◉ KUNDAM MARKET<small>VR ARCHITECTURAL EXPERIENCE</small></div>
+  <nav class="nav">
+   <button id="homeBtn">⌂ Home</button>
+   <button id="mapBtn">◎ Map</button>
+   <button id="uploadBtn" class="active">⇧ Upload Assets</button>
+   <button id="directoryBtn">☷ Directory</button>
+   <button id="helpBtn">? Help</button>
+  </nav>
+ </header>
+
+ <section id="zoneCard" class="panel">
+  <button class="close" id="closeCard" aria-label="Close zone card">×</button>
+  <div id="zoneIcon">◈</div>
+  <h2 id="zoneTitle">Entrance Plaza</h2>
+  <p id="zoneDescription">Main arrival area, pedestrian access, orientation and public gathering.</p>
+  <img id="zonePreview" alt="Zone preview">
+  <div id="previewFallback">No image assigned to this zone yet</div>
+  <button id="viewZoneBtn" class="primary full">View Zone →</button>
+  <div class="small" id="zoneCount">ZONE 01 · 14 MARKET SECTORS</div>
+ </section>
+
+ <div id="hotspots" aria-label="Teleport destinations"></div>
+
+ <section id="bottomControls" class="panel">
+  <button id="teleportBtn">◎ Teleport</button>
+  <button id="walkBtn">➤ Walk</button>
+  <button id="infoBtn">ⓘ Info</button>
+ </section>
+
+ <section id="minimap" class="panel">
+  <div id="mapHeader"><span>● SITE MASTERPLAN</span><button class="secondary" id="expandMap">⛶</button></div>
+  <img id="mapImage" alt="Uploaded market site plan">
+  <div id="mapFallback">Upload your site plan using Upload Assets.</div>
+  <div id="mapCaption">Current zone: Entrance Plaza</div>
+  <div id="mapZoneButtons"></div>
+ </section>
+
+ <div id="dialogBackdrop">
+  <div class="dialog panel">
+   <div class="dialogHead">
+    <h2 id="dialogTitle">Market Asset Manager</h2>
+    <button id="closeDialog" class="close" aria-label="Close dialog">×</button>
+   </div>
+   <div id="dialogContent"></div>
+  </div>
+ </div>
+ <div id="loading">Loading zone…</div>
+ <div id="toast" role="status"></div>
+</div>
+
+<script>
+"use strict";
+
+/* MARKET DATA */
+const ZONES_DATA = [
+ {id:"entrance",name:"Entrance Plaza",description:"Main arrival area, pedestrian access, orientation, taxi drop-off and public gathering.",x:50,y:50},
+ {id:"vegetable",name:"Vegetable Market",description:"Fresh vegetables, local produce and everyday market shopping.",x:63,y:39},
+ {id:"fruit",name:"Fruit Market",description:"Fresh fruits, seasonal produce and local fruit vendors.",x:70,y:48},
+ {id:"banana",name:"Banana and Bulk Produce",description:"Bulk produce, banana trading and wholesale supplies.",x:72,y:60},
+ {id:"staples",name:"Staples Market",description:"Rice, grains, pulses, flour and other daily essentials.",x:59,y:64},
+ {id:"crossstreet",name:"Cross Street",description:"Connecting market street linking the major market sectors.",x:43,y:61},
+ {id:"spices",name:"Spice and Dry Produce Market",description:"Spices, dry goods, condiments and traditional ingredients.",x:34,y:54},
+ {id:"foodcourt",name:"Food Court",description:"Food stalls, seating, refreshment and gathering spaces.",x:30,y:42},
+ {id:"courtyard",name:"Central Courtyard",description:"Open central gathering space with landscape and shaded seating.",x:50,y:34},
+ {id:"flowers",name:"Flower and Garland Market",description:"Flower vendors, garlands and ceremonial floral produce.",x:25,y:60},
+ {id:"fish",name:"Fish and Seafood Market",description:"Fish and seafood stalls with appropriate washing and service areas.",x:25,y:72},
+ {id:"meat",name:"Meat and Poultry Market",description:"Dedicated meat and poultry trading zone.",x:40,y:76},
+ {id:"admin",name:"Administration and Services",description:"Management, staff facilities, storage and market services.",x:60,y:78},
+ {id:"roofscape",name:"Roofscape and Solar Canopy",description:"Market roof, shading, daylight and passive climate strategies.",x:78,y:72}
+];
+
+const state = {
+ currentZoneId:"entrance",
+ sitePlan:null,
+ assets:[],
+ expandedMap:false
+};
+
+const $ = id => document.getElementById(id);
+const zoneById = id => ZONES_DATA.find(z => z.id === id);
+let db;
+let toastTimer;
+const objectURLs = new Map();
+
+function showToast(message){
+ const t=$("toast");
+ t.textContent=message;
+ t.classList.add("show");
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>t.classList.remove("show"),2800);
+}
+
+function openDialog(title,html){
+ $("dialogTitle").textContent=title;
+ $("dialogContent").innerHTML=html;
+ $("dialogBackdrop").classList.add("open");
+}
+
+function closeDialog(){
+ $("dialogBackdrop").classList.remove("open");
+}
+
+function getZoneAssets(id){
+ return state.assets.filter(a=>a.zoneId===id);
+}
+
+function primaryAsset(id){
+ const list=getZoneAssets(id);
+ return list.find(a=>a.primary)||list[0]||null;
+}
+
+function makeURL(blob,key){
+ if(objectURLs.has(key))return objectURLs.get(key);
+ const url=URL.createObjectURL(blob);
+ objectURLs.set(key,url);
+ return url;
+}
+
+/* PERSISTENT STORAGE */
+function openDatabase(){
+ return new Promise((resolve,reject)=>{
+  if(!("indexedDB" in window)){
+   reject(new Error("IndexedDB is not supported in this browser."));
+   return;
+  }
+  const request=indexedDB.open("KundamMarketAssets",1);
+  request.onupgradeneeded=()=>{
+   const database=request.result;
+   if(!database.objectStoreNames.contains("assets")){
+    database.createObjectStore("assets",{keyPath:"id"});
+   }
+   if(!database.objectStoreNames.contains("settings")){
+    database.createObjectStore("settings",{keyPath:"key"});
+   }
+  };
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+function putRecord(storeName,record){
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(storeName,"readwrite");
+  tx.objectStore(storeName).put(record);
+  tx.oncomplete=()=>resolve();
+  tx.onerror=()=>reject(tx.error);
+ });
+}
+
+function getAllRecords(storeName){
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(storeName,"readonly");
+  const request=tx.objectStore(storeName).getAll();
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+function deleteRecord(storeName,id){
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(storeName,"readwrite");
+  tx.objectStore(storeName).delete(id);
+  tx.oncomplete=()=>resolve();
+  tx.onerror=()=>reject(tx.error);
+ });
+}
+
+async function loadStoredAssets(){
+ try{
+  const [assets,settings]=await Promise.all([
+   getAllRecords("assets"),getAllRecords("settings")
+  ]);
+  state.assets=assets.filter(a=>a.kind==="zone");
+  const plan=settings.find(s=>s.key==="sitePlan");
+  state.sitePlan=plan?plan.blob:null;
+  renderMinimap();
+ }catch(error){
+  console.error("Could not load saved assets:",error);
+  showToast("Saved assets could not be loaded.");
+ }
+}
+
+/* IMAGE DISPLAY */
+function showZone(id){
+ const zone=zoneById(id);
+ if(!zone)return;
+
+ state.currentZoneId=id;
+ const asset=primaryAsset(id);
+
+ $("zoneTitle").textContent=zone.name;
+ $("zoneDescription").textContent=zone.description;
+ $("zoneCount").textContent="ZONE "+String(ZONES_DATA.indexOf(zone)+1).padStart(2,"0")+" · "+ZONES_DATA.length+" MARKET SECTORS";
+ $("emptyTitle").textContent=zone.name;
+ $("mapCaption").textContent="Current zone: "+zone.name;
+
+ document.querySelectorAll(".mapZone").forEach(btn=>{
+  btn.classList.toggle("active",btn.dataset.zone===id);
+ });
+ renderHotspots();
+
+ if(asset){
+  const url=makeURL(asset.blob,asset.id);
+  $("sceneImage").onload=()=>{
+   $("sceneImage").classList.add("visible");
+   $("emptyScene").style.display="none";
+   $("zonePreview").src=url;
+   $("zonePreview").classList.add("visible");
+   $("previewFallback").style.display="none";
+  };
+  $("sceneImage").onerror=()=>{
+   $("sceneImage").classList.remove("visible");
+   $("emptyScene").style.display="flex";
+   $("emptyTitle").textContent=zone.name;
+   $("emptyText").textContent="This image could not be loaded. Try uploading it again.";
+   $("zonePreview").classList.remove("visible");
+   $("previewFallback").style.display="grid";
+  };
+  $("sceneImage").src=url;
+ }else{
+  $("sceneImage").removeAttribute("src");
+  $("sceneImage").classList.remove("visible");
+  $("emptyScene").style.display="flex";
+  $("emptyTitle").textContent=zone.name;
+  $("emptyText").textContent="No architectural image has been uploaded for this zone. Open Upload Assets to add one.";
+  $("zonePreview").removeAttribute("src");
+  $("zonePreview").classList.remove("visible");
+  $("previewFallback").style.display="grid";
+ }
+
+ renderMinimap();
+}
+
+async function teleportTo(id){
+ if(!zoneById(id))return;
+ $("loading").classList.add("show");
+ try{
+  showZone(id);
+  await new Promise(resolve=>setTimeout(resolve,180));
+  closeDialog();
+  showToast("Destination selected: "+zoneById(id).name);
+ }finally{
+  $("loading").classList.remove("show");
+ }
+}
+
+/* NAVIGATION MARKERS */
+function renderHotspots(){
+ const container=$("hotspots");
+ container.replaceChildren();
+
+ ZONES_DATA.forEach(zone=>{
+  if(zone.id===state.currentZoneId)return;
+  const btn=document.createElement("button");
+  btn.type="button";
+  btn.className="hotspot";
+  btn.textContent=zone.name;
+  btn.style.left=zone.x+"%";
+  btn.style.top=zone.y+"%";
+  btn.title="Teleport to "+zone.name;
+  btn.addEventListener("click",()=>teleportTo(zone.id));
+  container.appendChild(btn);
+ });
+}
+
+function renderMinimap(){
+ $("mapZoneButtons").replaceChildren();
+ ZONES_DATA.forEach(zone=>{
+  const btn=document.createElement("button");
+  btn.className="mapZone"+(zone.id===state.currentZoneId?" active":"");
+  btn.dataset.zone=zone.id;
+  btn.textContent=zone.name;
+  btn.addEventListener("click",()=>teleportTo(zone.id));
+  $("mapZoneButtons").appendChild(btn);
+ });
+
+ if(state.sitePlan){
+  $("mapImage").src=makeURL(state.sitePlan,"sitePlan");
+  $("mapImage").classList.add("visible");
+  $("mapFallback").style.display="none";
+ }else{
+  $("mapImage").removeAttribute("src");
+  $("mapImage").classList.remove("visible");
+  $("mapFallback").style.display="flex";
+ }
+}
+
+/* UPLOAD VALIDATION */
+function validImage(file){
+ return file && /^image\/(jpeg|png|webp|gif|svg\+xml)$/.test(file.type);
+}
+
+async function uploadSitePlan(file){
+ if(!validImage(file)){
+  showToast("Choose a valid PNG, JPG, WEBP, GIF or SVG image.");
+  return;
+ }
+ if(file.size>15*1024*1024){
+  showToast("Site plan must be smaller than 15 MB.");
+  return;
+ }
+ try{
+  await putRecord("settings",{key:"sitePlan",blob:file,name:file.name});
+  state.sitePlan=file;
+  renderMinimap();
+  showToast("Site plan uploaded and saved.");
+  openAssetManager();
+ }catch(error){
+  console.error(error);
+  showToast("Could not save site plan. Browser storage may be full.");
+ }
+}
+
+async function uploadZoneImages(files){
+ const selected=Array.from(files);
+ if(!selected.length)return;
+
+ const currentCount=state.assets.length;
+ const allowed=selected.slice(0,Math.max(0,20-currentCount));
+
+ if(!allowed.length){
+  showToast("The limit of 20 zone images has been reached.");
+  return;
+ }
+ if(allowed.length<selected.length){
+  showToast("Only "+allowed.length+" additional images fit the 20-image limit.");
+ }
+
+ for(const file of allowed){
+  if(!validImage(file)){
+   showToast("Skipped unsupported file: "+file.name);
+   continue;
+  }
+  if(file.size>15*1024*1024){
+   showToast("Skipped file larger than 15 MB: "+file.name);
+   continue;
+  }
+
+  const id=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random();
+  const record={
+   id,kind:"zone",name:file.name,blob:file,
+   zoneId:state.currentZoneId,primary:false
+  };
+
+  try{
+   await putRecord("assets",record);
+   state.assets.push(record);
+  }catch(error){
+   console.error(error);
+   showToast("Could not save "+file.name+". Check available browser storage.");
+  }
+ }
+ showZone(state.currentZoneId);
+ openAssetManager();
+}
+
+/* ASSET MANAGER */
+function openAssetManager(){
+ const zoneOptions=selected=>ZONES_DATA.map(z=>
+  `<option value="${z.id}" ${z.id===selected?"selected":""}>${z.name}</option>`
+ ).join("");
+
+ openDialog("Market Asset Manager",`
+  <p class="muted">Upload your masterplan and up to 20 architectural images. Assign every image to the correct market zone.</p>
+
+  <section class="section">
+   <h3>1. Upload Master Site Plan</h3>
+   <div class="uploadArea">
+    <div>Upload your architectural site plan</div>
+    <p class="muted">PNG, JPG, WEBP or SVG · Maximum 15 MB</p>
+    <input id="sitePlanInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
+   </div>
+   <p class="muted">${state.sitePlan?"A site plan is saved. Upload another to replace it.":"No site plan uploaded yet."}</p>
+   ${state.sitePlan?'<button id="removePlan" class="secondary">Remove Site Plan</button>':""}
+  </section>
+
+  <section class="section">
+   <h3>2. Upload Market Zone Images (<span id="assetCount">${state.assets.length}</span>/20)</h3>
+   <div class="uploadArea">
+    <div>Select one or multiple architectural images</div>
+    <p class="muted">Ordinary photographs and renders display as full-screen images. Upload genuine panoramic images separately if needed.</p>
+    <input id="zoneFilesInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" multiple>
+   </div>
+  </section>
+
+  <section class="section">
+   <h3>3. Assign and Manage Images</h3>
+   <div id="assetList"></div>
+  </section>
+ `);
+
+ $("sitePlanInput").addEventListener("change",e=>{
+  if(e.target.files[0])uploadSitePlan(e.target.files[0]);
+ });
+ $("zoneFilesInput").addEventListener("change",e=>{
+  uploadZoneImages(e.target.files);
+ });
+
+ if($("removePlan")){
+  $("removePlan").addEventListener("click",async()=>{
+   try{
+    await deleteRecord("settings","sitePlan");
+    if(objectURLs.has("sitePlan")){
+     URL.revokeObjectURL(objectURLs.get("sitePlan"));
+     objectURLs.delete("sitePlan");
+    }
+    state.sitePlan=null;
+    renderMinimap();
+    openAssetManager();
+    showToast("Site plan removed.");
+   }catch(error){showToast("Could not remove site plan.");}
+  });
+ }
+ renderAssetList(zoneOptions);
+}
+
+function renderAssetList(zoneOptions){
+ const list=$("assetList");
+ if(!list)return;
+
+ $("assetCount").textContent=state.assets.length;
+
+ if(!state.assets.length){
+  list.innerHTML='<p class="muted">No zone images uploaded yet.</p>';
+  return;
+ }
+
+ list.replaceChildren();
+
+ state.assets.forEach(asset=>{
+  const row=document.createElement("div");
+  row.className="assetRow";
+
+  const image=document.createElement("img");
+  image.alt=asset.name;
+  image.src=makeURL(asset.blob,asset.id);
+
+  const details=document.createElement("div");
+  const name=document.createElement("div");
+  name.className="assetName";
+  name.textContent=asset.name;
+
+  const select=document.createElement("select");
+  select.setAttribute("aria-label","Assign "+asset.name+" to a zone");
+  select.innerHTML=zoneOptions(asset.zoneId);
+
+  const primaryLabel=document.createElement("label");
+  primaryLabel.style.cssText="display:block;font-size:11px;color:#ccc;margin:3px 0 8px";
+  const checkbox=document.createElement("input");
+  checkbox.type="checkbox";
+  checkbox.checked=asset.primary;
+  checkbox.style.marginRight="6px";
+  primaryLabel.append(checkbox,document.createTextNode("Use as primary zone image"));
+
+  const remove=document.createElement("button");
+  remove.type="button";
+  remove.textContent="Remove image";
+
+  select.addEventListener("change",async()=>{
+   asset.zoneId=select.value;
+   try{
+    await putRecord("assets",asset);
+    showZone(state.currentZoneId);
+    showToast("Image assigned to "+zoneById(asset.zoneId).name);
+    openAssetManager();
+   }catch(error){showToast("Could not update image assignment.");}
+  });
+
+  checkbox.addEventListener("change",async()=>{
+   asset.primary=checkbox.checked;
+   if(asset.primary){
+    for(const other of state.assets){
+     if(other.id!==asset.id&&other.zoneId===asset.zoneId){
+      other.primary=false;
+      await putRecord("assets",other);
+     }
+    }
+   }
+   await putRecord("assets",asset);
+   showZone(state.currentZoneId);
+   openAssetManager();
+  });
+
+  remove.addEventListener("click",async()=>{
+   try{
+    await deleteRecord("assets",asset.id);
+    state.assets=state.assets.filter(a=>a.id!==asset.id);
+    if(objectURLs.has(asset.id)){
+     URL.revokeObjectURL(objectURLs.get(asset.id));
+     objectURLs.delete(asset.id);
+    }
+    showZone(state.currentZoneId);
+    openAssetManager();
+    showToast("Image removed.");
+   }catch(error){showToast("Could not remove image.");}
+  });
+
+  details.append(name,select,primaryLabel,remove);
+  row.append(image,details);
+  list.appendChild(row);
+ });
+}
+
+/* DIRECTORY AND MAP */
+function openDirectory(){
+ openDialog("Market Directory",`
+  <p class="muted">Select any sector to navigate directly to that market zone.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px" id="directoryGrid"></div>
+ `);
+ const grid=$("directoryGrid");
+ ZONES_DATA.forEach(zone=>{
+  const btn=document.createElement("button");
+  btn.className="secondary";
+  btn.style.textAlign="left";
+  btn.style.padding="12px";
+  btn.textContent=zone.name;
+  btn.addEventListener("click",()=>teleportTo(zone.id));
+  grid.appendChild(btn);
+ });
+}
+
+function openMap(){
+ state.expandedMap=true;
+ openDialog("Market Masterplan & Navigation",`
+  <p class="muted">Select a market zone to navigate. Upload your actual site plan using Upload Assets.</p>
+  <img id="expandedMapImage" alt="Full market site plan" style="width:100%;max-height:40vh;object-fit:contain;background:#242633;border-radius:10px;${state.sitePlan?"":"display:none"}">
+  <div id="expandedMapFallback" class="uploadArea" style="${state.sitePlan?"display:none":""}">No site plan uploaded yet.</div>
+  <div id="expandedMapZones" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;margin-top:12px"></div>
+ `);
+ if(state.sitePlan)$("expandedMapImage").src=makeURL(state.sitePlan,"sitePlan");
+ ZONES_DATA.forEach(zone=>{
+  const btn=document.createElement("button");
+  btn.className="secondary";
+  btn.textContent=zone.name;
+  btn.addEventListener("click",()=>teleportTo(zone.id));
+  $("expandedMapZones").appendChild(btn);
+ });
+}
+
+function showHelp(){
+ openDialog("How to Use the VR Experience",`
+  <h3>Upload architectural images</h3>
+  <p class="muted">Open Upload Assets. Upload a site plan separately, then select up to 20 zone images. Assign each image to its matching market zone.</p>
+  <h3>Teleport between zones</h3>
+  <p class="muted">Click a marker in the main screen, select a zone from the map, or open the directory. The assigned image and zone information will update.</p>
+  <h3>Save your work</h3>
+  <p class="muted">Images are stored in this browser's IndexedDB. They do not automatically appear on another computer or for other website visitors.</p>
+  <h3>Important limitation</h3>
+  <p class="muted">This single-file version displays ordinary images as architectural views. It does not reconstruct a navigable 3D building from photographs. The marker positions are illustrative until you configure them against your real site plan.</p>
+ `);
+}
+
+/* EVENTS */
+$("uploadBtn").addEventListener("click",openAssetManager);
+$("emptyUpload").addEventListener("click",openAssetManager);
+$("btn-placeholder-upload").addEventListener("click",openAssetManager);
+$("closeDialog").addEventListener("click",closeDialog);
+$("dialogBackdrop").addEventListener("click",e=>{
+ if(e.target===$("dialogBackdrop"))closeDialog();
+});
+$("directoryBtn").addEventListener("click",openDirectory);
+$("mapBtn").addEventListener("click",openMap);
+$("expandMap").addEventListener("click",openMap);
+$("teleportBtn").addEventListener("click",openDirectory);
+$("viewZoneBtn").addEventListener("click",()=>teleportTo(state.currentZoneId));
+$("homeBtn").addEventListener("click",()=>teleportTo("entrance"));
+$("walkBtn").addEventListener("click",()=>showToast("Select a destination marker to move between market zones."));
+$("infoBtn").addEventListener("click",()=>showHelp());
+$("helpBtn").addEventListener("click",showHelp);
+$("closeCard").addEventListener("click",()=>{
+ $("zoneCard").style.display="none";
+ setTimeout(()=>{$("zoneCard").style.display=""},5000);
+});
+$("emptyUpload").addEventListener("keydown",e=>{
+ if(e.key==="Enter")openAssetManager();
+});
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape")closeDialog();
+});
+
+/* STARTUP */
+async function init(){
+ try{
+  db=await openDatabase();
+  await loadStoredAssets();
+  showZone(state.currentZoneId);
+ }catch(error){
+  console.error("Asset storage initialization failed:",error);
+  showZone(state.currentZoneId);
+  showToast("Browser storage unavailable. Image uploads may not persist.");
+ }
+}
+init();
+</script>
+</body>
+</html>
