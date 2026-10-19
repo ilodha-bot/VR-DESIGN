@@ -1,704 +1,2075 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kundam Market | VR Architectural Experience</title>
-<style>
-:root{--bg:#090a10;--panel:rgba(17,18,27,.94);--line:#343541;--gold:#f5a500;--text:#f6f6f8;--muted:#a6a7b2}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif;overflow:hidden}
-button,input,select{font:inherit}
-button{cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-button:disabled{opacity:.45;cursor:not-allowed}
-#app{height:100dvh;width:100%;position:relative;overflow:hidden;background:#121725}
-#scene{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#354052,#141a29 70%);overflow:hidden}
-#sceneImage{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none}
-#sceneImage.visible{display:block}
-#emptyScene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px;background:linear-gradient(145deg,#111725,#29364a)}
-#emptyScene h2{font-size:clamp(23px,4vw,42px);margin:0 0 12px}
-#emptyScene p{max-width:420px;color:#c2c5ce;line-height:1.6}
-#topbar{position:absolute;top:12px;left:14px;right:14px;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
-#brand{pointer-events:auto;font-weight:800;letter-spacing:2px;font-size:15px}
-#brand small{display:block;font-size:10px;letter-spacing:1.2px;color:#c1c2ca;margin-top:4px}
-.nav{pointer-events:auto;display:flex;gap:3px;padding:7px;background:var(--panel);border:1px solid var(--line);border-radius:40px;max-width:100%;overflow-x:auto}
-.nav button{border:0;background:transparent;color:#eee;padding:10px 12px;border-radius:30px;white-space:nowrap;font-size:11px}
-.nav button:hover,.nav button.active{background:#493512;color:#ffc64b}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 36px #0007;backdrop-filter:blur(16px)}
-#zoneCard{position:absolute;z-index:5;top:50%;left:16px;transform:translateY(-50%);width:330px;max-width:calc(100vw - 32px);padding:17px}
-.close{float:right;background:#282a35;color:white;border:0;border-radius:50%;width:30px;height:30px}
-#zoneIcon{color:var(--gold);font-size:23px}
-#zoneTitle{font-size:20px;margin:13px 0 8px}
-#zoneDescription{color:#c1c2cc;line-height:1.55;margin:0 0 12px}
-#zonePreview{width:100%;height:135px;object-fit:cover;border-radius:12px;background:#242633;display:none}
-#zonePreview.visible{display:block}
-#previewFallback{height:105px;display:grid;place-items:center;background:#242633;border-radius:12px;color:#aaa}
-.primary{background:var(--gold);color:#17120a;font-weight:800;border:0;border-radius:12px;padding:12px 15px}
-.primary:hover{background:#ffc34b}
-.full{width:100%;margin-top:12px}
-#zoneCard .small{font-size:11px;color:#aeb0bb;margin-top:10px}
-#bottomControls{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:5px;padding:8px;border-radius:40px;white-space:nowrap}
-#bottomControls button{background:transparent;color:#eee;border:0;padding:12px 15px;border-radius:30px}
-#bottomControls button:hover{background:#493512;color:#ffc64b}
-#minimap{position:absolute;right:16px;bottom:18px;z-index:5;width:300px;max-width:34vw;padding:12px}
-#mapHeader{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:bold;color:#ffc64b;margin-bottom:9px}
-#mapImage{width:100%;height:150px;object-fit:contain;background:#252733;border-radius:9px;display:none}
-#mapImage.visible{display:block}
-#mapFallback{height:150px;background:#202532;border-radius:9px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#aaa;font-size:11px}
-#mapZoneButtons{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;max-height:100px;overflow:auto}
-.mapZone{background:#292b36;color:#eee;border:1px solid #454653;border-radius:7px;padding:6px 4px;font-size:10px}
-.mapZone.active{border-color:var(--gold);color:#ffc64b}
-#mapCaption{font-size:10px;color:#bbb;margin-top:8px}
-#hotspots{position:absolute;inset:0;z-index:3;pointer-events:none}
-.hotspot{position:absolute;pointer-events:auto;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:25px;background:#0a0b10eF;color:#ffc64b;padding:9px 12px;font-size:11px;font-weight:bold;box-shadow:0 3px 20px #0007;max-width:170px}
-.hotspot::before{content:"➜";display:inline-grid;place-items:center;background:var(--gold);color:#111;border-radius:50%;width:23px;height:23px;margin-right:7px}
-#dialogBackdrop{position:absolute;inset:0;background:#0009;z-index:20;display:none;align-items:center;justify-content:center;padding:15px}
-#dialogBackdrop.open{display:flex}
-.dialog{width:600px;max-width:100%;max-height:90dvh;overflow:auto;padding:20px}
-.dialog h2{margin:0 0 8px;font-size:20px}
-.muted{color:var(--muted);line-height:1.5;font-size:12px}
-.dialogHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.section{border-top:1px solid var(--line);padding-top:15px;margin-top:15px}
-.section h3{font-size:14px;margin:0 0 10px}
-.uploadArea{border:1px dashed #696b78;border-radius:12px;padding:17px;text-align:center;background:#20212b}
-.uploadArea input{max-width:100%;margin-top:12px;color:#ddd}
-.assetRow{display:grid;grid-template-columns:75px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid #353641}
-.assetRow img{width:75px;height:65px;object-fit:cover;border-radius:8px;background:#252633}
-.assetRow select{width:100%;margin:7px 0;background:#20212a;color:white;border:1px solid #555;border-radius:7px;padding:8px}
-.assetRow button,.secondary{border:1px solid #555;background:#292b36;color:#eee;border-radius:7px;padding:7px 9px;font-size:11px}
-.assetName{font-size:12px;overflow-wrap:anywhere}
-#assetList{max-height:260px;overflow:auto}
-#toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);z-index:40;background:#101117;border:1px solid var(--gold);padding:12px 18px;border-radius:12px;display:none;max-width:90%;text-align:center}
-#toast.show{display:block}
-#loading{position:absolute;inset:0;z-index:15;background:#090a10cc;display:none;align-items:center;justify-content:center;font-weight:bold;color:var(--gold)}
-#loading.show{display:flex}
-@media(max-width:700px){
- #topbar{align-items:flex-start;flex-direction:column}
- .nav{width:100%;justify-content:flex-start}
- #brand{padding:3px}
- #zoneCard{top:auto;bottom:125px;left:10px;width:245px;padding:12px;transform:none}
- #zoneTitle{font-size:16px;margin-top:7px}
- #zonePreview{height:85px}
- #previewFallback{height:65px}
- #zoneDescription{font-size:12px}
- #minimap{right:10px;bottom:120px;width:155px;max-width:42vw;padding:8px}
- #mapImage,#mapFallback{height:75px}
- #mapZoneButtons{grid-template-columns:1fr;max-height:65px}
- #bottomControls{bottom:10px;width:max-content;max-width:96vw}
- #bottomControls button{padding:11px 9px;font-size:11px}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Kundam Market VR Architectural Experience</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Three.js Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Inter & Plus Jakarta Sans Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #09090d;
+            --glass-bg: rgba(15, 15, 22, 0.82);
+            --glass-card: rgba(20, 20, 30, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --amber-main: #f59e0b;
+            --amber-hover: #d97706;
+            --amber-glow: rgba(245, 158, 11, 0.4);
+            --text-main: #f4f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+        }
+
+        /* Glassmorphism Panel Standard */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel-light {
+            background: rgba(30, 30, 45, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-main);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .glass-button.active {
+            background: var(--amber-main);
+            border-color: var(--amber-hover);
+            box-shadow: 0 0 18px var(--amber-glow);
+            color: #000000;
+            font-weight: 700;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--amber-main);
+        }
+
+        /* Hotspot Pulse */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.88); opacity: 0.95; }
+            50% { transform: scale(1.22); opacity: 0.4; }
+            100% { transform: scale(0.88); opacity: 0.95; }
+        }
+
+        .hotspot-ring {
+            animation: pulse-ring 2.2s infinite ease-in-out;
+        }
+
+        /* Chevrons Flow Animation */
+        @keyframes chevron-flow {
+            0% { opacity: 0.2; transform: translateY(6px); }
+            50% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0.2; transform: translateY(-6px); }
+        }
+
+        .chevron-anim-1 { animation: chevron-flow 1.8s infinite ease-in-out; }
+        .chevron-anim-2 { animation: chevron-flow 1.8s infinite ease-in-out 0.3s; }
+        .chevron-anim-3 { animation: chevron-flow 1.8s infinite ease-in-out 0.6s; }
+
+        /* Modal Transitions */
+        .modal-fade {
+            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.96) translateY(10px);
+        }
+        .modal-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Teleport Transition Overlay */
+        #transition-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, rgba(245,158,11,0.35) 0%, rgba(9,9,13,0.98) 75%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.38s ease-in-out;
+            z-index: 60;
+        }
+        #transition-overlay.active {
+            opacity: 1;
+        }
+
+        #webgl-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .amber-gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dynamic SVG Map Styling */
+        .map-zone-polygon {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .map-zone-polygon:hover {
+            fill-opacity: 0.85 !important;
+            stroke: #f59e0b !important;
+            stroke-width: 2.5px !important;
+        }
+    </style>
 </head>
-<body>
-<div id="app">
- <div id="scene">
-  <img id="sceneImage" alt="Selected market zone">
-  <div id="emptyScene">
-   <div>
-    <div style="font-size:42px;margin-bottom:12px">🏛️</div>
-    <h2 id="emptyTitle">Kundam Market</h2>
-    <p id="emptyText">Upload architectural photographs for your market zones, then select a destination to explore your design.</p>
-    <button class="primary" id="emptyUpload">Upload Architectural Images</button>
-   </div>
-  </div>
- </div>
-
- <header id="topbar">
-  <div id="brand">◉ KUNDAM MARKET<small>VR ARCHITECTURAL EXPERIENCE</small></div>
-  <nav class="nav">
-   <button id="homeBtn">⌂ Home</button>
-   <button id="mapBtn">◎ Map</button>
-   <button id="uploadBtn" class="active">⇧ Upload Assets</button>
-   <button id="directoryBtn">☷ Directory</button>
-   <button id="helpBtn">? Help</button>
-  </nav>
- </header>
-
- <section id="zoneCard" class="panel">
-  <button class="close" id="closeCard" aria-label="Close zone card">×</button>
-  <div id="zoneIcon">◈</div>
-  <h2 id="zoneTitle">Entrance Plaza</h2>
-  <p id="zoneDescription">Main arrival area, pedestrian access, orientation and public gathering.</p>
-  <img id="zonePreview" alt="Zone preview">
-  <div id="previewFallback">No image assigned to this zone yet</div>
-  <button id="viewZoneBtn" class="primary full">View Zone →</button>
-  <div class="small" id="zoneCount">ZONE 01 · 14 MARKET SECTORS</div>
- </section>
-
- <div id="hotspots" aria-label="Teleport destinations"></div>
-
- <section id="bottomControls" class="panel">
-  <button id="teleportBtn">◎ Teleport</button>
-  <button id="walkBtn">➤ Walk</button>
-  <button id="infoBtn">ⓘ Info</button>
- </section>
-
- <section id="minimap" class="panel">
-  <div id="mapHeader"><span>● SITE MASTERPLAN</span><button class="secondary" id="expandMap">⛶</button></div>
-  <img id="mapImage" alt="Uploaded market site plan">
-  <div id="mapFallback">Upload your site plan using Upload Assets.</div>
-  <div id="mapCaption">Current zone: Entrance Plaza</div>
-  <div id="mapZoneButtons"></div>
- </section>
-
- <div id="dialogBackdrop">
-  <div class="dialog panel">
-   <div class="dialogHead">
-    <h2 id="dialogTitle">Market Asset Manager</h2>
-    <button id="closeDialog" class="close" aria-label="Close dialog">×</button>
-   </div>
-   <div id="dialogContent"></div>
-  </div>
- </div>
- <div id="loading">Loading zone…</div>
- <div id="toast" role="status"></div>
-</div>
-
-<script>
-"use strict";
-
-/* MARKET DATA */
-const ZONES_DATA = [
- {id:"entrance",name:"Entrance Plaza",description:"Main arrival area, pedestrian access, orientation, taxi drop-off and public gathering.",x:50,y:50},
- {id:"vegetable",name:"Vegetable Market",description:"Fresh vegetables, local produce and everyday market shopping.",x:63,y:39},
- {id:"fruit",name:"Fruit Market",description:"Fresh fruits, seasonal produce and local fruit vendors.",x:70,y:48},
- {id:"banana",name:"Banana and Bulk Produce",description:"Bulk produce, banana trading and wholesale supplies.",x:72,y:60},
- {id:"staples",name:"Staples Market",description:"Rice, grains, pulses, flour and other daily essentials.",x:59,y:64},
- {id:"crossstreet",name:"Cross Street",description:"Connecting market street linking the major market sectors.",x:43,y:61},
- {id:"spices",name:"Spice and Dry Produce Market",description:"Spices, dry goods, condiments and traditional ingredients.",x:34,y:54},
- {id:"foodcourt",name:"Food Court",description:"Food stalls, seating, refreshment and gathering spaces.",x:30,y:42},
- {id:"courtyard",name:"Central Courtyard",description:"Open central gathering space with landscape and shaded seating.",x:50,y:34},
- {id:"flowers",name:"Flower and Garland Market",description:"Flower vendors, garlands and ceremonial floral produce.",x:25,y:60},
- {id:"fish",name:"Fish and Seafood Market",description:"Fish and seafood stalls with appropriate washing and service areas.",x:25,y:72},
- {id:"meat",name:"Meat and Poultry Market",description:"Dedicated meat and poultry trading zone.",x:40,y:76},
- {id:"admin",name:"Administration and Services",description:"Management, staff facilities, storage and market services.",x:60,y:78},
- {id:"roofscape",name:"Roofscape and Solar Canopy",description:"Market roof, shading, daylight and passive climate strategies.",x:78,y:72}
-];
-
-const state = {
- currentZoneId:"entrance",
- sitePlan:null,
- assets:[],
- expandedMap:false
-};
-
-const $ = id => document.getElementById(id);
-const zoneById = id => ZONES_DATA.find(z => z.id === id);
-let db;
-let toastTimer;
-const objectURLs = new Map();
-
-function showToast(message){
- const t=$("toast");
- t.textContent=message;
- t.classList.add("show");
- clearTimeout(toastTimer);
- toastTimer=setTimeout(()=>t.classList.remove("show"),2800);
-}
-
-function openDialog(title,html){
- $("dialogTitle").textContent=title;
- $("dialogContent").innerHTML=html;
- $("dialogBackdrop").classList.add("open");
-}
-
-function closeDialog(){
- $("dialogBackdrop").classList.remove("open");
-}
-
-function getZoneAssets(id){
- return state.assets.filter(a=>a.zoneId===id);
-}
-
-function primaryAsset(id){
- const list=getZoneAssets(id);
- return list.find(a=>a.primary)||list[0]||null;
-}
-
-function makeURL(blob,key){
- if(objectURLs.has(key))return objectURLs.get(key);
- const url=URL.createObjectURL(blob);
- objectURLs.set(key,url);
- return url;
-}
-
-/* PERSISTENT STORAGE */
-function openDatabase(){
- return new Promise((resolve,reject)=>{
-  if(!("indexedDB" in window)){
-   reject(new Error("IndexedDB is not supported in this browser."));
-   return;
-  }
-  const request=indexedDB.open("KundamMarketAssets",1);
-  request.onupgradeneeded=()=>{
-   const database=request.result;
-   if(!database.objectStoreNames.contains("assets")){
-    database.createObjectStore("assets",{keyPath:"id"});
-   }
-   if(!database.objectStoreNames.contains("settings")){
-    database.createObjectStore("settings",{keyPath:"key"});
-   }
-  };
-  request.onsuccess=()=>resolve(request.result);
-  request.onerror=()=>reject(request.error);
- });
-}
-
-function putRecord(storeName,record){
- return new Promise((resolve,reject)=>{
-  const tx=db.transaction(storeName,"readwrite");
-  tx.objectStore(storeName).put(record);
-  tx.oncomplete=()=>resolve();
-  tx.onerror=()=>reject(tx.error);
- });
-}
-
-function getAllRecords(storeName){
- return new Promise((resolve,reject)=>{
-  const tx=db.transaction(storeName,"readonly");
-  const request=tx.objectStore(storeName).getAll();
-  request.onsuccess=()=>resolve(request.result);
-  request.onerror=()=>reject(request.error);
- });
-}
-
-function deleteRecord(storeName,id){
- return new Promise((resolve,reject)=>{
-  const tx=db.transaction(storeName,"readwrite");
-  tx.objectStore(storeName).delete(id);
-  tx.oncomplete=()=>resolve();
-  tx.onerror=()=>reject(tx.error);
- });
-}
-
-async function loadStoredAssets(){
- try{
-  const [assets,settings]=await Promise.all([
-   getAllRecords("assets"),getAllRecords("settings")
-  ]);
-  state.assets=assets.filter(a=>a.kind==="zone");
-  const plan=settings.find(s=>s.key==="sitePlan");
-  state.sitePlan=plan?plan.blob:null;
-  renderMinimap();
- }catch(error){
-  console.error("Could not load saved assets:",error);
-  showToast("Saved assets could not be loaded.");
- }
-}
-
-/* IMAGE DISPLAY */
-function showZone(id){
- const zone=zoneById(id);
- if(!zone)return;
-
- state.currentZoneId=id;
- const asset=primaryAsset(id);
-
- $("zoneTitle").textContent=zone.name;
- $("zoneDescription").textContent=zone.description;
- $("zoneCount").textContent="ZONE "+String(ZONES_DATA.indexOf(zone)+1).padStart(2,"0")+" · "+ZONES_DATA.length+" MARKET SECTORS";
- $("emptyTitle").textContent=zone.name;
- $("mapCaption").textContent="Current zone: "+zone.name;
-
- document.querySelectorAll(".mapZone").forEach(btn=>{
-  btn.classList.toggle("active",btn.dataset.zone===id);
- });
- renderHotspots();
-
- if(asset){
-  const url=makeURL(asset.blob,asset.id);
-  $("sceneImage").onload=()=>{
-   $("sceneImage").classList.add("visible");
-   $("emptyScene").style.display="none";
-   $("zonePreview").src=url;
-   $("zonePreview").classList.add("visible");
-   $("previewFallback").style.display="none";
-  };
-  $("sceneImage").onerror=()=>{
-   $("sceneImage").classList.remove("visible");
-   $("emptyScene").style.display="flex";
-   $("emptyTitle").textContent=zone.name;
-   $("emptyText").textContent="This image could not be loaded. Try uploading it again.";
-   $("zonePreview").classList.remove("visible");
-   $("previewFallback").style.display="grid";
-  };
-  $("sceneImage").src=url;
- }else{
-  $("sceneImage").removeAttribute("src");
-  $("sceneImage").classList.remove("visible");
-  $("emptyScene").style.display="flex";
-  $("emptyTitle").textContent=zone.name;
-  $("emptyText").textContent="No architectural image has been uploaded for this zone. Open Upload Assets to add one.";
-  $("zonePreview").removeAttribute("src");
-  $("zonePreview").classList.remove("visible");
-  $("previewFallback").style.display="grid";
- }
-
- renderMinimap();
-}
-
-async function teleportTo(id){
- if(!zoneById(id))return;
- $("loading").classList.add("show");
- try{
-  showZone(id);
-  await new Promise(resolve=>setTimeout(resolve,180));
-  closeDialog();
-  showToast("Destination selected: "+zoneById(id).name);
- }finally{
-  $("loading").classList.remove("show");
- }
-}
-
-/* NAVIGATION MARKERS */
-function renderHotspots(){
- const container=$("hotspots");
- container.replaceChildren();
-
- ZONES_DATA.forEach(zone=>{
-  if(zone.id===state.currentZoneId)return;
-  const btn=document.createElement("button");
-  btn.type="button";
-  btn.className="hotspot";
-  btn.textContent=zone.name;
-  btn.style.left=zone.x+"%";
-  btn.style.top=zone.y+"%";
-  btn.title="Teleport to "+zone.name;
-  btn.addEventListener("click",()=>teleportTo(zone.id));
-  container.appendChild(btn);
- });
-}
-
-function renderMinimap(){
- $("mapZoneButtons").replaceChildren();
- ZONES_DATA.forEach(zone=>{
-  const btn=document.createElement("button");
-  btn.className="mapZone"+(zone.id===state.currentZoneId?" active":"");
-  btn.dataset.zone=zone.id;
-  btn.textContent=zone.name;
-  btn.addEventListener("click",()=>teleportTo(zone.id));
-  $("mapZoneButtons").appendChild(btn);
- });
-
- if(state.sitePlan){
-  $("mapImage").src=makeURL(state.sitePlan,"sitePlan");
-  $("mapImage").classList.add("visible");
-  $("mapFallback").style.display="none";
- }else{
-  $("mapImage").removeAttribute("src");
-  $("mapImage").classList.remove("visible");
-  $("mapFallback").style.display="flex";
- }
-}
-
-/* UPLOAD VALIDATION */
-function validImage(file){
- return file && /^image\/(jpeg|png|webp|gif|svg\+xml)$/.test(file.type);
-}
-
-async function uploadSitePlan(file){
- if(!validImage(file)){
-  showToast("Choose a valid PNG, JPG, WEBP, GIF or SVG image.");
-  return;
- }
- if(file.size>15*1024*1024){
-  showToast("Site plan must be smaller than 15 MB.");
-  return;
- }
- try{
-  await putRecord("settings",{key:"sitePlan",blob:file,name:file.name});
-  state.sitePlan=file;
-  renderMinimap();
-  showToast("Site plan uploaded and saved.");
-  openAssetManager();
- }catch(error){
-  console.error(error);
-  showToast("Could not save site plan. Browser storage may be full.");
- }
-}
-
-async function uploadZoneImages(files){
- const selected=Array.from(files);
- if(!selected.length)return;
-
- const currentCount=state.assets.length;
- const allowed=selected.slice(0,Math.max(0,20-currentCount));
-
- if(!allowed.length){
-  showToast("The limit of 20 zone images has been reached.");
-  return;
- }
- if(allowed.length<selected.length){
-  showToast("Only "+allowed.length+" additional images fit the 20-image limit.");
- }
-
- for(const file of allowed){
-  if(!validImage(file)){
-   showToast("Skipped unsupported file: "+file.name);
-   continue;
-  }
-  if(file.size>15*1024*1024){
-   showToast("Skipped file larger than 15 MB: "+file.name);
-   continue;
-  }
-
-  const id=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random();
-  const record={
-   id,kind:"zone",name:file.name,blob:file,
-   zoneId:state.currentZoneId,primary:false
-  };
-
-  try{
-   await putRecord("assets",record);
-   state.assets.push(record);
-  }catch(error){
-   console.error(error);
-   showToast("Could not save "+file.name+". Check available browser storage.");
-  }
- }
- showZone(state.currentZoneId);
- openAssetManager();
-}
-
-/* ASSET MANAGER */
-function openAssetManager(){
- const zoneOptions=selected=>ZONES_DATA.map(z=>
-  `<option value="${z.id}" ${z.id===selected?"selected":""}>${z.name}</option>`
- ).join("");
-
- openDialog("Market Asset Manager",`
-  <p class="muted">Upload your masterplan and up to 20 architectural images. Assign every image to the correct market zone.</p>
-
-  <section class="section">
-   <h3>1. Upload Master Site Plan</h3>
-   <div class="uploadArea">
-    <div>Upload your architectural site plan</div>
-    <p class="muted">PNG, JPG, WEBP or SVG · Maximum 15 MB</p>
-    <input id="sitePlanInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
-   </div>
-   <p class="muted">${state.sitePlan?"A site plan is saved. Upload another to replace it.":"No site plan uploaded yet."}</p>
-   ${state.sitePlan?'<button id="removePlan" class="secondary">Remove Site Plan</button>':""}
-  </section>
-
-  <section class="section">
-   <h3>2. Upload Market Zone Images (<span id="assetCount">${state.assets.length}</span>/20)</h3>
-   <div class="uploadArea">
-    <div>Select one or multiple architectural images</div>
-    <p class="muted">Ordinary photographs and renders display as full-screen images. Upload genuine panoramic images separately if needed.</p>
-    <input id="zoneFilesInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" multiple>
-   </div>
-  </section>
-
-  <section class="section">
-   <h3>3. Assign and Manage Images</h3>
-   <div id="assetList"></div>
-  </section>
- `);
-
- $("sitePlanInput").addEventListener("change",e=>{
-  if(e.target.files[0])uploadSitePlan(e.target.files[0]);
- });
- $("zoneFilesInput").addEventListener("change",e=>{
-  uploadZoneImages(e.target.files);
- });
-
- if($("removePlan")){
-  $("removePlan").addEventListener("click",async()=>{
-   try{
-    await deleteRecord("settings","sitePlan");
-    if(objectURLs.has("sitePlan")){
-     URL.revokeObjectURL(objectURLs.get("sitePlan"));
-     objectURLs.delete("sitePlan");
-    }
-    state.sitePlan=null;
-    renderMinimap();
-    openAssetManager();
-    showToast("Site plan removed.");
-   }catch(error){showToast("Could not remove site plan.");}
-  });
- }
- renderAssetList(zoneOptions);
-}
-
-function renderAssetList(zoneOptions){
- const list=$("assetList");
- if(!list)return;
-
- $("assetCount").textContent=state.assets.length;
-
- if(!state.assets.length){
-  list.innerHTML='<p class="muted">No zone images uploaded yet.</p>';
-  return;
- }
-
- list.replaceChildren();
-
- state.assets.forEach(asset=>{
-  const row=document.createElement("div");
-  row.className="assetRow";
-
-  const image=document.createElement("img");
-  image.alt=asset.name;
-  image.src=makeURL(asset.blob,asset.id);
-
-  const details=document.createElement("div");
-  const name=document.createElement("div");
-  name.className="assetName";
-  name.textContent=asset.name;
-
-  const select=document.createElement("select");
-  select.setAttribute("aria-label","Assign "+asset.name+" to a zone");
-  select.innerHTML=zoneOptions(asset.zoneId);
-
-  const primaryLabel=document.createElement("label");
-  primaryLabel.style.cssText="display:block;font-size:11px;color:#ccc;margin:3px 0 8px";
-  const checkbox=document.createElement("input");
-  checkbox.type="checkbox";
-  checkbox.checked=asset.primary;
-  checkbox.style.marginRight="6px";
-  primaryLabel.append(checkbox,document.createTextNode("Use as primary zone image"));
-
-  const remove=document.createElement("button");
-  remove.type="button";
-  remove.textContent="Remove image";
-
-  select.addEventListener("change",async()=>{
-   asset.zoneId=select.value;
-   try{
-    await putRecord("assets",asset);
-    showZone(state.currentZoneId);
-    showToast("Image assigned to "+zoneById(asset.zoneId).name);
-    openAssetManager();
-   }catch(error){showToast("Could not update image assignment.");}
-  });
-
-  checkbox.addEventListener("change",async()=>{
-   asset.primary=checkbox.checked;
-   if(asset.primary){
-    for(const other of state.assets){
-     if(other.id!==asset.id&&other.zoneId===asset.zoneId){
-      other.primary=false;
-      await putRecord("assets",other);
-     }
-    }
-   }
-   await putRecord("assets",asset);
-   showZone(state.currentZoneId);
-   openAssetManager();
-  });
-
-  remove.addEventListener("click",async()=>{
-   try{
-    await deleteRecord("assets",asset.id);
-    state.assets=state.assets.filter(a=>a.id!==asset.id);
-    if(objectURLs.has(asset.id)){
-     URL.revokeObjectURL(objectURLs.get(asset.id));
-     objectURLs.delete(asset.id);
-    }
-    showZone(state.currentZoneId);
-    openAssetManager();
-    showToast("Image removed.");
-   }catch(error){showToast("Could not remove image.");}
-  });
-
-  details.append(name,select,primaryLabel,remove);
-  row.append(image,details);
-  list.appendChild(row);
- });
-}
-
-/* DIRECTORY AND MAP */
-function openDirectory(){
- openDialog("Market Directory",`
-  <p class="muted">Select any sector to navigate directly to that market zone.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px" id="directoryGrid"></div>
- `);
- const grid=$("directoryGrid");
- ZONES_DATA.forEach(zone=>{
-  const btn=document.createElement("button");
-  btn.className="secondary";
-  btn.style.textAlign="left";
-  btn.style.padding="12px";
-  btn.textContent=zone.name;
-  btn.addEventListener("click",()=>teleportTo(zone.id));
-  grid.appendChild(btn);
- });
-}
-
-function openMap(){
- state.expandedMap=true;
- openDialog("Market Masterplan & Navigation",`
-  <p class="muted">Select a market zone to navigate. Upload your actual site plan using Upload Assets.</p>
-  <img id="expandedMapImage" alt="Full market site plan" style="width:100%;max-height:40vh;object-fit:contain;background:#242633;border-radius:10px;${state.sitePlan?"":"display:none"}">
-  <div id="expandedMapFallback" class="uploadArea" style="${state.sitePlan?"display:none":""}">No site plan uploaded yet.</div>
-  <div id="expandedMapZones" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;margin-top:12px"></div>
- `);
- if(state.sitePlan)$("expandedMapImage").src=makeURL(state.sitePlan,"sitePlan");
- ZONES_DATA.forEach(zone=>{
-  const btn=document.createElement("button");
-  btn.className="secondary";
-  btn.textContent=zone.name;
-  btn.addEventListener("click",()=>teleportTo(zone.id));
-  $("expandedMapZones").appendChild(btn);
- });
-}
-
-function showHelp(){
- openDialog("How to Use the VR Experience",`
-  <h3>Upload architectural images</h3>
-  <p class="muted">Open Upload Assets. Upload a site plan separately, then select up to 20 zone images. Assign each image to its matching market zone.</p>
-  <h3>Teleport between zones</h3>
-  <p class="muted">Click a marker in the main screen, select a zone from the map, or open the directory. The assigned image and zone information will update.</p>
-  <h3>Save your work</h3>
-  <p class="muted">Images are stored in this browser's IndexedDB. They do not automatically appear on another computer or for other website visitors.</p>
-  <h3>Important limitation</h3>
-  <p class="muted">This single-file version displays ordinary images as architectural views. It does not reconstruct a navigable 3D building from photographs. The marker positions are illustrative until you configure them against your real site plan.</p>
- `);
-}
-
-/* EVENTS */
-$("uploadBtn").addEventListener("click",openAssetManager);
-$("emptyUpload").addEventListener("click",openAssetManager);
-$("btn-placeholder-upload").addEventListener("click",openAssetManager);
-$("closeDialog").addEventListener("click",closeDialog);
-$("dialogBackdrop").addEventListener("click",e=>{
- if(e.target===$("dialogBackdrop"))closeDialog();
-});
-$("directoryBtn").addEventListener("click",openDirectory);
-$("mapBtn").addEventListener("click",openMap);
-$("expandMap").addEventListener("click",openMap);
-$("teleportBtn").addEventListener("click",openDirectory);
-$("viewZoneBtn").addEventListener("click",()=>teleportTo(state.currentZoneId));
-$("homeBtn").addEventListener("click",()=>teleportTo("entrance"));
-$("walkBtn").addEventListener("click",()=>showToast("Select a destination marker to move between market zones."));
-$("infoBtn").addEventListener("click",()=>showHelp());
-$("helpBtn").addEventListener("click",showHelp);
-$("closeCard").addEventListener("click",()=>{
- $("zoneCard").style.display="none";
- setTimeout(()=>{$("zoneCard").style.display=""},5000);
-});
-$("emptyUpload").addEventListener("keydown",e=>{
- if(e.key==="Enter")openAssetManager();
-});
-document.addEventListener("keydown",e=>{
- if(e.key==="Escape")closeDialog();
-});
-
-/* STARTUP */
-async function init(){
- try{
-  db=await openDatabase();
-  await loadStoredAssets();
-  showZone(state.currentZoneId);
- }catch(error){
-  console.error("Asset storage initialization failed:",error);
-  showZone(state.currentZoneId);
-  showToast("Browser storage unavailable. Image uploads may not persist.");
- }
-}
-init();
-</script>
+<body class="bg-black text-slate-100 overflow-hidden select-none font-sans">
+
+    <!-- PRE-ENTER LANDING PAGE MODAL OVERLAY -->
+    <div id="landing-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-zinc-950 via-black to-zinc-900 transition-opacity duration-500">
+        <div class="glass-panel w-full max-w-3xl p-8 sm:p-10 rounded-3xl border border-white/15 relative overflow-hidden flex flex-col items-center text-center shadow-2xl">
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-amber-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wider uppercase mb-4">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                Kundam Market VR Experience
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3 font-sans">
+                KUNDAM MARKET VR ARCHITECTURAL EXPERIENCE
+            </h1>
+            <p class="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed mb-6">
+                Explore an immersive architectural vision for the Kundam Sustainable Public Market. Discover 14 specialized market sectors, passive climate design, central Banyan courtyard, and interactive wayfinding.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8 text-left">
+                <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
+                    <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
+                        <span>⚡</span> Interactive Teleport
+                    </div>
+                    <div class="text-[11px] text-zinc-400">Directly teleport between all 14 market sectors using interactive markers and site plan.</div>
+                </div>
+
+                <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
+                    <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
+                        <span>🏛</span> Climate Resilient
+                    </div>
+                    <div class="text-[11px] text-zinc-400">Passive ventilation chimneys, compressed earth blocks, and solar canopy architecture.</div>
+                </div>
+
+                <div class="glass-panel-light p-4 rounded-2xl border border-white/10">
+                    <div class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
+                        <span>🖼️</span> Personal Asset Manager
+                    </div>
+                    <div class="text-[11px] text-zinc-400">Upload custom site plans and up to 20 market zone photos or 360° panoramas.</div>
+                </div>
+            </div>
+
+            <button id="btn-enter-experience" class="w-full sm:w-auto px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-sm rounded-2xl shadow-xl shadow-amber-950/50 border border-amber-300/40 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer">
+                <span>ENTER ARCHITECTURAL EXPERIENCE</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen Transition Overlay Effect Element -->
+    <div id="transition-overlay"></div>
+
+    <!-- MAIN VIEWPORT CONTAINER -->
+    <div id="canvas-container" class="relative w-full h-full overflow-hidden bg-black">
+        <!-- Three.js 360 WebGL Canvas -->
+        <canvas id="webgl-canvas" class="absolute inset-0 z-0"></canvas>
+
+        <!-- Flat Viewport Image Layer for Ordinary Architectural Photos (ISSUE 1 FIX) -->
+        <img id="viewport-flat-image" src="" alt="Active Zone Architectural View" class="absolute inset-0 w-full h-full object-cover z-1 transition-opacity duration-500 opacity-0 pointer-events-none">
+
+        <!-- Viewport Placeholder when no image is uploaded for selected zone -->
+        <div id="viewport-placeholder" class="absolute inset-0 z-1 flex flex-col items-center justify-center bg-zinc-950/90 text-center p-6 transition-opacity duration-300 opacity-0 pointer-events-none">
+            <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-2xl mb-3 shadow-xl">
+                📷
+            </div>
+            <h3 id="placeholder-zone-title" class="text-lg font-bold text-white mb-1">Entrance Plaza</h3>
+            <p class="text-xs text-zinc-400 max-w-sm mb-4">No custom architectural image uploaded for this zone yet. Upload an image in the Asset Manager to personalize this view.</p>
+            <button id="btn-placeholder-upload" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-xl shadow-lg transition-all cursor-pointer pointer-events-auto">
+                Open Asset Manager
+            </button>
+        </div>
+
+        <!-- Dynamic 3D Hotspot DOM Projection Layer (ISSUE 2 FIX) -->
+        <div id="hotspots-overlay" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
+    </div>
+
+    <!-- 1. TOP-LEFT BRANDING HEADER -->
+    <div id="brand-header" class="absolute top-5 left-6 z-20 pointer-events-auto flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center shadow-lg shadow-black/50">
+            <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2C6.5 2 2 6.5 2 12c0 5.5 4.5 10 10 10s10-4.5 10-10C22 6.5 17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8 0-3.3 2-6.2 5-7.4V17h6V6.6c3 1.2 5 4.1 5 7.4 0 4.4-3.6 8-8 8z" fill="rgba(245, 158, 11, 0.25)"/>
+                <path d="M12 4v14M8 17V8M16 17V8" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-sm font-black tracking-widest text-white uppercase font-sans drop-shadow-md">KUNDAM MARKET</h1>
+            <p class="text-[10px] font-semibold text-zinc-300 uppercase tracking-widest -mt-0.5 opacity-90 drop-shadow">VR ARCHITECTURAL EXPERIENCE</p>
+        </div>
+    </div>
+
+    <!-- 2. TOP-RIGHT FLOATING NAVIGATION BAR -->
+    <div id="top-nav-bar" class="absolute top-5 right-6 z-20 pointer-events-auto">
+        <div class="glass-panel px-3 py-1.5 flex items-center gap-1 sm:gap-2 rounded-full shadow-2xl">
+            <button id="nav-btn-home" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Home</span>
+            </button>
+
+            <button id="nav-btn-map" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer group">
+                <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center transition-all">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <span>Map</span>
+            </button>
+
+            <button id="nav-btn-upload-assets" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-amber-400 hover:text-amber-300 hover:bg-white/10 transition-all text-[11px] font-bold cursor-pointer group">
+                <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center transition-all">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                </div>
+                <span>Upload Assets</span>
+            </button>
+
+            <button id="nav-btn-layers" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                <span>Layers</span>
+            </button>
+
+            <button id="nav-btn-settings" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span>Settings</span>
+            </button>
+
+            <button id="nav-btn-camera" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span>Camera</span>
+            </button>
+
+            <button id="nav-btn-help" class="px-3 py-1.5 rounded-full flex flex-col items-center gap-0.5 text-zinc-300 hover:text-white hover:bg-white/10 transition-all text-[11px] font-medium cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Help</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. COMPACT LEFT-SIDE DYNAMIC ZONE INFORMATION CARD -->
+    <div id="left-zone-card" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 pointer-events-auto w-72 sm:w-80 transition-all duration-300">
+        <div class="glass-panel p-4 rounded-3xl flex flex-col gap-3 shadow-2xl relative border border-white/15">
+            <div class="flex items-center justify-between">
+                <div id="zone-card-icon" class="w-10 h-10 rounded-full bg-black/60 border border-amber-500/40 flex items-center justify-center text-lg text-amber-400 shadow-md">
+                    🏛️
+                </div>
+                <button id="btn-close-zone-card" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/15 text-zinc-400 hover:text-white flex items-center justify-center text-xs transition-all cursor-pointer">
+                    ✕
+                </button>
+            </div>
+
+            <div>
+                <h2 id="zone-card-title" class="text-base font-extrabold text-white tracking-wide">Entrance Plaza</h2>
+                <p id="zone-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed font-normal">
+                    Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
+                </p>
+            </div>
+
+            <div class="w-full h-28 rounded-2xl overflow-hidden bg-zinc-900 relative border border-white/10 group">
+                <img id="zone-card-img" src="" alt="Zone Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                <div id="zone-card-type-tag" class="absolute bottom-2 left-2 text-[10px] bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-full text-amber-300 font-semibold uppercase tracking-wider border border-white/10">
+                    Arrival & Circulation
+                </div>
+            </div>
+
+            <div id="zone-card-gallery-strip" class="hidden flex items-center gap-1.5 overflow-x-auto py-1 pr-1"></div>
+
+            <button id="btn-zone-card-view" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-950/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
+                <span>View Zone Details</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 4. BOTTOM-LEFT CONTROLS & JOYSTICK -->
+    <div id="bottom-left-controls" class="absolute bottom-6 left-6 z-20 pointer-events-auto flex items-end gap-3">
+        <div class="w-20 h-20 rounded-full glass-panel border border-white/20 flex items-center justify-center relative p-1 shadow-2xl">
+            <button id="joy-up" class="absolute top-1 left-1/2 -translate-x-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">▲</button>
+            <button id="joy-down" class="absolute bottom-1 left-1/2 -translate-x-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">▼</button>
+            <button id="joy-left" class="absolute left-1 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">◄</button>
+            <button id="joy-right" class="absolute right-1 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-400 text-xs p-1 cursor-pointer">►</button>
+            <div class="w-6 h-6 rounded-full bg-amber-500/30 border border-amber-400 flex items-center justify-center text-[8px] text-amber-300">
+                ●
+            </div>
+        </div>
+
+        <div class="glass-panel px-4 py-2.5 rounded-2xl flex items-center gap-3 border border-white/15">
+            <div class="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div>
+                <div class="text-[10px] text-zinc-400 font-medium">Floor Level</div>
+                <select id="floor-level-select" class="bg-transparent text-xs font-bold text-white border-none outline-none cursor-pointer p-0 -mt-0.5">
+                    <option value="Ground Floor" class="bg-zinc-900 text-white">Ground Floor</option>
+                    <option value="Roof Level" class="bg-zinc-900 text-white">Roof Level & Solar Canopy</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. CENTRAL GROUND PATH OVERLAY -->
+    <div id="ground-navigation-overlay" class="absolute left-1/2 top-2/3 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none flex flex-col items-center gap-2">
+        <div class="glass-panel px-4 py-2 rounded-2xl border border-amber-500/40 flex items-center gap-2.5 shadow-2xl animate-bounce">
+            <span id="ground-badge-icon" class="text-base">🏛️</span>
+            <div>
+                <div id="ground-badge-title" class="text-xs font-bold text-white">Entrance Plaza</div>
+                <div id="ground-badge-subtitle" class="text-[9px] text-amber-400 font-semibold uppercase">Zone 01</div>
+            </div>
+            <svg class="w-4 h-4 text-amber-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </div>
+
+        <div class="w-0.5 h-8 bg-gradient-to-b from-amber-400 to-transparent"></div>
+
+        <div class="w-12 h-6 rounded-full border-2 border-amber-400 bg-amber-500/20 shadow-lg flex items-center justify-center transform rotate-x-60">
+            <div class="w-4 h-2 rounded-full bg-amber-400 animate-ping"></div>
+        </div>
+    </div>
+
+    <!-- 6. BOTTOM-CENTER NAVIGATION DOCK -->
+    <div id="dock-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
+        <div class="glass-panel px-5 py-2.5 flex items-center gap-4 sm:gap-6 rounded-full shadow-2xl border border-white/20">
+            <button id="dock-btn-teleport" class="flex items-center gap-2.5 group cursor-pointer">
+                <div class="w-9 h-9 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold shadow-md shadow-amber-950/50 group-hover:bg-amber-400 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <span class="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">Teleport</span>
+            </button>
+
+            <div class="w-[1px] h-6 bg-white/15"></div>
+
+            <button id="dock-btn-walk" class="flex items-center gap-2.5 group cursor-pointer">
+                <div id="walk-icon-circle" class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <span id="walk-btn-text" class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Walk</span>
+            </button>
+
+            <div class="w-[1px] h-6 bg-white/15"></div>
+
+            <button id="dock-btn-info" class="flex items-center gap-2.5 group cursor-pointer">
+                <div class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <span class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Info</span>
+            </button>
+
+            <button id="dock-btn-menu" class="hidden sm:flex items-center gap-1.5 ml-2 pl-3 border-l border-white/15 text-xs text-zinc-400 hover:text-amber-400 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <span>Directory</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 7. BOTTOM-RIGHT INTERACTIVE SITE PLAN MINIMAP -->
+    <div id="minimap-card" class="absolute bottom-6 right-6 z-20 pointer-events-auto w-72 sm:w-80 h-52 sm:h-56">
+        <div class="glass-panel w-full h-full p-3 rounded-3xl flex flex-col justify-between shadow-2xl relative border border-white/15 overflow-hidden">
+            <div class="flex items-center justify-between z-10">
+                <div class="text-[10px] font-bold tracking-wider uppercase text-amber-400 bg-black/70 px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    SITE MASTERPLAN
+                </div>
+                <div class="w-7 h-7 rounded-full bg-black/70 border border-white/20 flex flex-col items-center justify-center text-[9px] font-bold text-white shadow-md">
+                    <span class="text-amber-400 text-[8px] leading-none">▲</span>
+                    <span class="leading-none">N</span>
+                </div>
+            </div>
+
+            <div id="minimap-container" class="absolute inset-0 p-2 pt-10 pb-8 flex items-center justify-center">
+                <svg id="minimap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
+                    <rect x="20" y="20" width="560" height="320" rx="20" fill="#0c0d12" stroke="#27272a" stroke-width="2"/>
+                    
+                    <image id="minimap-custom-bg" x="20" y="20" width="560" height="320" preserveAspectRatio="xMidYMid meet" class="hidden"/>
+
+                    <g id="minimap-schematic-grid">
+                        <path d="M 50 160 L 550 160" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                        <path d="M 320 50 L 320 310" stroke="#3f3f46" stroke-width="14" stroke-linecap="round"/>
+                    </g>
+                    
+                    <g id="minimap-zones-group"></g>
+
+                    <g id="minimap-user-pin" transform="translate(100,100)" class="transition-all duration-500">
+                        <circle r="12" fill="rgba(245, 158, 11, 0.35)" class="animate-ping"/>
+                        <circle r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+                        <circle r="2.5" fill="#000000"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flex items-center justify-between z-10 mt-auto">
+                <div id="minimap-current-label" class="text-[10px] text-zinc-300 font-semibold bg-black/80 px-2 py-0.5 rounded-md truncate max-w-[180px]">
+                    01. Entrance Plaza
+                </div>
+                <button id="btn-expand-minimap" class="w-7 h-7 rounded-full bg-black/70 hover:bg-amber-500 hover:text-black border border-white/20 text-zinc-300 flex items-center justify-center transition-all cursor-pointer" title="Expand Masterplan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TELEPORT TO ZONE DIALOGUE -->
+    <div id="modal-teleport" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl relative flex flex-col gap-4 border border-white/20 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h2 class="text-base font-bold text-white tracking-wide">TELEPORT TO ZONE</h2>
+                </div>
+                <button class="btn-close-modal glass-button w-8 h-8 rounded-full text-zinc-400 hover:text-white flex items-center justify-center">
+                    ✕
+                </button>
+            </div>
+
+            <div class="glass-panel-light p-3 rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">Current Location (From)</span>
+                    <span id="teleport-from-label" class="text-xs font-bold text-amber-400">01. Entrance Plaza</span>
+                </div>
+                <span class="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-300 rounded-full font-mono">Floor 01</span>
+            </div>
+
+            <div>
+                <label for="teleport-select-destination" class="text-[11px] font-bold text-zinc-300 uppercase tracking-wider block mb-1.5">Select Destination</label>
+                <select id="teleport-select-destination" class="w-full bg-zinc-900/90 border border-white/20 rounded-xl px-3.5 py-3 text-xs font-semibold text-white focus:outline-none focus:border-amber-500">
+                </select>
+            </div>
+
+            <div class="glass-panel-light p-3.5 rounded-2xl border border-white/10 flex flex-col gap-2">
+                <div class="flex items-center justify-between">
+                    <span id="teleport-preview-title" class="text-xs font-bold text-white flex items-center gap-2">
+                        <span id="teleport-preview-icon">🏛️</span> Entrance Plaza
+                    </span>
+                    <span id="teleport-preview-type" class="text-[10px] text-amber-400 font-mono uppercase bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/30">Arrival & Circulation</span>
+                </div>
+
+                <div class="w-full h-28 rounded-xl overflow-hidden bg-zinc-950 relative border border-white/10">
+                    <img id="teleport-preview-img" src="" alt="Destination Preview" class="w-full h-full object-cover">
+                </div>
+
+                <p id="teleport-preview-desc" class="text-[11px] text-zinc-300 leading-relaxed">
+                    Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
+                </p>
+            </div>
+
+            <button id="btn-execute-teleport" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-2xl shadow-xl shadow-amber-950/50 border border-amber-300/40 transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:scale-[1.01]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>TELEPORT TO SELECTED ZONE</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MARKET ASSET MANAGER MODAL -->
+    <div id="modal-asset-manager" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-4xl max-h-[90vh] flex flex-col p-6 rounded-3xl relative overflow-hidden shadow-2xl border border-white/20">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-black text-white uppercase tracking-wide">MARKET ASSET MANAGER</h2>
+                        <p class="text-xs text-zinc-400 mt-0.5">Upload site plans and zone images to personalize your VR market experience.</p>
+                    </div>
+                </div>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto pr-2 space-y-6">
+                <!-- SECTION 1: SITE PLAN UPLOAD -->
+                <div class="glass-panel-light p-5 rounded-2xl border border-white/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">UPLOAD MASTER SITE PLAN</h3>
+                        </div>
+                        <span class="text-[10px] text-zinc-400 font-mono">PNG, JPG, WEBP, SVG</span>
+                    </div>
+
+                    <div id="siteplan-drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-5 text-center transition-all bg-white/5 cursor-pointer flex flex-col items-center justify-center gap-2">
+                        <input type="file" id="file-input-siteplan" accept="image/png, image/jpeg, image/webp, image/svg+xml" class="hidden">
+                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                        <div class="text-xs font-bold text-white">Drag & drop Master Site Plan or <span class="text-amber-400 underline">Browse File</span></div>
+                        <p class="text-[10px] text-zinc-400">Renders directly on bottom-right minimap and 2D masterplan view.</p>
+                    </div>
+
+                    <div id="siteplan-preview-container" class="mt-4 hidden glass-panel p-4 rounded-xl border border-white/10 flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-full sm:w-48 h-28 bg-zinc-950 rounded-lg overflow-hidden border border-white/10 relative flex items-center justify-center">
+                            <img id="siteplan-preview-img" src="" alt="Site Plan Preview" class="w-full h-full object-contain">
+                        </div>
+                        <div class="flex-1 space-y-1 text-center sm:text-left">
+                            <div id="siteplan-filename" class="text-xs font-bold text-white truncate">site_plan.png</div>
+                            <div id="siteplan-filesize" class="text-[10px] text-amber-400 font-mono">0 KB</div>
+                            <p class="text-[11px] text-zinc-400">Currently displayed as custom masterplan background.</p>
+                            <div class="flex items-center justify-center sm:justify-start gap-2 pt-2">
+                                <button id="btn-replace-siteplan" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition-all cursor-pointer">Replace Plan</button>
+                                <button id="btn-remove-siteplan" class="px-3.5 py-1.5 bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold rounded-lg transition-all cursor-pointer">Remove Plan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: MARKET ZONE IMAGES UPLOAD -->
+                <div class="glass-panel-light p-5 rounded-2xl border border-white/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">UPLOAD MARKET ZONE IMAGES</h3>
+                        </div>
+                        <span id="zone-images-count-badge" class="text-xs px-2.5 py-1 bg-amber-500/20 text-amber-300 font-mono font-bold rounded-full border border-amber-500/30">0 / 20 uploaded</span>
+                    </div>
+
+                    <div id="zone-images-drop-zone" class="border-2 border-dashed border-white/20 hover:border-amber-500/60 rounded-2xl p-5 text-center transition-all bg-white/5 cursor-pointer flex flex-col items-center justify-center gap-2">
+                        <input type="file" id="file-input-zone-images" accept="image/png, image/jpeg, image/webp" multiple class="hidden">
+                        <input type="file" id="file-input-zone-folder" accept="image/png, image/jpeg, image/webp" webkitdirectory directory multiple class="hidden">
+                        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <div class="text-xs font-bold text-white">Drag & drop zone photos/renders or select below</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <button id="btn-browse-zone-files" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-xl transition-all cursor-pointer">Browse Files</button>
+                            <button id="btn-browse-zone-folder" class="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 transition-all cursor-pointer">Upload Folder</button>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 mt-1">Maximum 20 images total (JPG, PNG, WEBP). Folder uploads auto-assign matching zones!</p>
+                    </div>
+
+                    <div class="mt-4 space-y-2">
+                        <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider">Uploaded Zone Assets</h4>
+                        <div id="zone-images-list" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+                            <p id="zone-images-empty-text" class="text-xs text-zinc-500 italic text-center py-4">No zone images uploaded yet. Upload images to personalize market sectors.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DIRECTORY MENU -->
+    <div id="modal-menu" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-5xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative overflow-hidden">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <div>
+                    <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                        <span class="w-2 h-5 bg-amber-500 rounded-sm"></span>
+                        Architectural Space Directory
+                    </h2>
+                    <p class="text-xs text-zinc-400 mt-0.5">Select any market sector, administration room, or courtyard to teleport instantly</p>
+                </div>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto pr-1">
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Navigation Actions</h3>
+                    <button id="menu-btn-explore" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl flex items-center gap-3">
+                        <div class="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-white">Full Guided Tour</div>
+                            <div class="text-[11px] text-zinc-400">Sequential walkthrough</div>
+                        </div>
+                    </button>
+
+                    <button id="menu-btn-open-map" class="zone-nav-item glass-panel-light p-3 text-left hover:border-amber-500/50 transition-all rounded-xl flex items-center gap-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.782V8.018a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-white">Interactive Masterplan</div>
+                            <div class="text-[11px] text-zinc-400">Full 2D schematic plan</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col gap-1.5">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">All Market Sectors (14 Zones)</h3>
+                    <div id="zone-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-80 overflow-y-auto pr-1"></div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-1 px-1">Administration</h3>
+                    <div id="admin-list-container" class="flex flex-col gap-1 text-xs max-h-80 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2D MASTERPLAN -->
+    <div id="modal-map" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-5xl max-h-[90vh] flex flex-col p-6 rounded-3xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
+                <div class="flex items-center gap-3">
+                    <h2 class="text-lg font-extrabold text-white">2D Architectural Masterplan & Circulation Network</h2>
+                    <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30">Interactive Wayfinding</span>
+                </div>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 overflow-hidden">
+                <div class="md:col-span-2 bg-zinc-950/90 rounded-2xl p-4 border border-white/10 relative flex items-center justify-center min-h-[340px] overflow-hidden">
+                    <svg id="fullmap-svg" viewBox="0 0 600 360" class="w-full h-full object-contain">
+                        <rect x="10" y="10" width="580" height="340" rx="16" fill="#090a0f" stroke="#27272a" stroke-width="2"/>
+                        
+                        <image id="fullmap-custom-bg" x="10" y="10" width="580" height="340" preserveAspectRatio="xMidYMid meet" class="hidden"/>
+
+                        <g id="fullmap-schematic-grid">
+                            <path id="route-line-main" d="M 50 130 L 550 130" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                            <path id="route-line-cross" d="M 330 50 L 330 310" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+                        </g>
+                        
+                        <path id="wayfinding-active-path" d="" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6,6" fill="none" class="animate-pulse"/>
+
+                        <g id="fullmap-zones-group"></g>
+
+                        <g id="fullmap-user-pin" transform="translate(100,100)">
+                            <circle r="14" fill="rgba(245, 158, 11, 0.35)" class="animate-ping"/>
+                            <circle r="8" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <div class="absolute bottom-3 left-3 text-[10px] text-zinc-300 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
+                        Click any zone polygon to select and calculate wayfinding route
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3 justify-between">
+                    <div class="glass-panel-light p-4 rounded-2xl flex flex-col gap-2.5">
+                        <div class="text-[10px] font-bold text-amber-400 tracking-wider uppercase">Selected Target Zone</div>
+                        <h3 id="map-target-title" class="text-base font-extrabold text-white">Entrance Plaza</h3>
+                        
+                        <div class="w-full h-28 rounded-xl overflow-hidden bg-zinc-900 border border-white/10 my-1">
+                            <img id="map-target-img" src="" class="w-full h-full object-cover">
+                        </div>
+
+                        <p id="map-target-desc" class="text-xs text-zinc-300 leading-relaxed">
+                            Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
+                        </p>
+                        
+                        <div class="text-[11px] text-zinc-400 space-y-1 border-t border-white/10 pt-2.5 mt-1">
+                            <div><strong class="text-zinc-200">Category:</strong> <span id="map-target-type">Arrival & Circulation</span></div>
+                            <div><strong class="text-zinc-200">Ventilation:</strong> <span id="map-target-vent">Open-air breeze corridor</span></div>
+                            <div><strong class="text-zinc-200">Materials:</strong> <span id="map-target-mat">Compressed Earth Blocks, Teak Timbers</span></div>
+                        </div>
+                    </div>
+
+                    <button id="btn-map-enter-zone" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>TELEPORT TO THIS ZONE</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LAYERS & MATERIALS -->
+    <div id="modal-layers" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+                <h2 class="text-lg font-bold text-white">Architectural Layers & Material Explorer</h2>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-4 overflow-y-auto pr-1">
+                <div>
+                    <h3 class="text-xs font-bold uppercase text-amber-500 tracking-wider mb-2">BIM System Layer Visibility</h3>
+                    <div id="layers-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold uppercase text-amber-500 tracking-wider mb-2">Sustainable Material Palette</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="glass-panel-light p-3 rounded-xl border border-white/10">
+                            <div class="text-xs font-bold text-amber-400">Compressed Earth Blocks (CSEB)</div>
+                            <div class="text-[11px] text-zinc-300 mt-1">Locally pressed site soil with 5% cement stabilization. High thermal mass.</div>
+                        </div>
+                        <div class="glass-panel-light p-3 rounded-xl border border-white/10">
+                            <div class="text-xs font-bold text-amber-400">Treated Bamboo Truss Rafters</div>
+                            <div class="text-[11px] text-zinc-300 mt-1">Boron-treated structural bamboo columns providing lightweight roof support.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SETTINGS -->
+    <div id="modal-settings" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-3xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+                <h2 class="text-lg font-bold text-white">Comfort & Visual Settings</h2>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <div class="flex items-center justify-between glass-panel-light p-3 rounded-xl">
+                    <div>
+                        <div class="font-bold text-white">Snap Turn Angle</div>
+                        <div class="text-zinc-400 text-[11px]">Rotational comfort increment for WebXR</div>
+                    </div>
+                    <select id="setting-snap-turn" class="bg-black/80 border border-white/20 rounded-lg px-2.5 py-1.5 text-white">
+                        <option value="15">15°</option>
+                        <option value="30" selected>30° (Default)</option>
+                        <option value="45">45°</option>
+                    </select>
+                </div>
+
+                <div class="glass-panel-light p-3 rounded-xl space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-white">Time of Day Simulation</span>
+                        <span id="time-display" class="text-amber-400 font-mono">12:00 PM</span>
+                    </div>
+                    <input type="range" id="setting-time-slider" min="6" max="18" step="0.5" value="12" class="w-full accent-amber-500 bg-zinc-800 rounded-lg cursor-pointer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PROJECT OVERVIEW (INFO) -->
+    <div id="modal-info" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <h2 class="text-lg font-bold text-white">Project Architectural Overview</h2>
+                </div>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-4 overflow-y-auto pr-1 text-xs leading-relaxed text-zinc-300">
+                <div class="glass-panel-light p-4 rounded-xl border border-white/10">
+                    <h3 class="text-amber-400 font-bold text-sm mb-1">Architectural Vision</h3>
+                    <p>The Kundam Market redevelopment integrates traditional bazaar spatial typologies with contemporary passive climate design. It provides structured stalls for over 150 local vendors with permanent, environmentally responsive timber and earthen architecture.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NAVIGATION HELP -->
+    <div id="modal-help" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
+        <div class="glass-panel w-full max-w-lg flex flex-col p-6 rounded-3xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+                <h2 class="text-lg font-bold text-white">Controls & Navigation Guide</h2>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div class="glass-panel-light p-3 rounded-xl flex items-center gap-3">
+                    <div class="p-2 bg-amber-500/20 text-amber-400 rounded-lg font-bold">🖱 Teleport Markers</div>
+                    <div class="text-zinc-300">Click any yellow directional marker inside the viewport to jump directly to that sector.</div>
+                </div>
+
+                <div class="glass-panel-light p-3 rounded-xl flex items-center gap-3">
+                    <div class="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg font-bold">🗺 Interactive Minimap</div>
+                    <div class="text-zinc-300">Click zone blocks on the minimap or full masterplan to calculate wayfinding routes and switch views.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRESENTATION HUD -->
+    <div id="presentation-hud" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-8">
+        <div class="glass-panel p-3 min-w-[340px] max-w-md flex flex-col gap-2.5 pointer-events-auto rounded-2xl shadow-2xl">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">PREDEFINED PRESENTATION VIEWS</span>
+                </div>
+                <button id="btn-exit-presentation" class="text-[10px] text-amber-400 hover:underline font-semibold cursor-pointer">EXIT PRESENTATION</button>
+            </div>
+
+            <div id="presentation-views-container" class="flex flex-col gap-1.5 max-h-48 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- HOTSPOT ARCHITECTURAL INFO POPUP CARD -->
+    <div id="hotspot-card" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 glass-panel p-5 max-w-sm w-full rounded-2xl modal-fade modal-hidden">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10 mb-2">
+            <span id="hotspot-card-category" class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Architectural Feature</span>
+            <button id="btn-close-hotspot-card" class="text-zinc-400 hover:text-white text-xs cursor-pointer">✕</button>
+        </div>
+        <h3 id="hotspot-card-title" class="text-base font-bold text-white">Courtyard Feature</h3>
+        <p id="hotspot-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed">Passive cooling atrium designed to naturally draw hot air upwards through high clerestory vents.</p>
+        <button id="btn-hotspot-action" class="mt-4 w-full py-2 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs rounded-xl transition-all cursor-pointer">
+            CLOSE DETAILS
+        </button>
+    </div>
+
+    <!-- Global Notification Toast Container -->
+    <div id="toast-container" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2"></div>
+
+    <script>
+        // Global Application State
+        const STATE = {
+            currentZoneIndex: 0,
+            selectedMapZoneIndex: 0,
+            activeTab: 'HOME',
+            isPresentationMode: false,
+            isAutoWalk: false,
+            showTeleportHotspots: true,
+            userUploads: [],
+            sitePlanAsset: null,
+            zoneImagesAssets: []
+        };
+
+        // Source of Truth - 14 Market Zones Data
+        const ZONES_DATA = [
+            {
+                id: 'z1',
+                name: 'Entrance Plaza',
+                type: 'Arrival & Circulation',
+                desc: 'Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.',
+                icon: '🏛️',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/entrance_plaza.jpg',
+                panorama: 'assets/panoramas/entrance_plaza_360.jpg',
+                mapPos: { x: 40, y: 50, w: 100, h: 65 },
+                materials: 'Compressed Earth Blocks, Teak Timbers',
+                activities: 'Pedestrian arrival, ticketing, orientation',
+                ventilation: 'Open-air breeze corridor'
+            },
+            {
+                id: 'z2',
+                name: 'Vegetable Market',
+                type: 'Fresh Produce',
+                desc: 'Dedicated stalls for green leaf vegetables with wet drainage channels and terraced wooden racks.',
+                icon: '🥬',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/vegetable_market.jpg',
+                panorama: 'assets/panoramas/vegetable_market_360.jpg',
+                mapPos: { x: 155, y: 50, w: 90, h: 65 },
+                materials: 'Terracotta tile, Stainless steel drainage',
+                activities: 'Fresh veg sales, daily sorting',
+                ventilation: 'High clerestory stack effect'
+            },
+            {
+                id: 'z3',
+                name: 'Fruit Market',
+                type: 'Fresh Produce',
+                desc: 'Fresh fruits, local produce, and seasonal items displayed on modular timber fruit stalls.',
+                icon: '🍎',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/fruit_market.jpg',
+                panorama: 'assets/panoramas/fruit_market_360.jpg',
+                mapPos: { x: 260, y: 50, w: 90, h: 65 },
+                materials: 'Hardwood counters, Bamboo trusses',
+                activities: 'Fruit vendors, juice bars, retail',
+                ventilation: 'Cross-breeze naturally shaded roof'
+            },
+            {
+                id: 'z4',
+                name: 'Banana and Bulk Produce Market',
+                type: 'Wholesale & Storage',
+                desc: 'Shaded bulk storage and distribution bay for bananas, tubers, and heavy produce.',
+                icon: '🍌',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/banana_market.jpg',
+                panorama: 'assets/panoramas/banana_market_360.jpg',
+                mapPos: { x: 365, y: 50, w: 90, h: 65 },
+                materials: 'Rammed earth, Timber rafters',
+                activities: 'Bulk unloading, ripening racks',
+                ventilation: 'Thermal chimneys & louvers'
+            },
+            {
+                id: 'z5',
+                name: 'Staples Market',
+                type: 'Dry Goods',
+                desc: 'Dedicated stalls for grains, pulses, rice, oil, and essential dry provisions.',
+                icon: '🌾',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/staples_market.jpg',
+                panorama: 'assets/panoramas/staples_market_360.jpg',
+                mapPos: { x: 470, y: 50, w: 90, h: 65 },
+                materials: 'Sealed timber bins, Earthen plaster',
+                activities: 'Grain weighing, dry storage',
+                ventilation: 'Humidity-controlled screened vents'
+            },
+            {
+                id: 'z6',
+                name: 'Cross Street',
+                type: 'Circulation Spine',
+                desc: 'Main pedestrian circulation spine connecting the different market sectors and courtyards.',
+                icon: '🚶',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/cross_street.jpg',
+                panorama: 'assets/panoramas/cross_street_360.jpg',
+                mapPos: { x: 40, y: 130, w: 520, h: 35 },
+                materials: 'Stone pavers, Covered timber canopy',
+                activities: 'Pedestrian transit, street seating',
+                ventilation: 'Funneled linear wind corridor'
+            },
+            {
+                id: 'z7',
+                name: 'Spice and Dry Produce Market',
+                type: 'Dry Goods',
+                desc: 'Organized stalls for aromatic spices, dry produce, herbs, and traditional ingredients.',
+                icon: '🌶️',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/spice_market.jpg',
+                panorama: 'assets/panoramas/spice_market_360.jpg',
+                mapPos: { x: 40, y: 180, w: 105, h: 70 },
+                materials: 'Teak shelving, Clay jars, Brass accents',
+                activities: 'Spice grinding, custom blending',
+                ventilation: 'Exhaust louver roof monitors'
+            },
+            {
+                id: 'z8',
+                name: 'Food Court',
+                type: 'Dining & Hospitality',
+                desc: 'A shared eating area with local food stalls, communal seating, and connections to the main market.',
+                icon: '🍜',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/food_court.jpg',
+                panorama: 'assets/panoramas/food_court_360.jpg',
+                mapPos: { x: 160, y: 180, w: 120, h: 70 },
+                materials: 'Terracotta tiles, Recycled wood tables',
+                activities: 'Hot food stalls, dining, social hub',
+                ventilation: 'High volume roof exhaust hood'
+            },
+            {
+                id: 'z9',
+                name: 'Central Courtyard',
+                type: 'Public Open Space',
+                desc: 'A shaded community space with Banyan trees, terraced seating, and natural microclimate cooling.',
+                icon: '🌳',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/central_courtyard.jpg',
+                panorama: 'assets/panoramas/central_courtyard_360.jpg',
+                mapPos: { x: 295, y: 180, w: 110, h: 70 },
+                materials: 'Native stone, Terraced brick amphitheater',
+                activities: 'Community gathering, outdoor events',
+                ventilation: 'Evaporative tree canopy cooling'
+            },
+            {
+                id: 'z10',
+                name: 'Flower and Garland Market',
+                type: 'Specialty Retail',
+                desc: 'Aromatic open stalls for ceremonial flower garlands, fresh blooms, and ceremonial crafts.',
+                icon: '💐',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/flower_market.jpg',
+                panorama: 'assets/panoramas/flower_market_360.jpg',
+                mapPos: { x: 420, y: 180, w: 140, h: 70 },
+                materials: 'Water misting counters, Bamboo lattice',
+                activities: 'Garland weaving, flower display',
+                ventilation: 'Shaded humidified breeze'
+            },
+            {
+                id: 'z11',
+                name: 'Fish and Seafood Market',
+                type: 'Wet Market',
+                desc: 'Hygienic wet market section with stainless steel counters, ice storage, and automated washdown.',
+                icon: '🐟',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/fish_market.jpg',
+                panorama: 'assets/panoramas/fish_market_360.jpg',
+                mapPos: { x: 40, y: 265, w: 130, h: 70 },
+                materials: 'Glazed ceramic tile, Stainless steel',
+                activities: 'Seafood sales, cleaning stations',
+                ventilation: 'Negative pressure mechanical exhaust'
+            },
+            {
+                id: 'z12',
+                name: 'Meat and Poultry Market',
+                type: 'Wet Market',
+                desc: 'Enclosed, climate-controlled meat and poultry processing and retail section.',
+                icon: '🥩',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/meat_market.jpg',
+                panorama: 'assets/panoramas/meat_market_360.jpg',
+                mapPos: { x: 185, y: 265, w: 120, h: 70 },
+                materials: 'Stainless steel, Antimicrobial floors',
+                activities: 'Poultry & meat butcher stalls',
+                ventilation: 'Chilled air supply & HEPA filtration'
+            },
+            {
+                id: 'z13',
+                name: 'Administration and Service Areas',
+                type: 'Management & Logistics',
+                desc: 'Market administrative offices, sanitary inspector desk, security command, vendor facilities, and waste sorting.',
+                icon: '🏢',
+                floor: 'Ground Floor',
+                thumbnail: 'assets/thumbnails/admin_services.jpg',
+                panorama: 'assets/panoramas/admin_services_360.jpg',
+                mapPos: { x: 320, y: 265, w: 110, h: 70 },
+                materials: 'Earth blocks, Solar glass windows',
+                activities: 'Market management, security, lockers',
+                ventilation: 'Dual-mode natural & ceiling fans'
+            },
+            {
+                id: 'z14',
+                name: 'Roofscape and Solar Canopy',
+                type: 'Sustainability Infrastructure',
+                desc: 'Lightweight solar canopy roofing, rainwater harvesting gutters, and sky viewing deck.',
+                icon: '☀️',
+                floor: 'Roof Level',
+                thumbnail: 'assets/thumbnails/roofscape.jpg',
+                panorama: 'assets/panoramas/roofscape_360.jpg',
+                mapPos: { x: 445, y: 265, w: 115, h: 70 },
+                materials: 'BIPV solar glass, Steel truss, Polycarbonate',
+                activities: 'Clean energy generation, rainwater collection',
+                ventilation: 'Unrestricted rooftop breeze'
+            }
+        ];
+
+        const ADMIN_DATA = [
+            { name: "Market Manager Office", code: "ADM-01" },
+            { name: "Sanitary Inspector Desk", code: "ADM-02" },
+            { name: "President's Room", code: "ADM-03" },
+            { name: "Security & CCTV Command", code: "ADM-04" },
+            { name: "Staff & Association Room", code: "ADM-05" },
+            { name: "Vendor Rest Room & Lockers", code: "ADM-06" }
+        ];
+
+        // Teleport Hotspots Definition
+        const ZONE_HOTSPOTS = {
+            0: [
+                { yaw: 0.35, pitch: 0.0, targetZone: 1, label: 'Vegetable Market', type: 'teleport' },
+                { yaw: -0.4, pitch: -0.05, targetZone: 5, label: 'Cross Street Spine', type: 'teleport' },
+                { yaw: 0.1, pitch: 0.15, icon: '💨', title: 'Passive Cross-Ventilation', desc: 'High ceilings induce stack effect, pulling air across open stalls.', type: 'info' }
+            ],
+            1: [
+                { yaw: -0.5, pitch: 0.0, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
+                { yaw: -0.2, pitch: 0.25, icon: '☀️', title: 'Terracotta Roof Louvers', desc: 'Reduces heat radiation while allowing ambient indirect daylight.', type: 'info' }
+            ],
+            2: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 1, label: 'Vegetable Market', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 3, label: 'Banana & Bulk Produce', type: 'teleport' },
+                { yaw: 0.7, pitch: -0.05, targetZone: 7, label: 'Food Court', type: 'teleport' }
+            ],
+            3: [
+                { yaw: -0.5, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 4, label: 'Staples Market', type: 'teleport' }
+            ],
+            4: [
+                { yaw: -0.5, pitch: 0.0, targetZone: 3, label: 'Banana Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
+            ],
+            5: [
+                { yaw: -0.6, pitch: 0.0, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
+                { yaw: -0.2, pitch: 0.0, targetZone: 6, label: 'Spice Market', type: 'teleport' },
+                { yaw: 0.2, pitch: 0.0, targetZone: 7, label: 'Food Court', type: 'teleport' },
+                { yaw: 0.6, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
+            ],
+            6: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 5, label: 'Cross Street', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 10, label: 'Fish & Seafood', type: 'teleport' }
+            ],
+            7: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 2, label: 'Fruit Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' }
+            ],
+            8: [
+                { yaw: -0.5, pitch: 0.0, targetZone: 7, label: 'Food Court', type: 'teleport' },
+                { yaw: 0.35, pitch: 0.0, targetZone: 9, label: 'Flower Market', type: 'teleport' },
+                { yaw: -0.1, pitch: 0.2, icon: '🌿', title: 'Preserved Banyan Tree', desc: 'Natural shade canopy providing microclimate cooling.', type: 'info' }
+            ],
+            9: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 8, label: 'Central Courtyard', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 13, label: 'Roofscape & Solar Roof', type: 'teleport' }
+            ],
+            10: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 6, label: 'Spice Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 11, label: 'Meat & Poultry', type: 'teleport' }
+            ],
+            11: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 10, label: 'Fish Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 12, label: 'Administration', type: 'teleport' }
+            ],
+            12: [
+                { yaw: -0.4, pitch: 0.0, targetZone: 11, label: 'Meat Market', type: 'teleport' },
+                { yaw: 0.4, pitch: 0.0, targetZone: 13, label: 'Roofscape', type: 'teleport' }
+            ],
+            13: [
+                { yaw: -0.4, pitch: -0.1, targetZone: 12, label: 'Administration', type: 'teleport' },
+                { yaw: 0.5, pitch: -0.1, targetZone: 0, label: 'Entrance Plaza', type: 'teleport' },
+                { yaw: 0.0, pitch: 0.1, icon: '⚡', title: 'Photovoltaic Glass Roof', desc: 'Generates clean electricity for market lighting.', type: 'info' }
+            ]
+        };
+
+        // INDEXEDDB CLIENT-SIDE PERSISTENCE
+        const DB_NAME = 'KundamMarketVRDB';
+        const DB_VERSION = 1;
+        let dbPromise = null;
+
+        function getDB() {
+            if (!dbPromise) {
+                dbPromise = new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+                    request.onerror = (e) => reject("IndexedDB error: " + e.target.errorCode);
+                    request.onsuccess = (e) => resolve(e.target.result);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('sitePlan')) db.createObjectStore('sitePlan', { keyPath: 'id' });
+                        if (!db.objectStoreNames.contains('zoneImages')) db.createObjectStore('zoneImages', { keyPath: 'id' });
+                    };
+                });
+            }
+            return dbPromise;
+        }
+
+        async function dbSaveSitePlan(file) {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('sitePlan', 'readwrite');
+                const store = tx.objectStore('sitePlan');
+                const record = { id: 'masterSitePlan', filename: file.name, size: file.size, blob: file, timestamp: Date.now() };
+                const req = store.put(record);
+                req.onsuccess = () => resolve(record);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbGetSitePlan() {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('sitePlan', 'readonly');
+                const store = tx.objectStore('sitePlan');
+                const req = store.get('masterSitePlan');
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbDeleteSitePlan() {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('sitePlan', 'readwrite');
+                const store = tx.objectStore('sitePlan');
+                const req = store.delete('masterSitePlan');
+                req.onsuccess = () => resolve();
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbSaveZoneImage(asset) {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('zoneImages', 'readwrite');
+                const store = tx.objectStore('zoneImages');
+                const record = {
+                    id: asset.id,
+                    filename: asset.filename,
+                    size: asset.size,
+                    zoneId: asset.zoneId,
+                    role: asset.role || 'gallery',
+                    isPrimary: !!asset.isPrimary,
+                    blob: asset.blob,
+                    timestamp: Date.now()
+                };
+                const req = store.put(record);
+                req.onsuccess = () => resolve(record);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbGetAllZoneImages() {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('zoneImages', 'readonly');
+                const store = tx.objectStore('zoneImages');
+                const req = store.getAll();
+                req.onsuccess = () => resolve(req.result || []);
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function dbDeleteZoneImage(id) {
+            const db = await getDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('zoneImages', 'readwrite');
+                const store = tx.objectStore('zoneImages');
+                const req = store.delete(id);
+                req.onsuccess = () => resolve();
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        async function loadStoredAssets() {
+            try {
+                const planRecord = await dbGetSitePlan();
+                if (planRecord && planRecord.blob) {
+                    if (STATE.sitePlanAsset && STATE.sitePlanAsset.url) URL.revokeObjectURL(STATE.sitePlanAsset.url);
+                    STATE.sitePlanAsset = {
+                        filename: planRecord.filename,
+                        size: planRecord.size,
+                        blob: planRecord.blob,
+                        url: URL.createObjectURL(planRecord.blob)
+                    };
+                    updateSitePlanUI();
+                }
+
+                const imagesRecords = await dbGetAllZoneImages();
+                STATE.zoneImagesAssets.forEach(img => { if (img.url) URL.revokeObjectURL(img.url); });
+                STATE.zoneImagesAssets = imagesRecords.map(rec => ({
+                    id: rec.id,
+                    filename: rec.filename,
+                    size: rec.size,
+                    zoneId: rec.zoneId,
+                    role: rec.role,
+                    isPrimary: rec.isPrimary,
+                    blob: rec.blob,
+                    url: URL.createObjectURL(rec.blob)
+                }));
+
+                updateZoneImagesUI();
+                updateActiveZoneDisplay();
+            } catch (err) {
+                console.warn("Error loading stored assets from IndexedDB:", err);
+            }
+        }
+
+        // WebGL & THREE.JS SETUP
+        let scene, camera, renderer, sphereMesh, textureLoader;
+        let canvas, container;
+        let isUserInteracting = false;
+        let onPointerDownMouseX = 0, onPointerDownMouseY = 0;
+        let lon = 0, lat = 0, onPointerDownLon = 0, onPointerDownLat = 0;
+        let activeHotspotElements = [];
+
+        function initWebGL() {
+            container = document.getElementById('canvas-container');
+            canvas = document.getElementById('webgl-canvas');
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
+            camera.target = new THREE.Vector3(0, 0, 0);
+
+            const geometry = new THREE.SphereGeometry(500, 60, 40);
+            geometry.scale(-1, 1, 1);
+
+            const initialTexture = createProcedural360Texture(ZONES_DATA[0].name, 0);
+            const material = new THREE.MeshBasicMaterial({ map: initialTexture });
+
+            sphereMesh = new THREE.Mesh(geometry, material);
+            scene.add(sphereMesh);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            canvas.addEventListener('pointerdown', onPointerDown);
+            canvas.addEventListener('wheel', onDocumentMouseWheel);
+            window.addEventListener('resize', onWindowResize);
+
+            animate();
+        }
+
+        function createProcedural360Texture(titleText, zoneIdx) {
+            const cvs = document.createElement('canvas');
+            cvs.width = 2048;
+            cvs.height = 1024;
+            const ctx = cvs.getContext('2d');
+
+            const colorPalettes = [
+                ['#0f172a', '#1e293b', '#334155'], ['#14532d', '#166534', '#15803d'],
+                ['#713f12', '#854d0e', '#a16207'], ['#365314', '#3f6212', '#4d7c0f'],
+                ['#78350f', '#854d0e', '#92400e'], ['#1e293b', '#334155', '#475569'],
+                ['#7f1d1d', '#991b1b', '#b91c1c'], ['#831843', '#9d174d', '#be185d'],
+                ['#064e3b', '#047857', '#059669'], ['#701a75', '#86198f', '#a21caf'],
+                ['#1e3a8a', '#1d4ed8', '#2563eb'], ['#450a0a', '#7f1d1d', '#991b1b'],
+                ['#134e4a', '#0f766e', '#14b8a6'], ['#0c4a6e', '#0369a1', '#0284c7']
+            ];
+
+            const palette = colorPalettes[zoneIdx % colorPalettes.length];
+            const gradient = ctx.createLinearGradient(0, 0, 0, cvs.height);
+            gradient.addColorStop(0, '#09090d');
+            gradient.addColorStop(0.38, palette[0]);
+            gradient.addColorStop(0.5, palette[1]);
+            gradient.addColorStop(0.65, palette[2]);
+            gradient.addColorStop(1, '#09090d');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 2;
+            const horizonY = cvs.height / 2;
+
+            for (let x = 0; x <= cvs.width; x += 128) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, cvs.height); ctx.stroke();
+            }
+            for (let y = 0; y <= cvs.height; y += 64) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cvs.width, y); ctx.stroke();
+            }
+
+            ctx.fillStyle = 'rgba(244, 244, 246, 0.95)';
+            ctx.font = 'bold 44px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText("KUNDAM MARKET ARCHITECTURAL MODEL", cvs.width / 2, horizonY - 40);
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 32px Inter, sans-serif';
+            ctx.fillText((zoneIdx + 1 < 10 ? "0" : "") + (zoneIdx + 1) + ". " + titleText.toUpperCase(), cvs.width / 2, horizonY + 20);
+
+            return new THREE.CanvasTexture(cvs);
+        }
+
+        function onPointerDown(event) {
+            if (event.target.closest('#top-nav-bar, #brand-header, #left-zone-card, #bottom-left-controls, #dock-hud, #minimap-card, .modal-fade:not(.modal-hidden), #presentation-hud, #hotspot-card, .hotspot-item')) {
+                return;
+            }
+
+            isUserInteracting = true;
+            onPointerDownMouseX = event.clientX;
+            onPointerDownMouseY = event.clientY;
+            onPointerDownLon = lon;
+            onPointerDownLat = lat;
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        }
+
+        function onPointerMove(event) {
+            if (isUserInteracting === true) {
+                lon = (onPointerDownMouseX - event.clientX) * 0.1 + onPointerDownLon;
+                lat = (event.clientY - onPointerDownMouseY) * 0.1 + onPointerDownLat;
+            }
+        }
+
+        function onPointerUp() {
+            isUserInteracting = false;
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
+        }
+
+        function onDocumentMouseWheel(event) {
+            const fov = camera.fov + event.deltaY * 0.05;
+            camera.fov = THREE.MathUtils.clamp(fov, 30, 90);
+            camera.updateProjectionMatrix();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (STATE.isAutoWalk && !isUserInteracting) {
+                lon += 0.08;
+            }
+
+            updateCamera();
+        }
+
+        function updateCamera() {
+            lat = Math.max(-85, Math.min(85, lat));
+            const phi = THREE.MathUtils.degToRad(90 - lat);
+            const theta = THREE.MathUtils.degToRad(lon);
+
+            camera.target.x = 500 * Math.sin(phi) * Math.cos(theta);
+            camera.target.y = 500 * Math.cos(phi);
+            camera.target.z = 500 * Math.sin(phi) * Math.sin(theta);
+
+            camera.lookAt(camera.target);
+            renderer.render(scene, camera);
+
+            updateHotspotsPositions();
+        }
+
+        // ISSUE 2 FIX: STABLE HOTSPOT CREATION & PERSISTENT CLICK HANDLERS
+        function renderZoneHotspots() {
+            const overlayContainer = document.getElementById('hotspots-overlay');
+            overlayContainer.innerHTML = '';
+            activeHotspotElements = [];
+
+            if (STATE.isPresentationMode || !STATE.showTeleportHotspots) return;
+
+            const currentHotspots = ZONE_HOTSPOTS[STATE.currentZoneIndex] || [];
+
+            currentHotspots.forEach((hs) => {
+                const hotspotEl = document.createElement('div');
+                hotspotEl.className = 'hotspot-item absolute pointer-events-auto cursor-pointer transform -translate-x-1/2 -translate-y-1/2 transition-transform hover:scale-110 z-10';
+
+                if (hs.type === 'teleport') {
+                    const targetZoneName = ZONES_DATA[hs.targetZone]?.name || `Zone ${hs.targetZone + 1}`;
+                    hotspotEl.innerHTML = `
+                        <div class="relative flex items-center justify-center group pointer-events-auto">
+                            <div class="w-10 h-10 rounded-full bg-amber-500 border-2 border-white text-black flex items-center justify-center shadow-xl shadow-amber-950/60 hotspot-ring font-bold cursor-pointer">
+                                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div class="absolute left-12 bg-black/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-xs font-bold text-amber-300 whitespace-nowrap shadow-2xl transition-all opacity-90 group-hover:opacity-100 group-hover:scale-105 cursor-pointer">
+                                ${hs.label || targetZoneName}
+                            </div>
+                        </div>
+                    `;
+
+                    hotspotEl.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        switchZone(hs.targetZone);
+                    });
+                } else {
+                    hotspotEl.innerHTML = `
+                        <div class="relative flex items-center justify-center cursor-pointer pointer-events-auto">
+                            <div class="w-9 h-9 rounded-full bg-emerald-600 border border-emerald-300 text-white flex items-center justify-center text-sm font-bold shadow-lg hotspot-ring pointer-events-none">
+                                ${hs.icon || 'ℹ'}
+                            </div>
+                            <div class="absolute left-11 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10 text-[11px] font-medium text-white whitespace-nowrap hidden sm:block pointer-events-none">
+                                ${hs.title}
+                            </div>
+                        </div>
+                    `;
+
+                    hotspotEl.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showHotspotCard(hs);
+                    });
+                }
+
+                overlayContainer.appendChild(hotspotEl);
+
+                activeHotspotElements.push({
+                    element: hotspotEl,
+                    yaw: hs.yaw,
+                    pitch: hs.pitch
+                });
+            });
+
+            updateHotspotsPositions();
+        }
+
+        // UPDATE SCREEN COORDINATES OF EXISTING HOTSPOT ELEMENTS (RUNS EVERY FRAME WITHOUT DESTROYING DOM)
+        function updateHotspotsPositions() {
+            if (!activeHotspotElements || activeHotspotElements.length === 0) return;
+
+            activeHotspotElements.forEach((item) => {
+                const phi = THREE.MathUtils.degToRad(90 - item.pitch * 50);
+                const theta = THREE.MathUtils.degToRad(item.yaw * 180);
+                const pos = new THREE.Vector3(
+                    400 * Math.sin(phi) * Math.cos(theta),
+                    400 * Math.cos(phi),
+                    400 * Math.sin(phi) * Math.sin(theta)
+                );
+
+                const vector = pos.clone().project(camera);
+
+                if (vector.z < 1) {
+                    const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+                    const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
+                    item.element.style.left = `${x}px`;
+                    item.element.style.top = `${y}px`;
+                    item.element.style.display = 'block';
+                } else {
+                    item.element.style.display = 'none';
+                }
+            });
+        }
+
+        function showHotspotCard(hs) {
+            document.getElementById('hotspot-card-title').innerText = hs.title;
+            document.getElementById('hotspot-card-desc').innerText = hs.desc;
+            document.getElementById('hotspot-card').classList.remove('modal-hidden');
+            document.getElementById('hotspot-card').classList.add('modal-visible');
+        }
+
+        // ISSUE 1, 3, 5 FIX: CENTRALIZED ZONE SWITCHING & VIEWPORT DISPLAY LOGIC
+        function switchZone(index) {
+            if (index < 0 || index >= ZONES_DATA.length) return;
+
+            const transitionOverlay = document.getElementById('transition-overlay');
+            transitionOverlay.classList.add('active');
+
+            const initialFov = camera.fov;
+            camera.fov = Math.max(30, camera.fov - 12);
+            camera.updateProjectionMatrix();
+
+            setTimeout(() => {
+                STATE.currentZoneIndex = index;
+                STATE.selectedMapZoneIndex = index;
+                const zone = ZONES_DATA[index];
+
+                // Update Information Card Text
+                document.getElementById('zone-card-icon').innerText = zone.icon;
+                document.getElementById('zone-card-title').innerText = zone.name;
+                document.getElementById('zone-card-desc').innerText = zone.desc;
+                document.getElementById('zone-card-type-tag').innerText = zone.type;
+
+                // Update Active Zone Display & Viewport Image Layer
+                updateActiveZoneDisplay();
+
+                // Update Floor Badges & Minimap Labels
+                document.getElementById('ground-badge-icon').innerText = zone.icon;
+                document.getElementById('ground-badge-title').innerText = zone.name;
+                document.getElementById('ground-badge-subtitle').innerText = `Zone ${(index + 1 < 10 ? '0' : '') + (index + 1)}`;
+                document.getElementById('teleport-from-label').innerText = `${(index + 1 < 10 ? '0' : '') + (index + 1)}. ${zone.name}`;
+                document.getElementById('minimap-current-label').innerText = `${(index + 1 < 10 ? '0' : '') + (index + 1)}. ${zone.name}`;
+
+                updateMinimapPin();
+                renderMasterplanSVGs();
+                renderZoneHotspots();
+
+                camera.fov = initialFov;
+                camera.updateProjectionMatrix();
+
+                setTimeout(() => {
+                    transitionOverlay.classList.remove('active');
+                }, 150);
+
+                showToast(`Teleported to: ${zone.name}`);
+            }, 300);
+        }
+
+        // ISSUE 1 FIX: VIEWPORT ORDINARY PHOTO VS 360 PANORAMA DISPLAY
+        function updateActiveZoneDisplay() {
+            const zone = ZONES_DATA[STATE.currentZoneIndex];
+            if (!zone) return;
+
+            const assignedAssets = STATE.zoneImagesAssets.filter(img => img.zoneId === zone.id);
+            const primaryAsset = assignedAssets.find(img => img.isPrimary) || assignedAssets[0];
+
+            const flatViewportImg = document.getElementById('viewport-flat-image');
+            const viewportPlaceholder = document.getElementById('viewport-placeholder');
+            const cardImgEl = document.getElementById('zone-card-img');
+            const galleryStrip = document.getElementById('zone-card-gallery-strip');
+
+            if (primaryAsset) {
+                // Asset is present for selected zone
+                cardImgEl.src = primaryAsset.url;
+
+                if (primaryAsset.role === 'panorama') {
+                    // Load 360 Panorama into Three.js Sphere
+                    flatViewportImg.classList.add('opacity-0');
+                    viewportPlaceholder.classList.add('opacity-0');
+
+                    textureLoader = textureLoader || new THREE.TextureLoader();
+                    textureLoader.load(primaryAsset.url, (tex) => {
+                        sphereMesh.material.map = tex;
+                        sphereMesh.material.needsUpdate = true;
+                    });
+                } else {
+                    // Display Ordinary Photo in Full Viewport Flat Layer
+                    flatViewportImg.src = primaryAsset.url;
+                    flatViewportImg.classList.remove('opacity-0');
+                    viewportPlaceholder.classList.add('opacity-0');
+
+                    // Set Three.js background texture to procedural background
+                    sphereMesh.material.map = createProcedural360Texture(zone.name, STATE.currentZoneIndex);
+                    sphereMesh.material.needsUpdate = true;
+                }
+            } else {
+                // No custom asset uploaded for this zone
+                cardImgEl.onerror = () => {
+                    cardImgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(zone.name)}</text></svg>`;
+                };
+                cardImgEl.src = zone.thumbnail;
+
+                // Show explicit Viewport Placeholder
+                flatViewportImg.classList.add('opacity-0');
+                document.getElementById('placeholder-zone-title').innerText = zone.name;
+                viewportPlaceholder.classList.remove('opacity-0');
+
+                sphereMesh.material.map = createProcedural360Texture(zone.name, STATE.currentZoneIndex);
+                sphereMesh.material.needsUpdate = true;
+            }
+
+            // Gallery Strip in Left Card if multiple images are uploaded for this zone
+            if (assignedAssets.length > 1) {
+                galleryStrip.innerHTML = '';
+                galleryStrip.classList.remove('hidden');
+                assignedAssets.forEach(asset => {
+                    const thumb = document.createElement('div');
+                    thumb.className = `w-12 h-10 rounded-lg overflow-hidden border cursor-pointer flex-shrink-0 transition-all ${asset === primaryAsset ? 'border-amber-400 scale-105' : 'border-white/20 opacity-70 hover:opacity-100'}`;
+                    thumb.innerHTML = `<img src="${asset.url}" class="w-full h-full object-cover">`;
+                    thumb.addEventListener('click', () => {
+                        cardImgEl.src = asset.url;
+                        if (asset.role !== 'panorama') {
+                            flatViewportImg.src = asset.url;
+                            flatViewportImg.classList.remove('opacity-0');
+                        }
+                    });
+                    galleryStrip.appendChild(thumb);
+                });
+            } else {
+                galleryStrip.classList.add('hidden');
+            }
+
+            // Update Teleport preview image
+            const teleportImg = document.getElementById('teleport-preview-img');
+            if (teleportImg) teleportImg.src = primaryAsset ? primaryAsset.url : cardImgEl.src;
+
+            // Update Masterplan modal preview image
+            const mapImg = document.getElementById('map-target-img');
+            if (mapImg) mapImg.src = primaryAsset ? primaryAsset.url : cardImgEl.src;
+        }
+
+        // ISSUE 4 FIX: SITE PLAN & MINIMAP RENDER
+        function updateSitePlanUI() {
+            const previewContainer = document.getElementById('siteplan-preview-container');
+            const previewImg = document.getElementById('siteplan-preview-img');
+            const filenameEl = document.getElementById('siteplan-filename');
+            const filesizeEl = document.getElementById('siteplan-filesize');
+
+            const miniBg = document.getElementById('minimap-custom-bg');
+            const fullBg = document.getElementById('fullmap-custom-bg');
+            const miniGrid = document.getElementById('minimap-schematic-grid');
+            const fullGrid = document.getElementById('fullmap-schematic-grid');
+
+            if (STATE.sitePlanAsset && STATE.sitePlanAsset.url) {
+                previewContainer.classList.remove('hidden');
+                previewImg.src = STATE.sitePlanAsset.url;
+                filenameEl.innerText = STATE.sitePlanAsset.filename;
+                filesizeEl.innerText = `${Math.round(STATE.sitePlanAsset.size / 1024)} KB`;
+
+                if (miniBg) {
+                    miniBg.setAttribute('href', STATE.sitePlanAsset.url);
+                    miniBg.classList.remove('hidden');
+                }
+                if (fullBg) {
+                    fullBg.setAttribute('href', STATE.sitePlanAsset.url);
+                    fullBg.classList.remove('hidden');
+                }
+                if (miniGrid) miniGrid.style.opacity = '0.3';
+                if (fullGrid) fullGrid.style.opacity = '0.3';
+            } else {
+                previewContainer.classList.add('hidden');
+                if (miniBg) miniBg.classList.add('hidden');
+                if (fullBg) fullBg.classList.add('hidden');
+                if (miniGrid) miniGrid.style.opacity = '1';
+                if (fullGrid) fullGrid.style.opacity = '1';
+            }
+        }
+
+        function renderMasterplanSVGs() {
+            const minimapGroup = document.getElementById('minimap-zones-group');
+            const fullmapGroup = document.getElementById('fullmap-zones-group');
+            if (!minimapGroup || !fullmapGroup) return;
+
+            minimapGroup.innerHTML = '';
+            fullmapGroup.innerHTML = '';
+
+            ZONES_DATA.forEach((z, idx) => {
+                const isCurrent = idx === STATE.currentZoneIndex;
+                const isSelected = idx === STATE.selectedMapZoneIndex;
+
+                let fill = 'rgba(39, 39, 42, 0.75)';
+                let stroke = 'rgba(255, 255, 255, 0.2)';
+                let strokeWidth = '1.5';
+
+                if (isCurrent) {
+                    fill = 'rgba(245, 158, 11, 0.65)';
+                    stroke = '#ffffff';
+                    strokeWidth = '2.5';
+                } else if (isSelected) {
+                    fill = 'rgba(245, 158, 11, 0.35)';
+                    stroke = '#f59e0b';
+                    strokeWidth = '2';
+                }
+
+                const rectMarkup = `
+                    <rect x="${z.mapPos.x}" y="${z.mapPos.y}" width="${z.mapPos.w}" height="${z.mapPos.h}" rx="6"
+                          fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" class="map-zone-polygon" data-idx="${idx}"/>
+                    <text x="${z.mapPos.x + z.mapPos.w / 2}" y="${z.mapPos.y + z.mapPos.h / 2 + 4}" 
+                          fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle" pointer-events="none">
+                        ${z.icon}
+                    </text>
+                `;
+
+                minimapGroup.innerHTML += rectMarkup;
+                fullmapGroup.innerHTML += rectMarkup;
+            });
+
+            document.querySelectorAll('.map-zone-polygon').forEach(poly => {
+                poly.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    STATE.selectedMapZoneIndex = idx;
+                    updateMapTargetDetails(idx);
+                    
+                    if (e.target.closest('#minimap-svg')) {
+                        switchZone(idx);
+                    } else {
+                        renderMasterplanSVGs();
+                    }
+                });
+            });
+
+            updateMinimapPin();
+            drawWayfindingPath();
+        }
+
+        function updateMinimapPin() {
+            const currentZone = ZONES_DATA[STATE.currentZoneIndex];
+            if (!currentZone) return;
+
+            const cx = currentZone.mapPos.x + currentZone.mapPos.w / 2;
+            const cy = currentZone.mapPos.y + currentZone.mapPos.h / 2;
+
+            const miniPin = document.getElementById('minimap-user-pin');
+            const fullPin = document.getElementById('fullmap-user-pin');
+
+            if (miniPin) miniPin.setAttribute('transform', `translate(${cx}, ${cy})`);
+            if (fullPin) fullPin.setAttribute('transform', `translate(${cx}, ${cy})`);
+        }
+
+        function drawWayfindingPath() {
+            const pathEl = document.getElementById('wayfinding-active-path');
+            if (!pathEl) return;
+
+            const curr = ZONES_DATA[STATE.currentZoneIndex];
+            const target = ZONES_DATA[STATE.selectedMapZoneIndex];
+
+            if (STATE.currentZoneIndex === STATE.selectedMapZoneIndex) {
+                pathEl.setAttribute('d', '');
+                return;
+            }
+
+            const x1 = curr.mapPos.x + curr.mapPos.w / 2;
+            const y1 = curr.mapPos.y + curr.mapPos.h / 2;
+            const x2 = target.mapPos.x + target.mapPos.w / 2;
+            const y2 = target.mapPos.y + target.mapPos.h / 2;
+
+            const d = `M ${x1} ${y1} L ${x1} 147 L ${x2} 147 L ${x2} ${y2}`;
+            pathEl.setAttribute('d', d);
+        }
+
+        function updateMapTargetDetails(idx) {
+            const z = ZONES_DATA[idx];
+            if (!z) return;
+
+            document.getElementById('map-target-title').innerText = z.name;
+            document.getElementById('map-target-desc').innerText = z.desc;
+            document.getElementById('map-target-type').innerText = z.type;
+            document.getElementById('map-target-vent').innerText = z.ventilation;
+            document.getElementById('map-target-mat').innerText = z.materials;
+
+            const assignedAssets = STATE.zoneImagesAssets.filter(img => img.zoneId === z.id);
+            const primaryAsset = assignedAssets.find(img => img.isPrimary) || assignedAssets[0];
+
+            const imgEl = document.getElementById('map-target-img');
+            imgEl.onerror = () => {
+                imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150"><rect width="300" height="150" fill="%23181820"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f59e0b" font-family="sans-serif" font-weight="bold" font-size="14">${encodeURIComponent(z.name)}</text></svg>`;
+            };
+            imgEl.src = primaryAsset ? primaryAsset.url : z.thumbnail;
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'glass-panel px-4 py-2 rounded-xl text-xs font-bold text-white border border-amber-500/50 shadow-2xl transition-all transform translate-y-4 opacity-0 flex items-center gap-2';
+            toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span>${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (!el) { showToast('This panel is not available.'); return; }
+            el.classList.remove('modal-hidden');
+            el.classList.add('modal-visible');
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('[id^="modal-"]').forEach(el => {
+                el.classList.add('modal-hidden');
+                el.classList.remove('modal-visible');
+            });
+            const hotspot = document.getElementById('hotspot-card');
+            if (hotspot) { hotspot.classList.add('modal-hidden'); hotspot.classList.remove('modal-visible'); }
+        }
+
+        function updateTeleportDialoguePreview() {
+            const select = document.getElementById('teleport-select-destination');
+            if (!select) return;
+            const idx = Number(select.value || STATE.currentZoneIndex);
+            const z = ZONES_DATA[idx];
+            if (!z) return;
+            document.getElementById('teleport-preview-title').innerHTML = `<span id="teleport-preview-icon">${z.icon}</span> ${z.name}`;
+            document.getElementById('teleport-preview-type').textContent = z.type;
+            document.getElementById('teleport-preview-desc').textContent = z.desc;
+            const asset = STATE.zoneImagesAssets.find(a => a.zoneId === z.id && a.isPrimary) || STATE.zoneImagesAssets.find(a => a.zoneId === z.id);
+            document.getElementById('teleport-preview-img').src = asset ? asset.url : z.thumbnail;
+        }
+
+        function renderDirectory() {
+            const zoneList = document.getElementById('zone-list-container');
+            const adminList = document.getElementById('admin-list-container');
+            const select = document.getElementById('teleport-select-destination');
+            if (zoneList) {
+                zoneList.innerHTML = '';
+                ZONES_DATA.forEach((z, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'glass-panel-light p-3 text-left rounded-xl hover:border-amber-500/60 transition-all flex items-center gap-2';
+                    btn.innerHTML = `<span class="text-lg">${z.icon}</span><span><strong class="block text-white">${String(idx+1).padStart(2,'0')}. ${z.name}</strong><small class="text-zinc-400">${z.type}</small></span>`;
+                    btn.addEventListener('click', () => { switchZone(idx); closeAllModals(); });
+                    zoneList.appendChild(btn);
+                });
+            }
+            if (adminList) {
+                adminList.innerHTML = '';
+                ADMIN_DATA.forEach(a => {
+                    const row = document.createElement('div');
+                    row.className = 'glass-panel-light p-3 rounded-xl text-zinc-200';
+                    row.innerHTML = `<strong class="block">${a.name}</strong><small class="text-zinc-500">${a.code}</small>`;
+                    adminList.appendChild(row);
+                });
+            }
+            if (select) {
+                select.innerHTML = '';
+                ZONES_DATA.forEach((z, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = `${String(idx+1).padStart(2,'0')}. ${z.name}`;
+                    select.appendChild(opt);
+                });
+                select.value = String(STATE.currentZoneIndex);
+            }
+            const layers = document.getElementById('layers-grid');
+            if (layers && !layers.children.length) {
+                ['Market Stalls','Pedestrian Spine','Central Courtyard','Roof & Solar Canopy','Service Areas','Landscape'].forEach(label => {
+                    const btn = document.createElement('button');
+                    btn.className = 'glass-panel-light p-3 rounded-xl text-xs text-left text-zinc-200';
+                    btn.textContent = '◉  ' + label;
+                    btn.addEventListener('click', () => { btn.classList.toggle('opacity-40'); showToast(label + ' visibility toggled'); });
+                    layers.appendChild(btn);
+                });
+            }
+        }
+
+        function updateZoneImagesUI() {
+            const list = document.getElementById('zone-images-list');
+            const count = document.getElementById('zone-images-count-badge');
+            const empty = document.getElementById('zone-images-empty-text');
+            if (!list || !count) return;
+            count.textContent = `${STATE.zoneImagesAssets.length} / 20 uploaded`;
+            list.innerHTML = '';
+            if (!STATE.zoneImagesAssets.length) {
+                const msg = document.createElement('p');
+                msg.className = 'text-xs text-zinc-500 italic text-center py-4';
+                msg.textContent = 'No zone images uploaded yet. Upload images to personalize market sectors.';
+                list.appendChild(msg);
+                return;
+            }
+            STATE.zoneImagesAssets.forEach(asset => {
+                const row = document.createElement('div');
+                row.className = 'glass-panel-light p-3 rounded-xl flex flex-col sm:flex-row gap-3 sm:items-center';
+                const img = document.createElement('img');
+                img.src = asset.url; img.alt = asset.filename;
+                img.className = 'w-full sm:w-20 h-16 object-cover rounded-lg border border-white/10';
+                const info = document.createElement('div'); info.className = 'flex-1 min-w-0';
+                const name = document.createElement('div'); name.className = 'text-xs font-bold text-white truncate'; name.textContent = asset.filename;
+                const meta = document.createElement('div'); meta.className = 'text-[10px] text-zinc-400 mt-1'; meta.textContent = `${Math.round(asset.size/1024)} KB${asset.isPrimary ? ' • Primary image' : ''}`;
+                info.append(name, meta);
+                const controls = document.createElement('div'); controls.className = 'flex flex-wrap gap-2';
+                const zoneSelect = document.createElement('select'); zoneSelect.className = 'bg-zinc-900 border border-white/20 rounded-lg px-2 py-1.5 text-xs text-white max-w-44';
+                ZONES_DATA.forEach(z => { const op = document.createElement('option'); op.value=z.id; op.textContent=z.name; zoneSelect.appendChild(op); });
+                zoneSelect.value = asset.zoneId;
+                zoneSelect.addEventListener('change', async () => { asset.zoneId = zoneSelect.value; try { await dbSaveZoneImage(asset); updateZoneImagesUI(); updateActiveZoneDisplay(); showToast('Image assigned to ' + ZONES_DATA.find(z=>z.id===asset.zoneId).name); } catch(e) { showToast('Could not save image assignment'); } });
+                const primary = document.createElement('button'); primary.className = 'px-2.5 py-1.5 rounded-lg text-[10px] font-bold bg-amber-500/20 text-amber-300'; primary.textContent = asset.isPrimary ? 'Primary' : 'Set primary';
+                primary.addEventListener('click', async () => { STATE.zoneImagesAssets.forEach(a => { if (a.zoneId === asset.zoneId) a.isPrimary = a.id === asset.id; }); try { for (const a of STATE.zoneImagesAssets) await dbSaveZoneImage(a); updateZoneImagesUI(); updateActiveZoneDisplay(); showToast('Primary image updated'); } catch(e) { showToast('Could not save primary image'); } });
+                const remove = document.createElement('button'); remove.className = 'px-2.5 py-1.5 rounded-lg text-[10px] font-bold bg-red-500/15 text-red-300'; remove.textContent = 'Remove';
+                remove.addEventListener('click', async () => { try { await dbDeleteZoneImage(asset.id); } catch(e) {} URL.revokeObjectURL(asset.url); STATE.zoneImagesAssets = STATE.zoneImagesAssets.filter(a=>a.id!==asset.id); updateZoneImagesUI(); updateActiveZoneDisplay(); showToast('Image removed'); });
+                controls.append(zoneSelect, primary, remove); row.append(img, info, controls); list.appendChild(row);
+            });
+        }
+
+        async function handleSitePlanFile(file) {
+            if (!file || !file.type.startsWith('image/')) return showToast('Choose a valid image file.');
+            try {
+                await dbSaveSitePlan(file);
+                if (STATE.sitePlanAsset?.url) URL.revokeObjectURL(STATE.sitePlanAsset.url);
+                STATE.sitePlanAsset = { filename:file.name, size:file.size, blob:file, url:URL.createObjectURL(file) };
+                updateSitePlanUI(); showToast('Site plan uploaded');
+            } catch (e) { showToast('Could not save site plan. Try a smaller image.'); }
+        }
+
+        async function handleZoneFiles(files) {
+            const imageFiles = Array.from(files || []).filter(f => f.type.startsWith('image/'));
+            const remaining = 20 - STATE.zoneImagesAssets.length;
+            if (remaining <= 0) return showToast('Maximum 20 images reached');
+            if (!imageFiles.length) return showToast('Choose JPG, PNG, or WEBP images.');
+            for (const file of imageFiles.slice(0, remaining)) {
+                const base = file.name.toLowerCase().replace(/\.[^.]+$/, '').replace(/[_-]+/g,' ');
+                let zone = ZONES_DATA.find(z => base.includes(z.name.toLowerCase()) || z.name.toLowerCase().includes(base));
+                if (!zone) zone = ZONES_DATA[STATE.currentZoneIndex];
+                const asset = { id: (crypto.randomUUID ? crypto.randomUUID() : 'img-' + Date.now() + '-' + Math.random().toString(16).slice(2)), filename:file.name, size:file.size, zoneId:zone.id, role:'image', isPrimary:!STATE.zoneImagesAssets.some(a=>a.zoneId===zone.id), blob:file };
+                try {
+                    await dbSaveZoneImage(asset);
+                    asset.url = URL.createObjectURL(file);
+                    STATE.zoneImagesAssets.push(asset);
+                } catch(e) { showToast('An image could not be saved. Try a smaller file.'); }
+            }
+            if (imageFiles.length > remaining) showToast('Only the first ' + remaining + ' images were added (20 image limit).');
+            updateZoneImagesUI(); updateActiveZoneDisplay();
+            showToast('Images uploaded. Check each zone assignment below.');
+        }
+
+        function togglePresentationMode() {
+            STATE.isPresentationMode = !STATE.isPresentationMode;
+            const hud = document.getElementById('presentation-hud');
+            if (hud) { hud.classList.toggle('opacity-0', !STATE.isPresentationMode); hud.classList.toggle('translate-y-8', !STATE.isPresentationMode); }
+            ['brand-header','top-nav-bar','left-zone-card','bottom-left-controls','dock-hud','minimap-card'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.classList.toggle('opacity-0', STATE.isPresentationMode);
+            });
+            showToast(STATE.isPresentationMode ? 'Presentation mode enabled' : 'Presentation mode disabled');
+        }
+
+        function setupModalsAndEvents() {
+            document.getElementById('btn-enter-experience').addEventListener('click', () => {
+                const landing = document.getElementById('landing-screen');
+                landing.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => landing.remove(), 500);
+                showToast('Welcome to Kundam Market VR Architectural Experience');
+            });
+            document.getElementById('nav-btn-home').addEventListener('click', () => switchZone(0));
+            document.getElementById('nav-btn-map').addEventListener('click', () => { openModal('modal-map'); renderMasterplanSVGs(); updateMapTargetDetails(STATE.currentZoneIndex); });
+            document.getElementById('nav-btn-upload-assets').addEventListener('click', () => openModal('modal-asset-manager'));
+            document.getElementById('btn-placeholder-upload').addEventListener('click', () => openModal('modal-asset-manager'));
+            document.getElementById('nav-btn-layers').addEventListener('click', () => openModal('modal-layers'));
+            document.getElementById('nav-btn-settings').addEventListener('click', () => openModal('modal-settings'));
+            document.getElementById('nav-btn-camera').addEventListener('click', togglePresentationMode);
+            document.getElementById('nav-btn-help').addEventListener('click', () => openModal('modal-help'));
+            document.getElementById('btn-close-zone-card').addEventListener('click', () => document.getElementById('left-zone-card').classList.add('opacity-0','pointer-events-none'));
+            document.getElementById('btn-zone-card-view').addEventListener('click', () => { openModal('modal-teleport'); updateTeleportDialoguePreview(); });
+            document.getElementById('dock-btn-teleport').addEventListener('click', () => { openModal('modal-teleport'); updateTeleportDialoguePreview(); });
+            document.getElementById('dock-btn-walk').addEventListener('click', () => { STATE.isAutoWalk = !STATE.isAutoWalk; document.getElementById('walk-btn-text').textContent = STATE.isAutoWalk ? 'Walking' : 'Walk'; showToast(STATE.isAutoWalk ? 'Auto Walk Mode Active' : 'Auto Walk Mode Paused'); });
+            document.getElementById('dock-btn-info').addEventListener('click', () => openModal('modal-info'));
+            document.getElementById('dock-btn-menu').addEventListener('click', () => openModal('modal-menu'));
+            document.getElementById('btn-expand-minimap').addEventListener('click', () => { openModal('modal-map'); renderMasterplanSVGs(); updateMapTargetDetails(STATE.currentZoneIndex); });
+            document.getElementById('joy-up').addEventListener('click', () => { lat = Math.max(-80, lat - 8); });
+            document.getElementById('joy-down').addEventListener('click', () => { lat = Math.min(80, lat + 8); });
+            document.getElementById('joy-left').addEventListener('click', () => { lon -= 12; });
+            document.getElementById('joy-right').addEventListener('click', () => { lon += 12; });
+            document.getElementById('floor-level-select').addEventListener('change', e => switchZone(e.target.value === 'Roof Level' ? 13 : 0));
+            const destSelect = document.getElementById('teleport-select-destination');
+            destSelect.addEventListener('change', updateTeleportDialoguePreview);
+            document.getElementById('btn-execute-teleport').addEventListener('click', () => { switchZone(Number(destSelect.value)); closeAllModals(); });
+            document.getElementById('btn-map-enter-zone').addEventListener('click', () => { switchZone(STATE.selectedMapZoneIndex); closeAllModals(); });
+            document.querySelectorAll('.btn-close-modal').forEach(btn => btn.addEventListener('click', closeAllModals));
+            document.querySelectorAll('[id^="modal-"]').forEach(modal => modal.addEventListener('click', e => { if (e.target === modal) closeAllModals(); }));
+            document.getElementById('btn-close-hotspot-card').addEventListener('click', closeAllModals);
+            document.getElementById('btn-hotspot-action').addEventListener('click', closeAllModals);
+            document.getElementById('btn-exit-presentation')?.addEventListener('click', togglePresentationMode);
+            document.getElementById('menu-btn-explore').addEventListener('click', () => { closeAllModals(); STATE.isAutoWalk = true; showToast('Guided tour started'); });
+            document.getElementById('menu-btn-open-map').addEventListener('click', () => { openModal('modal-map'); renderMasterplanSVGs(); });
+            document.getElementById('file-input-siteplan').addEventListener('change', e => handleSitePlanFile(e.target.files[0]));
+            document.getElementById('btn-replace-siteplan').addEventListener('click', () => document.getElementById('file-input-siteplan').click());
+            document.getElementById('btn-remove-siteplan').addEventListener('click', async () => { try { await dbDeleteSitePlan(); } catch(e) {} if (STATE.sitePlanAsset?.url) URL.revokeObjectURL(STATE.sitePlanAsset.url); STATE.sitePlanAsset = null; updateSitePlanUI(); showToast('Site plan removed'); });
+            const planDrop = document.getElementById('siteplan-drop-zone');
+            planDrop.addEventListener('click', e => { if (e.target.tagName !== 'BUTTON') document.getElementById('file-input-siteplan').click(); });
+            planDrop.addEventListener('dragover', e => { e.preventDefault(); planDrop.classList.add('border-amber-400'); });
+            planDrop.addEventListener('dragleave', () => planDrop.classList.remove('border-amber-400'));
+            planDrop.addEventListener('drop', e => { e.preventDefault(); planDrop.classList.remove('border-amber-400'); handleSitePlanFile(e.dataTransfer.files[0]); });
+            document.getElementById('file-input-zone-images').addEventListener('change', e => { handleZoneFiles(e.target.files); e.target.value=''; });
+            document.getElementById('file-input-zone-folder').addEventListener('change', e => { handleZoneFiles(e.target.files); e.target.value=''; });
+            document.getElementById('btn-browse-zone-files').addEventListener('click', e => { e.stopPropagation(); document.getElementById('file-input-zone-images').click(); });
+            document.getElementById('btn-browse-zone-folder').addEventListener('click', e => { e.stopPropagation(); document.getElementById('file-input-zone-folder').click(); });
+            const zoneDrop = document.getElementById('zone-images-drop-zone');
+            zoneDrop.addEventListener('click', e => { if (!e.target.closest('button')) document.getElementById('file-input-zone-images').click(); });
+            zoneDrop.addEventListener('dragover', e => { e.preventDefault(); zoneDrop.classList.add('border-amber-400'); });
+            zoneDrop.addEventListener('dragleave', () => zoneDrop.classList.remove('border-amber-400'));
+            zoneDrop.addEventListener('drop', e => { e.preventDefault(); zoneDrop.classList.remove('border-amber-400'); handleZoneFiles(e.dataTransfer.files); });
+            document.getElementById('setting-time-slider')?.addEventListener('input', e => { const v=Number(e.target.value); const display=document.getElementById('time-display'); if(display) display.textContent = (v%12 || 12) + (v >= 12 ? ':00 PM' : ':00 AM'); });
+            document.getElementById('setting-snap-turn')?.addEventListener('change', e => showToast('Turn setting: ' + e.target.value));
+        }
+
+        async function startApp() {
+            try { initWebGL(); } catch (e) { console.error('3D setup failed:', e); showToast('3D view unavailable; navigation controls remain available.'); }
+            renderDirectory();
+            setupModalsAndEvents();
+            renderMasterplanSVGs();
+            updateSitePlanUI();
+            updateZoneImagesUI();
+            try { await loadStoredAssets(); } catch(e) { console.warn(e); }
+            updateActiveZoneDisplay();
+            updateMinimapPin();
+            if (document.getElementById('presentation-views-container')) {
+                document.getElementById('presentation-views-container').innerHTML = ZONES_DATA.map((z,i)=>`<button class="glass-panel-light text-left p-2 rounded-lg text-xs text-white hover:text-amber-300" data-view="${i}">${z.icon} ${z.name}</button>`).join('');
+                document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>switchZone(Number(b.dataset.view))));
+            }
+        }
+
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startApp);
+        else startApp();
+    </script>
 </body>
 </html>
