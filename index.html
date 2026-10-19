@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Kundam Market VR Architectural Experience</title>
+    <title>Purna Market VR Architectural Experience</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -189,14 +189,14 @@
 
             <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wider uppercase mb-4">
                 <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-                Kundam Market VR Experience
+                Purna Market VR Experience
             </div>
 
             <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3 font-sans">
-                KUNDAM MARKET VR ARCHITECTURAL EXPERIENCE
+                PURNA MARKET VR ARCHITECTURAL EXPERIENCE
             </h1>
             <p class="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed mb-6">
-                Explore an immersive architectural vision for the Kundam Sustainable Public Market. Discover 14 specialized market sectors, passive climate design, central Banyan courtyard, and interactive wayfinding.
+                Explore an immersive architectural vision for the Purna Sustainable Public Market. Discover 14 specialized market sectors, passive climate design, central Banyan courtyard, and interactive wayfinding.
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8 text-left">
@@ -265,7 +265,7 @@
             </svg>
         </div>
         <div>
-            <h1 class="text-sm font-black tracking-widest text-white uppercase font-sans drop-shadow-md">KUNDAM MARKET</h1>
+            <h1 class="text-sm font-black tracking-widest text-white uppercase font-sans drop-shadow-md">PURNA MARKET</h1>
             <p class="text-[10px] font-semibold text-zinc-300 uppercase tracking-widest -mt-0.5 opacity-90 drop-shadow">VR ARCHITECTURAL EXPERIENCE</p>
         </div>
     </div>
@@ -329,7 +329,7 @@
             <div>
                 <h2 id="zone-card-title" class="text-base font-extrabold text-white tracking-wide">Entrance Plaza</h2>
                 <p id="zone-card-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed font-normal">
-                    Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
+                    The main arrival threshold introduces visitors to the market. A generous pedestrian plaza provides space to pause, orient themselves, meet others, and access the market without blocking the trading streets.
                 </p>
             </div>
 
@@ -414,6 +414,11 @@
             </button>
 
             <div class="w-[1px] h-6 bg-white/15"></div>
+
+            <button id="dock-btn-panorama" class="flex items-center gap-2 group cursor-pointer" title="360° panorama view">
+                <div class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">360°</div>
+                <span class="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">Panorama</span>
+            </button>
 
             <button id="dock-btn-info" class="flex items-center gap-2.5 group cursor-pointer">
                 <div class="w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center font-bold group-hover:bg-white/20 transition-all">
@@ -517,7 +522,7 @@
                 </div>
 
                 <p id="teleport-preview-desc" class="text-[11px] text-zinc-300 leading-relaxed">
-                    Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
+                    The main arrival threshold introduces visitors to the market. A generous pedestrian plaza provides space to pause, orient themselves, meet others, and access the market without blocking the trading streets.
                 </p>
             </div>
 
@@ -715,7 +720,7 @@
                         </div>
 
                         <p id="map-target-desc" class="text-xs text-zinc-300 leading-relaxed">
-                            Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.
+                            The main arrival threshold introduces visitors to the market. A generous pedestrian plaza provides space to pause, orient themselves, meet others, and access the market without blocking the trading streets.
                         </p>
                         
                         <div class="text-[11px] text-zinc-400 space-y-1 border-t border-white/10 pt-2.5 mt-1">
@@ -805,21 +810,19 @@
     <div id="modal-info" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md modal-fade modal-hidden">
         <div class="glass-panel w-full max-w-2xl max-h-[85vh] flex flex-col p-6 rounded-3xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                    <h2 class="text-lg font-bold text-white">Project Architectural Overview</h2>
-                </div>
-                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
+                <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><h2 class="text-lg font-bold text-white">Market Space Information</h2></div>
+                <button class="btn-close-modal glass-button p-2 rounded-xl text-zinc-400 hover:text-white" aria-label="Close information"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
-
-            <div class="space-y-4 overflow-y-auto pr-1 text-xs leading-relaxed text-zinc-300">
-                <div class="glass-panel-light p-4 rounded-xl border border-white/10">
-                    <h3 class="text-amber-400 font-bold text-sm mb-1">Architectural Vision</h3>
-                    <p>The Kundam Market redevelopment integrates traditional bazaar spatial typologies with contemporary passive climate design. It provides structured stalls for over 150 local vendors with permanent, environmentally responsive timber and earthen architecture.</p>
-                </div>
+            <div class="flex gap-4 items-start overflow-y-auto pr-1">
+                <img id="info-zone-image" class="w-32 sm:w-48 h-28 sm:h-36 object-cover rounded-xl border border-white/10 flex-shrink-0" alt="Current market space" src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=600&q=80">
+                <div class="min-w-0"><div id="info-zone-type" class="text-[10px] text-amber-400 font-bold uppercase tracking-widest mb-1">Market Zone</div><h3 id="info-zone-title" class="text-white font-extrabold text-xl mb-2">Entrance Plaza</h3><p id="info-zone-desc" class="text-sm leading-relaxed text-zinc-300"></p></div>
             </div>
+            <div class="grid sm:grid-cols-3 gap-2 mt-4 text-xs">
+                <div class="glass-panel-light p-3 rounded-xl"><div class="text-zinc-500 uppercase text-[9px] mb-1">Materials</div><div id="info-zone-materials" class="text-zinc-200">—</div></div>
+                <div class="glass-panel-light p-3 rounded-xl"><div class="text-zinc-500 uppercase text-[9px] mb-1">Activities</div><div id="info-zone-activities" class="text-zinc-200">—</div></div>
+                <div class="glass-panel-light p-3 rounded-xl"><div class="text-zinc-500 uppercase text-[9px] mb-1">Climate strategy</div><div id="info-zone-ventilation" class="text-zinc-200">—</div></div>
+            </div>
+            <div class="flex gap-2 mt-4"><button id="info-prev-zone" class="px-4 py-2 rounded-xl bg-white/10 text-white text-xs">← Previous</button><button id="info-next-zone" class="px-4 py-2 rounded-xl bg-amber-500 text-black font-bold text-xs">Next space →</button></div>
         </div>
     </div>
 
@@ -898,7 +901,7 @@
                 id: 'z1',
                 name: 'Entrance Plaza',
                 type: 'Arrival & Circulation',
-                desc: 'Main arrival area, pedestrian access, orientation, taxi drop-off, and public gathering.',
+                desc: 'The main arrival threshold introduces visitors to the market. A generous pedestrian plaza provides space to pause, orient themselves, meet others, and access the market without blocking the trading streets.',
                 icon: '🏛️',
                 floor: 'Ground Floor',
                 thumbnail: 'assets/thumbnails/entrance_plaza.jpg',
@@ -912,7 +915,7 @@
                 id: 'z2',
                 name: 'Vegetable Market',
                 type: 'Fresh Produce',
-                desc: 'Dedicated stalls for green leaf vegetables with wet drainage channels and terraced wooden racks.',
+                desc: 'A fresh-produce zone for leafy greens and everyday vegetables. Washable stall surfaces, clear drainage, shaded displays, and easy service access support hygienic trading and quick daily turnover.',
                 icon: '🥬',
                 floor: 'Ground Floor',
                 thumbnail: 'assets/thumbnails/vegetable_market.jpg',
@@ -926,7 +929,7 @@
                 id: 'z3',
                 name: 'Fruit Market',
                 type: 'Fresh Produce',
-                desc: 'Fresh fruits, local produce, and seasonal items displayed on modular timber fruit stalls.',
+                desc: 'A colourful retail area for seasonal fruit and local produce. Modular display counters keep goods visible to shoppers while shaded circulation and cross-ventilation help the space remain comfortable.',
                 icon: '🍎',
                 floor: 'Ground Floor',
                 thumbnail: 'assets/thumbnails/fruit_market.jpg',
@@ -940,7 +943,7 @@
                 id: 'z4',
                 name: 'Banana and Bulk Produce Market',
                 type: 'Wholesale & Storage',
-                desc: 'Shaded bulk storage and distribution bay for bananas, tubers, and heavy produce.',
+                desc: 'A working wholesale bay for bananas, tubers, and other bulky produce. The layout prioritises unloading, sorting, short-term storage, and movement of handcarts without obstructing customer routes.',
                 icon: '🍌',
                 floor: 'Ground Floor',
                 thumbnail: 'assets/thumbnails/banana_market.jpg',
@@ -954,7 +957,7 @@
                 id: 'z5',
                 name: 'Staples Market',
                 type: 'Dry Goods',
-                desc: 'Dedicated stalls for grains, pulses, rice, oil, and essential dry provisions.',
+                desc: 'A dry-goods street for rice, grains, pulses, oils, and household provisions. Enclosed bins and raised shelves help protect stock from moisture while keeping weighing and purchasing convenient.',
                 icon: '🌾',
                 floor: 'Ground Floor',
                 thumbnail: 'assets/thumbnails/staples_market.jpg',
@@ -968,7 +971,7 @@
                 id: 'z6',
                 name: 'Cross Street',
                 type: 'Circulation Spine',
-                desc: 'Main pedestrian circulation spine connecting the different market sectors and courtyards.',
+                desc: 'The main pedestrian spine links the market’s individual trading zones. A legible route, shaded edges, and occasional pauses help visitors move naturally between stalls and courtyards.',
                 icon: '🚶',
                 floor: 'Ground Floor',
                 thumbnail: 'assets/thumbnails/cross_street.jpg',
@@ -1377,7 +1380,7 @@
             ctx.fillStyle = 'rgba(244, 244, 246, 0.95)';
             ctx.font = 'bold 44px Inter, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText("KUNDAM MARKET ARCHITECTURAL MODEL", cvs.width / 2, horizonY - 40);
+            ctx.fillText("PURNA MARKET ARCHITECTURAL MODEL", cvs.width / 2, horizonY - 40);
 
             ctx.fillStyle = '#f59e0b';
             ctx.font = 'bold 32px Inter, sans-serif';
@@ -1430,7 +1433,13 @@
             requestAnimationFrame(animate);
 
             if (STATE.isAutoWalk && !isUserInteracting) {
-                lon += 0.08;
+                lon += 0.025;
+                STATE.walkElapsed = (STATE.walkElapsed || 0) + 1;
+                // Move to the next market space gradually, with a short visual dissolve.
+                if (STATE.walkElapsed >= 600) {
+                    STATE.walkElapsed = 0;
+                    switchZone((STATE.currentZoneIndex + 1) % ZONES_DATA.length, true);
+                }
             }
 
             updateCamera();
@@ -1549,11 +1558,12 @@
         }
 
         // ISSUE 1, 3, 5 FIX: CENTRALIZED ZONE SWITCHING & VIEWPORT DISPLAY LOGIC
-        function switchZone(index) {
+        function switchZone(index, fromWalk = false) {
             if (index < 0 || index >= ZONES_DATA.length) return;
 
             const transitionOverlay = document.getElementById('transition-overlay');
             transitionOverlay.classList.add('active');
+            if (!fromWalk) STATE.walkElapsed = 0;
 
             const initialFov = camera.fov;
             camera.fov = Math.max(30, camera.fov - 12);
@@ -1562,6 +1572,7 @@
             setTimeout(() => {
                 STATE.currentZoneIndex = index;
                 STATE.selectedMapZoneIndex = index;
+                if (fromWalk) { lon += 12; lat = Math.max(-8, Math.min(8, lat)); }
                 const zone = ZONES_DATA[index];
 
                 // Update Information Card Text
@@ -1572,6 +1583,7 @@
 
                 // Update Active Zone Display & Viewport Image Layer
                 updateActiveZoneDisplay();
+                if (!document.getElementById('modal-info').classList.contains('modal-hidden')) updateInfoPanel();
 
                 // Update Floor Badges & Minimap Labels
                 document.getElementById('ground-badge-icon').innerText = zone.icon;
@@ -1591,7 +1603,7 @@
                     transitionOverlay.classList.remove('active');
                 }, 150);
 
-                showToast(`Teleported to: ${zone.name}`);
+                if (!fromWalk) showToast(`Entered: ${zone.name}`);
             }, 300);
         }
 
@@ -1619,9 +1631,13 @@
 
                     textureLoader = textureLoader || new THREE.TextureLoader();
                     textureLoader.load(primaryAsset.url, (tex) => {
+                        if (!sphereMesh || !sphereMesh.material) { tex.dispose(); return; }
+                        if (sphereMesh.material.map && sphereMesh.material.map !== tex) sphereMesh.material.map.dispose();
+                        tex.colorSpace = THREE.SRGBColorSpace || tex.colorSpace;
                         sphereMesh.material.map = tex;
                         sphereMesh.material.needsUpdate = true;
-                    });
+                        showToast('360° panorama loaded — drag to look around, scroll to zoom');
+                    }, undefined, () => showToast('Could not load panorama. Use a JPG/PNG equirectangular 360° image.'));
                 } else {
                     // Display Ordinary Photo in Full Viewport Flat Layer
                     flatViewportImg.src = primaryAsset.url;
@@ -1870,6 +1886,28 @@
             document.getElementById('teleport-preview-img').src = asset ? asset.url : z.thumbnail;
         }
 
+        function updateInfoPanel() {
+            const z = ZONES_DATA[STATE.currentZoneIndex];
+            if (!z) return;
+            const assigned = STATE.zoneImagesAssets.find(a => a.zoneId === z.id && a.isPrimary) || STATE.zoneImagesAssets.find(a => a.zoneId === z.id);
+            const fallbackImages = [
+                'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=700&q=80',
+                'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=80',
+                'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=700&q=80',
+                'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=700&q=80',
+                'https://images.unsplash.com/photo-1604719312566-8912e9c8a213?auto=format&fit=crop&w=700&q=80',
+                'https://images.unsplash.com/photo-1555992336-03a23c7b20ee?auto=format&fit=crop&w=700&q=80'
+            ];
+            const image = document.getElementById('info-zone-image');
+            image.src = assigned ? assigned.url : fallbackImages[STATE.currentZoneIndex % fallbackImages.length];
+            document.getElementById('info-zone-title').textContent = z.name;
+            document.getElementById('info-zone-type').textContent = z.type;
+            document.getElementById('info-zone-desc').textContent = z.desc;
+            document.getElementById('info-zone-materials').textContent = z.materials || 'Locally appropriate, durable finishes';
+            document.getElementById('info-zone-activities').textContent = z.activities || 'Market circulation and daily trading';
+            document.getElementById('info-zone-ventilation').textContent = z.ventilation || 'Shaded, naturally ventilated space';
+        }
+
         function renderDirectory() {
             const zoneList = document.getElementById('zone-list-container');
             const adminList = document.getElementById('admin-list-container');
@@ -1878,8 +1916,18 @@
                 zoneList.innerHTML = '';
                 ZONES_DATA.forEach((z, idx) => {
                     const btn = document.createElement('button');
-                    btn.className = 'glass-panel-light p-3 text-left rounded-xl hover:border-amber-500/60 transition-all flex items-center gap-2';
-                    btn.innerHTML = `<span class="text-lg">${z.icon}</span><span><strong class="block text-white">${String(idx+1).padStart(2,'0')}. ${z.name}</strong><small class="text-zinc-400">${z.type}</small></span>`;
+                    btn.className = 'glass-panel-light p-2 text-left rounded-xl hover:border-amber-500/60 transition-all flex items-center gap-3';
+                    const directoryImages = [
+                        'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=240&q=75',
+                        'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=240&q=75',
+                        'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=240&q=75',
+                        'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=240&q=75',
+                        'https://images.unsplash.com/photo-1604719312566-8912e9c8a213?auto=format&fit=crop&w=240&q=75',
+                        'https://images.unsplash.com/photo-1555992336-03a23c7b20ee?auto=format&fit=crop&w=240&q=75'
+                    ];
+                    const assigned = STATE.zoneImagesAssets.find(a => a.zoneId === z.id && a.isPrimary) || STATE.zoneImagesAssets.find(a => a.zoneId === z.id);
+                    const imgSrc = assigned ? assigned.url : directoryImages[idx % directoryImages.length];
+                    btn.innerHTML = `<img src="${imgSrc}" alt="${z.name}" class="w-16 h-14 rounded-lg object-cover flex-shrink-0" loading="lazy"><span class="min-w-0"><strong class="block text-white">${String(idx+1).padStart(2,'0')}. ${z.name}</strong><small class="text-zinc-400">${z.type}</small><small class="block text-zinc-500 mt-1 line-clamp-2">${z.desc}</small></span>`;
                     btn.addEventListener('click', () => { switchZone(idx); closeAllModals(); });
                     zoneList.appendChild(btn);
                 });
@@ -1944,11 +1992,15 @@
                 ZONES_DATA.forEach(z => { const op = document.createElement('option'); op.value=z.id; op.textContent=z.name; zoneSelect.appendChild(op); });
                 zoneSelect.value = asset.zoneId;
                 zoneSelect.addEventListener('change', async () => { asset.zoneId = zoneSelect.value; try { await dbSaveZoneImage(asset); updateZoneImagesUI(); updateActiveZoneDisplay(); showToast('Image assigned to ' + ZONES_DATA.find(z=>z.id===asset.zoneId).name); } catch(e) { showToast('Could not save image assignment'); } });
+                const roleSelect = document.createElement('select'); roleSelect.className = 'bg-zinc-900 border border-white/20 rounded-lg px-2 py-1.5 text-[10px] text-white';
+                [['image','Photo / render'],['panorama','360° panorama']].forEach(([value,label]) => { const op=document.createElement('option'); op.value=value; op.textContent=label; roleSelect.appendChild(op); });
+                roleSelect.value = asset.role || 'image';
+                roleSelect.addEventListener('change', async () => { asset.role=roleSelect.value; try { await dbSaveZoneImage(asset); updateActiveZoneDisplay(); showToast(asset.role==='panorama' ? 'Set as 360° panorama. Use a 2:1 equirectangular panorama for best results.' : 'Set as standard photo/render'); } catch(e) { showToast('Could not save image type'); } });
                 const primary = document.createElement('button'); primary.className = 'px-2.5 py-1.5 rounded-lg text-[10px] font-bold bg-amber-500/20 text-amber-300'; primary.textContent = asset.isPrimary ? 'Primary' : 'Set primary';
                 primary.addEventListener('click', async () => { STATE.zoneImagesAssets.forEach(a => { if (a.zoneId === asset.zoneId) a.isPrimary = a.id === asset.id; }); try { for (const a of STATE.zoneImagesAssets) await dbSaveZoneImage(a); updateZoneImagesUI(); updateActiveZoneDisplay(); showToast('Primary image updated'); } catch(e) { showToast('Could not save primary image'); } });
                 const remove = document.createElement('button'); remove.className = 'px-2.5 py-1.5 rounded-lg text-[10px] font-bold bg-red-500/15 text-red-300'; remove.textContent = 'Remove';
                 remove.addEventListener('click', async () => { try { await dbDeleteZoneImage(asset.id); } catch(e) {} URL.revokeObjectURL(asset.url); STATE.zoneImagesAssets = STATE.zoneImagesAssets.filter(a=>a.id!==asset.id); updateZoneImagesUI(); updateActiveZoneDisplay(); showToast('Image removed'); });
-                controls.append(zoneSelect, primary, remove); row.append(img, info, controls); list.appendChild(row);
+                controls.append(zoneSelect, roleSelect, primary, remove); row.append(img, info, controls); list.appendChild(row);
             });
         }
 
@@ -1979,7 +2031,7 @@
                 } catch(e) { showToast('An image could not be saved. Try a smaller file.'); }
             }
             if (imageFiles.length > remaining) showToast('Only the first ' + remaining + ' images were added (20 image limit).');
-            updateZoneImagesUI(); updateActiveZoneDisplay();
+            updateZoneImagesUI(); updateActiveZoneDisplay(); renderDirectory();
             showToast('Images uploaded. Check each zone assignment below.');
         }
 
@@ -1998,7 +2050,7 @@
                 const landing = document.getElementById('landing-screen');
                 landing.classList.add('opacity-0', 'pointer-events-none');
                 setTimeout(() => landing.remove(), 500);
-                showToast('Welcome to Kundam Market VR Architectural Experience');
+                showToast('Welcome to Purna Market VR Architectural Experience');
             });
             document.getElementById('nav-btn-home').addEventListener('click', () => switchZone(0));
             document.getElementById('nav-btn-map').addEventListener('click', () => { openModal('modal-map'); renderMasterplanSVGs(); updateMapTargetDetails(STATE.currentZoneIndex); });
@@ -2011,8 +2063,11 @@
             document.getElementById('btn-close-zone-card').addEventListener('click', () => document.getElementById('left-zone-card').classList.add('opacity-0','pointer-events-none'));
             document.getElementById('btn-zone-card-view').addEventListener('click', () => { openModal('modal-teleport'); updateTeleportDialoguePreview(); });
             document.getElementById('dock-btn-teleport').addEventListener('click', () => { openModal('modal-teleport'); updateTeleportDialoguePreview(); });
-            document.getElementById('dock-btn-walk').addEventListener('click', () => { STATE.isAutoWalk = !STATE.isAutoWalk; document.getElementById('walk-btn-text').textContent = STATE.isAutoWalk ? 'Walking' : 'Walk'; showToast(STATE.isAutoWalk ? 'Auto Walk Mode Active' : 'Auto Walk Mode Paused'); });
-            document.getElementById('dock-btn-info').addEventListener('click', () => openModal('modal-info'));
+            document.getElementById('dock-btn-walk').addEventListener('click', () => { STATE.isAutoWalk = !STATE.isAutoWalk; STATE.walkElapsed = 0; document.getElementById('walk-btn-text').textContent = STATE.isAutoWalk ? 'Pause Walk' : 'Walk'; showToast(STATE.isAutoWalk ? 'Guided walk started — spaces transition smoothly' : 'Guided walk paused'); });
+            document.getElementById('dock-btn-info').addEventListener('click', () => { updateInfoPanel(); openModal('modal-info'); });
+            document.getElementById('dock-btn-panorama').addEventListener('click', () => { const z=ZONES_DATA[STATE.currentZoneIndex]; const asset=STATE.zoneImagesAssets.find(a=>a.zoneId===z.id && a.isPrimary) || STATE.zoneImagesAssets.find(a=>a.zoneId===z.id); if (asset && asset.role==='panorama') { updateActiveZoneDisplay(); showToast('360° panorama active — drag to look around, scroll to zoom'); } else { openModal('modal-asset-manager'); showToast('Upload a 360° equirectangular panorama, then assign it to this zone.'); } });
+            document.getElementById('info-prev-zone').addEventListener('click', () => { switchZone((STATE.currentZoneIndex + ZONES_DATA.length - 1) % ZONES_DATA.length); setTimeout(updateInfoPanel, 350); });
+            document.getElementById('info-next-zone').addEventListener('click', () => { switchZone((STATE.currentZoneIndex + 1) % ZONES_DATA.length); setTimeout(updateInfoPanel, 350); });
             document.getElementById('dock-btn-menu').addEventListener('click', () => openModal('modal-menu'));
             document.getElementById('btn-expand-minimap').addEventListener('click', () => { openModal('modal-map'); renderMasterplanSVGs(); updateMapTargetDetails(STATE.currentZoneIndex); });
             document.getElementById('joy-up').addEventListener('click', () => { lat = Math.max(-80, lat - 8); });
@@ -2029,7 +2084,7 @@
             document.getElementById('btn-close-hotspot-card').addEventListener('click', closeAllModals);
             document.getElementById('btn-hotspot-action').addEventListener('click', closeAllModals);
             document.getElementById('btn-exit-presentation')?.addEventListener('click', togglePresentationMode);
-            document.getElementById('menu-btn-explore').addEventListener('click', () => { closeAllModals(); STATE.isAutoWalk = true; showToast('Guided tour started'); });
+            document.getElementById('menu-btn-explore').addEventListener('click', () => { closeAllModals(); STATE.isAutoWalk = true; STATE.walkElapsed = 0; document.getElementById('walk-btn-text').textContent = 'Pause Walk'; showToast('Guided walk started'); });
             document.getElementById('menu-btn-open-map').addEventListener('click', () => { openModal('modal-map'); renderMasterplanSVGs(); });
             document.getElementById('file-input-siteplan').addEventListener('change', e => handleSitePlanFile(e.target.files[0]));
             document.getElementById('btn-replace-siteplan').addEventListener('click', () => document.getElementById('file-input-siteplan').click());
@@ -2060,6 +2115,7 @@
             updateSitePlanUI();
             updateZoneImagesUI();
             try { await loadStoredAssets(); } catch(e) { console.warn(e); }
+            renderDirectory();
             updateActiveZoneDisplay();
             updateMinimapPin();
             if (document.getElementById('presentation-views-container')) {
