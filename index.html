@@ -16,6 +16,23 @@
 @media(max-width:900px){.top-meta{display:none}.topbar{padding:0 22px}.intro{padding:0 8vw;background:linear-gradient(90deg,rgba(10,15,12,.89),rgba(10,15,12,.5) 75%,rgba(10,15,12,.3))}.intro h1{font-size:clamp(62px,13vw,100px)}.right-controls{right:16px;top:88px;width:158px}.mode-rail{left:16px;top:92px}.mode-button{min-width:118px;font-size:8px}.info-panel{right:16px;bottom:80px;width:240px}.bottom-left-tools{left:16px;bottom:80px;width:185px}.scene-footer{left:16px;right:16px;bottom:18px}.scene-controls{display:none}.scene-scale{display:none}.floor-caption{font-size:8px}.floor-button{height:34px}.floor-stack{gap:3px}.lighting-panel{padding:10px}.intro-side-note{right:14px}}
 @media(max-width:600px){.topbar{height:60px}.brand{font-size:10px}.top-actions{gap:10px}.intro{padding:0 7vw;align-items:center}.intro-content{margin-top:0}.eyebrow{font-size:7px;margin-bottom:24px}.intro h1{font-size:clamp(58px,16vw,88px)}.intro-subtitle{font-size:9px;letter-spacing:.22em}.intro-copy{font-size:11px;max-width:290px;margin:20px 0 26px}.intro-actions{gap:8px}.primary-button,.outline-button{height:44px;min-height:44px;padding:0 13px;gap:13px;font-size:8px}.primary-button{min-width:145px}.quiet-button{font-size:7px;padding:0 4px}.intro-bottom{left:7vw;right:7vw;bottom:18px}.intro-coordinates{display:none}.intro-side-note{display:none}.mode-rail{top:auto;bottom:70px;left:12px;right:12px;flex-direction:row;gap:3px}.mode-button{min-width:0;flex:1;height:32px;justify-content:center;padding:0 5px;gap:4px;font-size:7px;letter-spacing:.04em}.mode-index{display:none}.right-controls{top:72px;right:12px;width:136px;gap:6px}.floor-menu-wrap{gap:6px}.floor-menu-toggle{width:36px;height:36px;gap:4px}.floor-menu-toggle span{width:16px}.floor-panel{padding:9px;max-height:58vh;overflow-y:auto}.panel-kicker{font-size:7px}.floor-stack{margin:7px 0;gap:3px}.floor-button{height:30px;padding:0 7px}.floor-button b{font-size:7px}.floor-caption{font-size:7px}.floor-caption span{font-size:6px}.building-overview-button{font-size:6px;padding:8px 5px}.lighting-panel{padding:8px}.segmented-control{margin-top:6px}.segmented-control button{font-size:7px;padding:7px 1px}.info-panel{right:12px;bottom:112px;width:202px;min-height:0;padding:12px}.info-panel h2{font-size:17px;margin:6px 0}.info-number{margin-top:10px}.info-panel p{font-size:9px;margin-bottom:8px}.info-tags span{font-size:6px}.info-hint{font-size:6px;margin-top:9px;padding-top:8px}.bottom-left-tools{left:12px;bottom:112px;width:156px;gap:5px}.tool-button{height:30px;padding:0 8px;font-size:7px;gap:6px}.tool-symbol{font-size:13px}.tool-state{font-size:6px}.circulation-options{padding:9px;gap:8px}.circulation-options label{font-size:7px}.scene-footer{bottom:16px;left:12px;right:12px;font-size:7px}.location-mark{font-size:14px}.scene-location{gap:5px}.help-card{padding:25px 20px}.help-card h2{font-size:29px}.help-grid{gap:14px}.help-grid span{font-size:9px}.help-note{font-size:7px}.vr-top-label{top:73px;font-size:7px;white-space:nowrap}.vr-instructions{font-size:7px;bottom:94px;white-space:nowrap}.exit-vr{right:12px;bottom:25px;font-size:7px;padding:9px}.vr-pad{bottom:24px;left:65px;transform:none}.vr-pad button{width:28px;height:27px}.ar-heading{top:72px;font-size:7px}.ar-controls{bottom:16px}.masterplan-label{top:72px;font-size:7px;white-space:nowrap}}
 
+  
+/* UPDATE: high-contrast entrance page */
+.intro{cursor:pointer;background:linear-gradient(90deg,rgba(248,246,239,.96) 0%,rgba(248,246,239,.88) 43%,rgba(248,246,239,.28) 78%,rgba(248,246,239,.08) 100%),linear-gradient(0deg,rgba(248,246,239,.22),rgba(255,255,255,.12));}
+.intro:after{background:linear-gradient(0deg,rgba(248,246,239,.55),transparent)}
+.intro-backdrop{background:radial-gradient(circle at 76% 43%,rgba(201,143,88,.10),transparent 36%),linear-gradient(135deg,rgba(255,255,255,.1),transparent)}
+.intro h1{color:#171b18;text-shadow:0 2px 18px rgba(255,255,255,.28)}
+.intro h1 em{color:#7d452f}
+.eyebrow{color:#343a33}.intro-subtitle{color:#70462f}.intro-copy{color:#303830}
+.intro-bottom{color:#343b34}.intro-side-note{color:rgba(28,35,29,.78)}
+.intro .outline-button{color:#202720;border-color:rgba(32,39,32,.5);background:rgba(255,255,255,.55)}
+.intro .quiet-button{color:#202720}.intro .vr-icon{color:#8b5037}
+.intro .eyebrow-line{background:#9b5b3c}.intro .scroll-line{background:#9b5b3c}
+.intro .intro-coordinates span,.intro .quiet-button span{color:#9b5b3c}
+.intro .primary-button{background:#202720;color:#fff}
+.intro .primary-button:hover{background:#3b493c}
+.floor-button{color:#f2eee4}
+
   </style>
 </head>
 <body>
@@ -337,6 +354,19 @@ function makeFootprintGeometry(poly, holes = []) {
 function makeFlatPoly(parent, poly, y, material, holes = []) {
   const mesh = new THREE.Mesh(makeFootprintGeometry(poly, holes), material);
   mesh.position.y = y; mesh.receiveShadow = true; parent.add(mesh); return mesh;
+}
+function makeThickFloorSlab(parent, poly, topY, material, holes = []) {
+  const shape = makeShape(poly);
+  for (const h of holes) {
+    const path = new THREE.Path(); path.moveTo(h[0][0], -h[0][1]);
+    for (let i=1;i<h.length;i++) path.lineTo(h[i][0], -h[i][1]);
+    path.closePath(); shape.holes.push(path);
+  }
+  const geometry = new THREE.ExtrudeGeometry(shape,{depth:.42,bevelEnabled:false,curveSegments:2});
+  geometry.rotateX(-Math.PI/2); geometry.computeVertexNormals();
+  const slab = new THREE.Mesh(geometry,material); slab.position.y=topY-.42;
+  slab.castShadow=true; slab.receiveShadow=true; slab.userData.isFloorSlab=true;
+  parent.add(slab); return slab;
 }
 function addLine(parent, points, material, lineWidth = 1) {
   const geometry = new THREE.BufferGeometry().setFromPoints(points.map(p => new THREE.Vector3(p[0], p[1], p[2])));
@@ -757,15 +787,15 @@ function createGroundFloor(parent, floorIndex) {
   createRoomBlock(parent,1,-25.5,5.2,3.5,'WRAPPING',floorIndex);
   // Left planted court: two existing canopy trees, perimeter seating and low groundcover.
   addBox(parent,-20.7,.10,9.9,8.6,.20,11.0,M.green);
-  createTree(parent,-22,.15,12.2,.78,false); createTree(parent,-19.4,.15,7.6,.78,false);
+  
   addBox(parent,-20.7,.39,4.3,8.5,.5,.48,M.timber);
   // East-side planted court matches the long garden and linear walkways in the zoning sheet.
   addBox(parent,20.0,.09,-2.8,24.0,.18,18.0,M.green);
-  for(const x of [13,20,27]) createTree(parent,x,.15,9.4,.88,false);
+  
   addBox(parent,20,.38,-12.0,22,.5,.7,M.timber);
   // Linear tree promenade between two textured paving bands.
   addBox(parent,24.8,.08,-15.0,7.7,.16,17.0,M.green);
-  for(const z of [-8,-13,-18]) createTree(parent,24.8,.15,z,.78,false);
+  
   addBox(parent,19.5,.10,-15.0,2.4,.2,18.0,M.pavingDark);
   addBox(parent,30.2,.10,-15.0,2.4,.2,18.0,M.pavingDark);
   // Southern hawker spill-out and public forecourt (open to Town Kotha Road).
@@ -803,7 +833,7 @@ function createFirstFloor(parent, floorIndex) {
   // Large open circulation court / atrium to the east. Its outline is legible from above.
   addBox(parent,20,.04,-1.5,24,.12,17,M.pavingDark);
   addBox(parent,20,.13,-1.5,22,.1,15,M.green);
-  for(const x of [13,20,27]) createTree(parent,x,.2,4.7,.75,false);
+  
   addBox(parent,20,.5,-9.8,18,.55,.5,M.timber);
   // Vertical circulation and broad ramp/stair landings.
   createStairs(parent,-21,-14,3.0,0,floorIndex);
@@ -832,8 +862,8 @@ function createFloorPlates() {
   const descriptions = [
     'GROUND FLOOR · FLOWER MARKET · STREET INTERFACE · PUBLIC PLAZA',
     'FIRST FLOOR · VEGETABLE MARKET · RETAIL STALLS · MULTIPURPOSE HALL',
-    'SECOND FLOOR · REPEATED GROUND-FLOOR STALL ARRANGEMENT',
-    'THIRD FLOOR · REPEATED FIRST-FLOOR STALL ARRANGEMENT',
+    'SECOND FLOOR · REPEATED GROUND-FLOOR STALL ARRANGEMENT · OPEN COURTYARD',
+    'THIRD FLOOR · REPEATED FIRST-FLOOR STALL ARRANGEMENT · OPEN COURTYARD',
     'FOURTH FLOOR · REPEATED GROUND-FLOOR STALL ARRANGEMENT'
   ];
   for (let i = 0; i < 5; i++) {
@@ -844,7 +874,7 @@ function createFloorPlates() {
     buildingRoot.add(floor);
 
     const slabMat = mat(i % 2 ? '#c6c1b5' : '#b9b5a9', .92);
-    makeFlatPoly(floor, buildingPoly, 0, slabMat, [eastCourt]);
+    makeThickFloorSlab(floor, buildingPoly, 0, slabMat, [eastCourt]);
 
     // Slim slab-edge datum beams and open guardrails around the courts.
     for (let x = -24; x <= 30; x += 6) {
@@ -868,6 +898,26 @@ function createFloorPlates() {
     floor.userData.description = descriptions[i];
   }
 
+  // One continuous mature courtyard tree rises through the open-to-sky atrium.
+  // Floor slabs retain the eastCourt polygon as a true void at every level.
+  const atriumTree = new THREE.Group();
+  atriumTree.position.set(22,0,-5);
+  buildingRoot.add(atriumTree);
+  const bark = mat('#76513a',.92);
+  const trunk = addCylinder(atriumTree,0,8.2,0,.42,.78,16.4,bark,12);
+  trunk.castShadow=true;
+  for (const branch of [[-2.1,12.3,.2,4.7],[2.0,13.0,-.25,4.4],[-.3,14.2,1.5,4.0],[.5,11.8,-1.7,3.8]]) {
+    const b=addCylinder(atriumTree,branch[0]*.5,branch[1],branch[2]*.5,.18,.32,branch[3],bark,9);
+    b.rotation.z=branch[0]*.16; b.rotation.x=branch[2]*.14;
+  }
+  const canopyMat=mat('#426b43',.88);
+  const canopyMat2=mat('#638453',.9);
+  for (const c of [[0,17,0,4.8],[-3,15.7,.6,3.4],[3.1,16.1,-.3,3.6],[-1.5,18.1,-2.0,3.1],[1.8,18.4,2.0,3.2],[0,19.4,.3,2.8]]) {
+    const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(c[3],2),c[1]>18?canopyMat2:canopyMat);
+    crown.position.set(c[0],c[1],c[2]); crown.scale.set(1,.78,.95); crown.castShadow=true; crown.receiveShadow=true; atriumTree.add(crown);
+  }
+  atriumTree.userData.isAtriumTree=true;
+
   // Roof pergola and terrace planting sit above the fourth floor.
   const roof = new THREE.Group();
   roof.position.y = 21.05;
@@ -876,8 +926,6 @@ function createFloorPlates() {
   makeFlatPoly(roof, buildingPoly, 0, M.concreteLight, [eastCourt]);
   for (let x = -23; x < 31; x += 2.6) addBox(roof, x, .55, -2, .12, .18, 67, M.timber);
   for (const x of [-20, -10, 0, 10, 20, 29]) createPlanter(roof, x, 29, 4, 2, .2);
-  createTree(roof, -20, .2, 29, .7, false);
-  createTree(roof, 18, .2, 29, .7, false);
 }
 
 function createExteriorDetails() {
@@ -1028,8 +1076,8 @@ function selectFloor(index, moveCamera = true, isolate = true) {
     controls.maxDistance = 160;
     controls.maxPolarAngle = Math.PI * .49;
     cameraGoal = {
-      position: new THREE.Vector3(67, floorY + 43, 72),
-      target: new THREE.Vector3(0, floorY + .45, 0)
+      position: new THREE.Vector3(58, floorY + 30, 63),
+      target: new THREE.Vector3(0, floorY + .15, 0)
     };
     controls.enabled = !simulatedVR && !simulatedAR && !actualXR;
   }
@@ -1289,6 +1337,7 @@ document.addEventListener('mousemove',e=>{
 // Button bindings
 const byId=id=>document.getElementById(id);
 byId('enter-market').addEventListener('click',enterExperience);
+byId('intro').addEventListener('click',e=>{if(e.target.closest('button'))return;enterExperience();});
 byId('intro-vr').addEventListener('click',startVR);
 byId('intro-masterplan').addEventListener('click',enterMasterplan);
 byId('mode-explore').addEventListener('click',()=>{if(masterplanMode)exitMasterplan();exitXRVisuals();currentMode='explore';setModeButton('#mode-explore');controls.enabled=true;camera.up.set(0,1,0);});
