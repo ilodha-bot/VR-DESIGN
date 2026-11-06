@@ -12,7 +12,7 @@
   <style>
 :root{--ink:#f1eee5;--muted:#a8aaa1;--line:rgba(238,234,220,.18);--glass:rgba(19,24,20,.72);--terracotta:#c77453;--sage:#a6b59b;--gold:#e3c38b;--mono:'DM Mono',monospace;--sans:'Manrope',sans-serif}
 *{box-sizing:border-box}html,body,#app{width:100%;height:100%;margin:0;overflow:hidden;background:#181d18;color:var(--ink);font-family:var(--sans)}button{font:inherit;color:inherit;cursor:pointer;border:0}#market-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none}.film-grain{pointer-events:none;position:absolute;inset:0;z-index:2;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E")}.topbar{position:absolute;z-index:10;left:0;right:0;top:0;height:76px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(12,16,13,.6),transparent)}.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);font-size:12px;letter-spacing:.19em;font-weight:500}.brand b{font-weight:800}.brand-mark{width:24px;height:24px;display:flex;align-items:end;gap:3px}.brand-mark i{width:5px;background:var(--terracotta);display:block;transform:skewY(-28deg)}.brand-mark i:nth-child(1){height:13px}.brand-mark i:nth-child(2){height:19px;background:#dfb98c}.brand-mark i:nth-child(3){height:24px;background:#9cae91}.top-meta,.top-actions{display:flex;align-items:center;gap:12px;font:9px var(--mono);letter-spacing:.11em;color:#c6c4b8}.live-dot{width:6px;height:6px;border-radius:50%;background:#b3c69d;display:inline-block;box-shadow:0 0 12px #9ab47d}.meta-sep{color:var(--terracotta);padding:0 5px}.top-actions{gap:25px}.icon-button{width:28px;height:28px;background:transparent;padding:4px}.sound-bars{height:16px;display:flex;align-items:center;gap:2px}.sound-bars i{display:block;width:2px;background:#c6c4b8;height:5px}.sound-bars i:nth-child(2){height:12px}.sound-bars i:nth-child(3){height:8px}.text-button{background:transparent;color:#dfddd1;font:9px var(--mono);letter-spacing:.12em}.text-button span{color:var(--terracotta);font-size:14px;padding-left:5px}
-.intro{position:absolute;inset:0;z-index:5;display:flex;align-items:center;padding:0 10vw;background:linear-gradient(90deg,rgba(10,15,12,.87) 0%,rgba(11,16,13,.68) 34%,rgba(11,16,13,.1) 77%,rgba(11,16,13,.15) 100%),linear-gradient(0deg,rgba(8,12,10,.55),transparent 40%,rgba(8,12,10,.2)}.intro:after{content:"";position:absolute;left:0;right:0;bottom:0;height:28%;background:linear-gradient(0deg,rgba(10,14,11,.65),transparent);pointer-events:none}.intro-backdrop{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 76% 43%,rgba(201,143,88,.14),transparent 36%),linear-gradient(135deg,transparent 45%,rgba(0,0,0,.18))}.intro-content{position:relative;z-index:1;max-width:590px;margin-top:24px}.eyebrow,.panel-kicker{font:9px var(--mono);letter-spacing:.19em;color:#b3b6aa}.eyebrow{display:flex;align-items:center;gap:13px;margin-bottom:30px}.eyebrow-line{display:inline-block;width:34px;height:1px;background:var(--terracotta)}.intro h1{font-size:clamp(64px,8vw,118px);line-height:.84;letter-spacing:-.075em;font-weight:500;margin:0;color:#f0eee5}.intro h1 em{font-style:normal;font-weight:300;color:#d7b58e}.intro-subtitle{margin-top:23px;font:11px var(--mono);letter-spacing:.32em;color:#e0c6a1}.intro-copy{max-width:370px;margin:26px 0 36px;color:#c5c6bc;font-size:13px;line-height:1.9;font-weight:300}.intro-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}.primary-button,.outline-button,.quiet-button{min-height:49px;padding:0 20px;letter-spacing:.12em;font:9px var(--mono);display:flex;align-items:center;gap:25px;transition:.25s}.primary-button{background:#d2a67e;color:#1c211b;min-width:176px;justify-content:space-between}.primary-button b{font:18px var(--sans)}.primary-button:hover{background:#ecd0a8;transform:translateY(-2px)}.outline-button{border:1px solid rgba(239,234,217,.4);background:rgba(14,20,16,.2)}.outline-button:hover{background:rgba(255,255,255,.12)}.vr-icon{font-size:17px;color:#d6b48c}.quiet-button{background:transparent;color:#dedbd0;padding:0 13px;gap:14px}.quiet-button span{color:var(--terracotta);font-size:15px}.intro-bottom{position:absolute;z-index:2;left:4vw;right:4vw;bottom:30px;display:flex;justify-content:space-between;color:#b7b9ac;font:8px var(--mono);letter-spacing:.17em}.scroll-cue{display:flex;align-items:center;gap:12px}.scroll-line{width:24px;height:1px;background:var(--terracotta)}.intro-coordinates span{color:var(--terracotta);padding:0 7px}.intro-side-note{position:absolute;z-index:2;right:4vw;top:47%;font:8px/2 var(--mono);letter-spacing:.17em;color:rgba(241,238,229,.62);writing-mode:vertical-rl;text-align:left}.experience-ui{display:none;position:absolute;inset:0;z-index:6;pointer-events:none}.experience-ui.active{display:block}.experience-ui button,.experience-ui input,.experience-ui label,.experience-ui .glass-panel{pointer-events:auto}.glass-panel{background:var(--glass);border:1px solid rgba(235,232,218,.16);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.18)}.mode-rail{position:absolute;left:4vw;top:116px;display:flex;flex-direction:column;gap:6px}.mode-button{min-width:140px;height:34px;text-align:left;display:flex;align-items:center;gap:13px;padding:0 11px;background:rgba(17,23,18,.32);border-left:1px solid transparent;color:#c0c2b6;font:9px var(--mono);letter-spacing:.13em;transition:.2s}.mode-index{font-size:8px;color:#8d9687}.mode-button:hover,.mode-button.active{background:rgba(19,25,20,.76);border-left-color:var(--terracotta);color:#f2eee4}.mode-button.active .mode-index{color:#d59d79}.right-controls{position:absolute;right:4vw;top:104px;width:194px;display:flex;align-items:flex-end;flex-direction:column;gap:9px;z-index:9}.floor-menu-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-end;gap:8px}.floor-menu-toggle{width:42px;height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:rgba(19,25,20,.86);border:1px solid rgba(235,232,218,.23);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 30px rgba(0,0,0,.2);transition:background .2s,border-color .2s}.floor-menu-toggle:hover,.floor-menu-toggle[aria-expanded=true]{background:rgba(175,112,77,.35);border-color:rgba(213,157,121,.7)}.floor-menu-toggle span{display:block;width:18px;height:1.5px;background:#eee8dc;transition:transform .2s,opacity .2s}.floor-menu-toggle[aria-expanded=true] span:first-child{transform:translateY(6.5px) rotate(45deg)}.floor-menu-toggle[aria-expanded=true] span:nth-child(2){opacity:0}.floor-menu-toggle[aria-expanded=true] span:last-child{transform:translateY(-6.5px) rotate(-45deg)}.floor-panel{display:none;width:100%;padding:14px 13px 12px;transform-origin:top right}.floor-panel.open{display:block;animation:floorDrop .22s ease-out}@keyframes floorDrop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}.floor-stack{display:flex;flex-direction:column;gap:5px;margin:12px 0}.floor-button{height:35px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 10px;color:#c8c8bd;transition:.2s;width:100%;text-align:left}.floor-button span{font:9px var(--mono);color:#8e9689;min-width:18px}.floor-button b{font:8px var(--mono);font-weight:500;letter-spacing:.08em;flex:1}.floor-button em{font-style:normal;font-size:12px;color:#9da596}.floor-button:hover,.floor-button.active{background:rgba(205,154,111,.2);border-color:rgba(213,157,121,.65);color:#fff}.floor-button.active span,.floor-button.active em{color:#ddb18e}.floor-caption{font:9px/1.7 var(--mono);letter-spacing:.08em;color:#e8e1d1}.floor-caption span{font-size:7px;color:#a9b09f;letter-spacing:.08em}.building-overview-button{width:100%;margin-top:10px;padding:10px 8px;background:rgba(199,116,83,.16);border:1px solid rgba(213,157,121,.35);color:#edc9a9;text-align:center;font:7px var(--mono);letter-spacing:.1em;transition:.2s}.building-overview-button:hover{background:rgba(199,116,83,.3);border-color:rgba(213,157,121,.7)}.lighting-panel{padding:13px 14px}.segmented-control{display:flex;border:1px solid rgba(255,255,255,.12);margin-top:10px}.segmented-control button{flex:1;padding:9px 3px;background:transparent;color:#aeb3a8;font:8px var(--mono);letter-spacing:.05em}.segmented-control button.active{background:rgba(200,151,108,.25);color:#f1d4b2}.bottom-left-tools{position:absolute;left:4vw;bottom:82px;display:flex;flex-direction:column;gap:8px;width:205px}.tool-button{display:flex;align-items:center;gap:9px;text-align:left;height:37px;padding:0 11px;background:rgba(19,25,20,.8);border:1px solid rgba(255,255,255,.13);font:8px var(--mono);letter-spacing:.09em;color:#e4e2d7}.tool-symbol{font-size:17px;color:#d5a780}.tool-state{margin-left:auto;color:#95a38e;font-size:7px}.tool-button.active{border-color:rgba(211,158,120,.8);color:#f4d4b1}.circulation-options{display:none;padding:12px 13px;gap:11px;flex-direction:column}.circulation-options.show{display:flex}.circulation-options label{display:flex;align-items:center;gap:9px;font:8px var(--mono);letter-spacing:.1em;color:#c9c9bd}.circulation-options input{accent-color:#d59c76}.route-swatch{width:17px;height:2px;display:block}.route-swatch.customer{background:#edc17e}.route-swatch.vendor{background:#83b1a1}.route-swatch.service{background:#cf7a64}.info-panel{position:absolute;right:4vw;bottom:82px;width:275px;padding:18px 19px 15px;min-height:230px;transition:.25s}.info-panel.collapsed{opacity:.28;transform:translateX(20px)}.info-topline{display:flex;align-items:center;justify-content:space-between}.info-number{font:9px var(--mono);color:#d39b76;margin-top:17px}.info-panel h2{font-size:22px;line-height:1.08;letter-spacing:-.05em;font-weight:500;margin:8px 0 10px}.info-panel p{color:#bfc2b7;font-size:10px;line-height:1.7;margin:0 0 12px}.info-tags{display:flex;flex-wrap:wrap;gap:5px}.info-tags span{font:7px var(--mono);letter-spacing:.05em;color:#d5c1a6;border:1px solid rgba(216,177,139,.27);padding:5px 6px}.info-hint{margin-top:16px;padding-top:11px;border-top:1px solid rgba(255,255,255,.1);font:7px var(--mono);letter-spacing:.1em;color:#92998e;display:flex;gap:7px;align-items:center}.hint-dot{width:5px;height:5px;background:#c68e6b;border-radius:50%}.close-info{width:21px;height:21px;background:transparent;color:#aeb2a6;font-size:18px;line-height:1}.scene-footer{position:absolute;left:4vw;right:4vw;bottom:22px;display:flex;align-items:center;justify-content:space-between;font:8px var(--mono);letter-spacing:.1em;color:#adb1a5}.scene-location{display:flex;align-items:center;gap:9px}.location-mark{color:#d6a17b;font-size:17px}.scene-controls{display:flex;gap:18px}.scene-controls span{display:flex;align-items:center;gap:5px}.scene-controls kbd{display:inline-flex;min-width:16px;height:15px;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.23);font:7px var(--mono);padding:0 3px;color:#d7d8cd}.scene-scale{color:#818b7d}.scene-scale span{color:#d19a76;padding:0 4px}.vr-overlay,.ar-overlay{display:none;position:absolute;inset:0;pointer-events:none}.vr-overlay.active,.ar-overlay.active{display:block}.vr-overlay>* ,.ar-overlay>*{pointer-events:auto}.crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border:1px solid rgba(237,232,216,.55);border-radius:50%;opacity:.8}.crosshair i,.crosshair b{position:absolute;background:#eee8d8;left:50%;top:50%;transform:translate(-50%,-50%)}.crosshair i{height:1px;width:33px}.crosshair b{height:33px;width:1px}.vr-top-label{position:absolute;top:95px;left:50%;transform:translateX(-50%);padding:10px 14px;background:rgba(15,20,16,.6);border:1px solid rgba(255,255,255,.13);font:8px var(--mono);letter-spacing:.12em;display:flex;align-items:center;gap:9px}.vr-top-label span:last-child{color:#d4a47d;margin-left:10px}.vr-instructions{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font:8px var(--mono);letter-spacing:.16em;color:#d7d7cc}.vr-pad{position:absolute;left:50%;bottom:45px;transform:translateX(-50%);display:flex;align-items:center;flex-direction:column;gap:4px}.vr-pad div{display:flex;gap:4px}.vr-pad button{width:33px;height:31px;background:rgba(15,20,16,.72);border:1px solid rgba(255,255,255,.24);font-size:16px}.exit-vr{position:absolute;right:4vw;bottom:42px;background:rgba(15,20,16,.8);border:1px solid rgba(255,255,255,.25);padding:12px 16px;font:8px var(--mono);letter-spacing:.12em}.ar-heading{position:absolute;top:96px;left:50%;transform:translateX(-50%);background:rgba(15,20,16,.68);padding:10px 13px;font:8px var(--mono);letter-spacing:.15em;display:flex;align-items:center;gap:9px}.ar-reticle{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);width:60px;height:60px;border:1px solid rgba(225,214,189,.65);border-radius:50%;box-shadow:0 0 0 12px rgba(225,214,189,.07)}.ar-reticle:before,.ar-reticle:after{content:"";position:absolute;background:rgba(225,214,189,.6);left:50%;top:50%;transform:translate(-50%,-50%)}.ar-reticle:before{width:80px;height:1px}.ar-reticle:after{height:80px;width:1px}.ar-reticle i{position:absolute;width:5px;height:5px;background:#d5a37d;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}.ar-controls{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);width:min(360px,90vw);padding:15px}.scale-row{display:flex;gap:10px;align-items:center;margin:10px 0 13px}.scale-row button{width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:18px}.scale-row input{flex:1;accent-color:#d4a17b}.ar-actions{display:flex;gap:8px}.ar-actions button{flex:1;padding:11px 5px;background:rgba(255,255,255,.08);border:1px solid var(--line);font:8px var(--mono);letter-spacing:.1em}.ar-actions .place-button{background:#d2a67e;color:#1b211b;border-color:#d2a67e}.ar-exit{width:100%;margin-top:9px;padding:8px;background:transparent;color:#aeb6a9;font:8px var(--mono);letter-spacing:.1em}.masterplan-label{display:none;position:absolute;left:50%;top:95px;transform:translateX(-50%);font:8px var(--mono);letter-spacing:.15em;background:rgba(15,20,16,.78);border:1px solid var(--line);padding:11px 16px;gap:17px}.masterplan-label.show{display:flex}.masterplan-label b{color:#ddb08c;font-weight:400}.toast{position:absolute;left:50%;top:75px;transform:translate(-50%,-10px);padding:10px 14px;background:rgba(14,20,16,.88);border:1px solid var(--line);font:8px var(--mono);letter-spacing:.08em;color:#e8e3d5;opacity:0;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}.help-modal{display:none;position:absolute;inset:0;z-index:20;background:rgba(4,8,6,.55);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:18px}.help-modal.show{display:flex}.help-card{position:relative;width:min(590px,100%);padding:35px}.help-card>.close-info{position:absolute;right:22px;top:22px;font-size:23px}.help-card h2{font-size:36px;line-height:.98;letter-spacing:-.055em;font-weight:500;margin:18px 0 25px}.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 25px}.help-grid div{display:flex;flex-direction:column;gap:6px}.help-grid b{font:9px var(--mono);color:#d5a27d;letter-spacing:.13em}.help-grid span{font-size:10px;line-height:1.6;color:#bfc3b7}.help-note{border-top:1px solid var(--line);padding-top:15px;margin-top:25px;color:#90998d;font:8px/1.7 var(--mono)}.loading-screen{position:absolute;inset:0;background:#171d18;z-index:30;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:17px;transition:opacity .45s}.loading-screen.hidden{opacity:0;pointer-events:none}.loading-screen>span{font:8px var(--mono);letter-spacing:.2em;color:#c5c2b4}.loading-mark{height:24px;display:flex;align-items:end;gap:4px}.loading-mark i{width:5px;background:#d09c76;animation:loadbar .8s ease-in-out infinite alternate}.loading-mark i:nth-child(1){height:11px;animation-delay:.0s}.loading-mark i:nth-child(2){height:17px;animation-delay:.2s}.loading-mark i:nth-child(3){height:24px;animation-delay:.4s}.loading-track{width:145px;height:1px;background:rgba(255,255,255,.14);overflow:hidden}.loading-track i{display:block;width:45%;height:100%;background:#d19b76;animation:loading 1.1s ease-in-out infinite}@keyframes loading{from{transform:translateX(-100%)}to{transform:translateX(330%)}}@keyframes loadbar{to{height:6px}}
+.intro{position:absolute;inset:0;z-index:5;display:flex;align-items:center;padding:0 10vw;background:linear-gradient(90deg,rgba(249,247,240,.97) 0%,rgba(249,247,240,.91) 38%,rgba(249,247,240,.55) 67%,rgba(249,247,240,.12) 100%),linear-gradient(0deg,rgba(242,237,225,.28),rgba(255,255,255,.08)),url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2200&q=88') center/cover no-repeat;color:#171b17}.intro:after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(0deg,rgba(239,234,222,.55),transparent);pointer-events:none}.intro-backdrop{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 76% 43%,rgba(201,143,88,.14),transparent 36%),linear-gradient(135deg,transparent 45%,rgba(0,0,0,.18))}.intro-content{position:relative;z-index:1;max-width:590px;margin-top:24px;padding:30px 34px;background:rgba(250,248,241,.58);border:1px solid rgba(35,43,34,.12);box-shadow:0 18px 60px rgba(39,42,33,.08);backdrop-filter:blur(5px)}.eyebrow,.panel-kicker{font:9px var(--mono);letter-spacing:.19em;color:#41483e}.eyebrow{display:flex;align-items:center;gap:13px;margin-bottom:30px}.eyebrow-line{display:inline-block;width:34px;height:1px;background:var(--terracotta)}.intro h1{font-size:clamp(64px,8vw,118px);line-height:.84;letter-spacing:-.075em;font-weight:800;margin:0;color:#101510;text-shadow:0 2px 0 rgba(255,255,255,.35)}.intro h1 em{font-style:normal;font-weight:500;color:#a84f32}.intro-subtitle{margin-top:23px;font:11px var(--mono);letter-spacing:.32em;color:#30392f;font-weight:700}.intro-copy{max-width:370px;margin:26px 0 36px;color:#30362f;font-size:13px;line-height:1.9;font-weight:500}.intro-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}.primary-button,.outline-button,.quiet-button{min-height:49px;padding:0 20px;letter-spacing:.12em;font:9px var(--mono);display:flex;align-items:center;gap:25px;transition:.25s}.primary-button{background:#d2a67e;color:#1c211b;min-width:176px;justify-content:space-between}.primary-button b{font:18px var(--sans)}.primary-button:hover{background:#ecd0a8;transform:translateY(-2px)}.outline-button{border:1px solid rgba(26,35,27,.45);background:rgba(255,255,255,.58);color:#172018}.outline-button:hover{background:rgba(255,255,255,.12)}.vr-icon{font-size:17px;color:#d6b48c}.quiet-button{background:transparent;color:#172018;padding:0 13px;gap:14px;font-weight:700}.quiet-button span{color:var(--terracotta);font-size:15px}.intro-bottom{position:absolute;z-index:2;left:4vw;right:4vw;bottom:30px;display:flex;justify-content:space-between;color:#30382f;font:8px var(--mono);letter-spacing:.17em;font-weight:600}.scroll-cue{display:flex;align-items:center;gap:12px}.scroll-line{width:24px;height:1px;background:var(--terracotta)}.intro-coordinates span{color:var(--terracotta);padding:0 7px}.intro-side-note{position:absolute;z-index:2;right:4vw;top:47%;font:8px/2 var(--mono);letter-spacing:.17em;color:rgba(25,32,25,.72);writing-mode:vertical-rl;text-align:left}.experience-ui{display:none;position:absolute;inset:0;z-index:6;pointer-events:none}.experience-ui.active{display:block}.experience-ui button,.experience-ui input,.experience-ui label,.experience-ui .glass-panel{pointer-events:auto}.glass-panel{background:var(--glass);border:1px solid rgba(235,232,218,.16);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.18)}.mode-rail{position:absolute;left:4vw;top:360px;display:flex;flex-direction:column;gap:6px}.mode-button{min-width:140px;height:34px;text-align:left;display:flex;align-items:center;gap:13px;padding:0 11px;background:rgba(17,23,18,.32);border-left:1px solid transparent;color:#c0c2b6;font:9px var(--mono);letter-spacing:.13em;transition:.2s}.mode-index{font-size:8px;color:#8d9687}.mode-button:hover,.mode-button.active{background:rgba(19,25,20,.76);border-left-color:var(--terracotta);color:#f2eee4}.mode-button.active .mode-index{color:#d59d79}.right-controls{position:absolute;right:4vw;top:104px;width:194px;display:flex;align-items:flex-end;flex-direction:column;gap:9px;z-index:9}.floor-menu-wrap{position:fixed;left:4vw;top:94px;width:210px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;z-index:15}.floor-menu-toggle{width:42px;height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:rgba(19,25,20,.86);border:1px solid rgba(235,232,218,.23);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 30px rgba(0,0,0,.2);transition:background .2s,border-color .2s}.floor-menu-toggle:hover,.floor-menu-toggle[aria-expanded=true]{background:rgba(175,112,77,.35);border-color:rgba(213,157,121,.7)}.floor-menu-toggle span{display:block;width:18px;height:1.5px;background:#eee8dc;transition:transform .2s,opacity .2s}.floor-menu-toggle[aria-expanded=true] span:first-child{transform:translateY(6.5px) rotate(45deg)}.floor-menu-toggle[aria-expanded=true] span:nth-child(2){opacity:0}.floor-menu-toggle[aria-expanded=true] span:last-child{transform:translateY(-6.5px) rotate(-45deg)}.floor-panel{display:none;width:100%;padding:14px 13px 12px;transform-origin:top left}.floor-panel.open{display:block;animation:floorDrop .22s ease-out}@keyframes floorDrop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}.floor-stack{display:flex;flex-direction:column;gap:5px;margin:12px 0}.floor-button{height:35px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 10px;color:#c8c8bd;transition:.2s;width:100%;text-align:left}.floor-button span{font:9px var(--mono);color:#8e9689;min-width:18px}.floor-button b{font:8px var(--mono);font-weight:500;letter-spacing:.08em;flex:1}.floor-button em{font-style:normal;font-size:12px;color:#9da596}.floor-button:hover,.floor-button.active{background:rgba(205,154,111,.2);border-color:rgba(213,157,121,.65);color:#fff}.floor-button.active span,.floor-button.active em{color:#ddb18e}.floor-caption{font:9px/1.7 var(--mono);letter-spacing:.08em;color:#e8e1d1}.floor-caption span{font-size:7px;color:#a9b09f;letter-spacing:.08em}.building-overview-button{width:100%;margin-top:10px;padding:10px 8px;background:rgba(199,116,83,.16);border:1px solid rgba(213,157,121,.35);color:#edc9a9;text-align:center;font:7px var(--mono);letter-spacing:.1em;transition:.2s}.building-overview-button:hover{background:rgba(199,116,83,.3);border-color:rgba(213,157,121,.7)}.lighting-panel{padding:13px 14px}.segmented-control{display:flex;border:1px solid rgba(255,255,255,.12);margin-top:10px}.segmented-control button{flex:1;padding:9px 3px;background:transparent;color:#aeb3a8;font:8px var(--mono);letter-spacing:.05em}.segmented-control button.active{background:rgba(200,151,108,.25);color:#f1d4b2}.bottom-left-tools{position:absolute;left:4vw;bottom:82px;display:flex;flex-direction:column;gap:8px;width:205px}.tool-button{display:flex;align-items:center;gap:9px;text-align:left;height:37px;padding:0 11px;background:rgba(19,25,20,.8);border:1px solid rgba(255,255,255,.13);font:8px var(--mono);letter-spacing:.09em;color:#e4e2d7}.tool-symbol{font-size:17px;color:#d5a780}.tool-state{margin-left:auto;color:#95a38e;font-size:7px}.tool-button.active{border-color:rgba(211,158,120,.8);color:#f4d4b1}.circulation-options{display:none;padding:12px 13px;gap:11px;flex-direction:column}.circulation-options.show{display:flex}.circulation-options label{display:flex;align-items:center;gap:9px;font:8px var(--mono);letter-spacing:.1em;color:#c9c9bd}.circulation-options input{accent-color:#d59c76}.route-swatch{width:17px;height:2px;display:block}.route-swatch.customer{background:#edc17e}.route-swatch.vendor{background:#83b1a1}.route-swatch.service{background:#cf7a64}.info-panel{position:absolute;right:4vw;bottom:82px;width:275px;padding:18px 19px 15px;min-height:230px;transition:.25s}.info-panel.collapsed{opacity:.28;transform:translateX(20px)}.info-topline{display:flex;align-items:center;justify-content:space-between}.info-number{font:9px var(--mono);color:#d39b76;margin-top:17px}.info-panel h2{font-size:22px;line-height:1.08;letter-spacing:-.05em;font-weight:500;margin:8px 0 10px}.info-panel p{color:#bfc2b7;font-size:10px;line-height:1.7;margin:0 0 12px}.info-tags{display:flex;flex-wrap:wrap;gap:5px}.info-tags span{font:7px var(--mono);letter-spacing:.05em;color:#d5c1a6;border:1px solid rgba(216,177,139,.27);padding:5px 6px}.info-hint{margin-top:16px;padding-top:11px;border-top:1px solid rgba(255,255,255,.1);font:7px var(--mono);letter-spacing:.1em;color:#92998e;display:flex;gap:7px;align-items:center}.hint-dot{width:5px;height:5px;background:#c68e6b;border-radius:50%}.close-info{width:21px;height:21px;background:transparent;color:#aeb2a6;font-size:18px;line-height:1}.scene-footer{position:absolute;left:4vw;right:4vw;bottom:22px;display:flex;align-items:center;justify-content:space-between;font:8px var(--mono);letter-spacing:.1em;color:#adb1a5}.scene-location{display:flex;align-items:center;gap:9px}.location-mark{color:#d6a17b;font-size:17px}.scene-controls{display:flex;gap:18px}.scene-controls span{display:flex;align-items:center;gap:5px}.scene-controls kbd{display:inline-flex;min-width:16px;height:15px;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.23);font:7px var(--mono);padding:0 3px;color:#d7d8cd}.scene-scale{color:#818b7d}.scene-scale span{color:#d19a76;padding:0 4px}.vr-overlay,.ar-overlay{display:none;position:absolute;inset:0;pointer-events:none}.vr-overlay.active,.ar-overlay.active{display:block}.vr-overlay>* ,.ar-overlay>*{pointer-events:auto}.crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border:1px solid rgba(237,232,216,.55);border-radius:50%;opacity:.8}.crosshair i,.crosshair b{position:absolute;background:#eee8d8;left:50%;top:50%;transform:translate(-50%,-50%)}.crosshair i{height:1px;width:33px}.crosshair b{height:33px;width:1px}.vr-top-label{position:absolute;top:95px;left:50%;transform:translateX(-50%);padding:10px 14px;background:rgba(15,20,16,.6);border:1px solid rgba(255,255,255,.13);font:8px var(--mono);letter-spacing:.12em;display:flex;align-items:center;gap:9px}.vr-top-label span:last-child{color:#d4a47d;margin-left:10px}.vr-instructions{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font:8px var(--mono);letter-spacing:.16em;color:#d7d7cc}.vr-pad{position:absolute;left:50%;bottom:45px;transform:translateX(-50%);display:flex;align-items:center;flex-direction:column;gap:4px}.vr-pad div{display:flex;gap:4px}.vr-pad button{width:33px;height:31px;background:rgba(15,20,16,.72);border:1px solid rgba(255,255,255,.24);font-size:16px}.exit-vr{position:absolute;right:4vw;bottom:42px;background:rgba(15,20,16,.8);border:1px solid rgba(255,255,255,.25);padding:12px 16px;font:8px var(--mono);letter-spacing:.12em}.ar-heading{position:absolute;top:96px;left:50%;transform:translateX(-50%);background:rgba(15,20,16,.68);padding:10px 13px;font:8px var(--mono);letter-spacing:.15em;display:flex;align-items:center;gap:9px}.ar-reticle{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);width:60px;height:60px;border:1px solid rgba(225,214,189,.65);border-radius:50%;box-shadow:0 0 0 12px rgba(225,214,189,.07)}.ar-reticle:before,.ar-reticle:after{content:"";position:absolute;background:rgba(225,214,189,.6);left:50%;top:50%;transform:translate(-50%,-50%)}.ar-reticle:before{width:80px;height:1px}.ar-reticle:after{height:80px;width:1px}.ar-reticle i{position:absolute;width:5px;height:5px;background:#d5a37d;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}.ar-controls{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);width:min(360px,90vw);padding:15px}.scale-row{display:flex;gap:10px;align-items:center;margin:10px 0 13px}.scale-row button{width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:18px}.scale-row input{flex:1;accent-color:#d4a17b}.ar-actions{display:flex;gap:8px}.ar-actions button{flex:1;padding:11px 5px;background:rgba(255,255,255,.08);border:1px solid var(--line);font:8px var(--mono);letter-spacing:.1em}.ar-actions .place-button{background:#d2a67e;color:#1b211b;border-color:#d2a67e}.ar-exit{width:100%;margin-top:9px;padding:8px;background:transparent;color:#aeb6a9;font:8px var(--mono);letter-spacing:.1em}.masterplan-label{display:none;position:absolute;left:50%;top:95px;transform:translateX(-50%);font:8px var(--mono);letter-spacing:.15em;background:rgba(15,20,16,.78);border:1px solid var(--line);padding:11px 16px;gap:17px}.masterplan-label.show{display:flex}.masterplan-label b{color:#ddb08c;font-weight:400}.toast{position:absolute;left:50%;top:75px;transform:translate(-50%,-10px);padding:10px 14px;background:rgba(14,20,16,.88);border:1px solid var(--line);font:8px var(--mono);letter-spacing:.08em;color:#e8e3d5;opacity:0;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}.help-modal{display:none;position:absolute;inset:0;z-index:20;background:rgba(4,8,6,.55);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:18px}.help-modal.show{display:flex}.help-card{position:relative;width:min(590px,100%);padding:35px}.help-card>.close-info{position:absolute;right:22px;top:22px;font-size:23px}.help-card h2{font-size:36px;line-height:.98;letter-spacing:-.055em;font-weight:500;margin:18px 0 25px}.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 25px}.help-grid div{display:flex;flex-direction:column;gap:6px}.help-grid b{font:9px var(--mono);color:#d5a27d;letter-spacing:.13em}.help-grid span{font-size:10px;line-height:1.6;color:#bfc3b7}.help-note{border-top:1px solid var(--line);padding-top:15px;margin-top:25px;color:#90998d;font:8px/1.7 var(--mono)}.loading-screen{position:absolute;inset:0;background:#171d18;z-index:30;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:17px;transition:opacity .45s}.loading-screen.hidden{opacity:0;pointer-events:none}.loading-screen>span{font:8px var(--mono);letter-spacing:.2em;color:#c5c2b4}.loading-mark{height:24px;display:flex;align-items:end;gap:4px}.loading-mark i{width:5px;background:#d09c76;animation:loadbar .8s ease-in-out infinite alternate}.loading-mark i:nth-child(1){height:11px;animation-delay:.0s}.loading-mark i:nth-child(2){height:17px;animation-delay:.2s}.loading-mark i:nth-child(3){height:24px;animation-delay:.4s}.loading-track{width:145px;height:1px;background:rgba(255,255,255,.14);overflow:hidden}.loading-track i{display:block;width:45%;height:100%;background:#d19b76;animation:loading 1.1s ease-in-out infinite}@keyframes loading{from{transform:translateX(-100%)}to{transform:translateX(330%)}}@keyframes loadbar{to{height:6px}}
 @media(max-width:900px){.top-meta{display:none}.topbar{padding:0 22px}.intro{padding:0 8vw;background:linear-gradient(90deg,rgba(10,15,12,.89),rgba(10,15,12,.5) 75%,rgba(10,15,12,.3))}.intro h1{font-size:clamp(62px,13vw,100px)}.right-controls{right:16px;top:88px;width:158px}.mode-rail{left:16px;top:92px}.mode-button{min-width:118px;font-size:8px}.info-panel{right:16px;bottom:80px;width:240px}.bottom-left-tools{left:16px;bottom:80px;width:185px}.scene-footer{left:16px;right:16px;bottom:18px}.scene-controls{display:none}.scene-scale{display:none}.floor-caption{font-size:8px}.floor-button{height:34px}.floor-stack{gap:3px}.lighting-panel{padding:10px}.intro-side-note{right:14px}}
 @media(max-width:600px){.topbar{height:60px}.brand{font-size:10px}.top-actions{gap:10px}.intro{padding:0 7vw;align-items:center}.intro-content{margin-top:0}.eyebrow{font-size:7px;margin-bottom:24px}.intro h1{font-size:clamp(58px,16vw,88px)}.intro-subtitle{font-size:9px;letter-spacing:.22em}.intro-copy{font-size:11px;max-width:290px;margin:20px 0 26px}.intro-actions{gap:8px}.primary-button,.outline-button{height:44px;min-height:44px;padding:0 13px;gap:13px;font-size:8px}.primary-button{min-width:145px}.quiet-button{font-size:7px;padding:0 4px}.intro-bottom{left:7vw;right:7vw;bottom:18px}.intro-coordinates{display:none}.intro-side-note{display:none}.mode-rail{top:auto;bottom:70px;left:12px;right:12px;flex-direction:row;gap:3px}.mode-button{min-width:0;flex:1;height:32px;justify-content:center;padding:0 5px;gap:4px;font-size:7px;letter-spacing:.04em}.mode-index{display:none}.right-controls{top:72px;right:12px;width:136px;gap:6px}.floor-menu-wrap{gap:6px}.floor-menu-toggle{width:36px;height:36px;gap:4px}.floor-menu-toggle span{width:16px}.floor-panel{padding:9px;max-height:58vh;overflow-y:auto}.panel-kicker{font-size:7px}.floor-stack{margin:7px 0;gap:3px}.floor-button{height:30px;padding:0 7px}.floor-button b{font-size:7px}.floor-caption{font-size:7px}.floor-caption span{font-size:6px}.building-overview-button{font-size:6px;padding:8px 5px}.lighting-panel{padding:8px}.segmented-control{margin-top:6px}.segmented-control button{font-size:7px;padding:7px 1px}.info-panel{right:12px;bottom:112px;width:202px;min-height:0;padding:12px}.info-panel h2{font-size:17px;margin:6px 0}.info-number{margin-top:10px}.info-panel p{font-size:9px;margin-bottom:8px}.info-tags span{font-size:6px}.info-hint{font-size:6px;margin-top:9px;padding-top:8px}.bottom-left-tools{left:12px;bottom:112px;width:156px;gap:5px}.tool-button{height:30px;padding:0 8px;font-size:7px;gap:6px}.tool-symbol{font-size:13px}.tool-state{font-size:6px}.circulation-options{padding:9px;gap:8px}.circulation-options label{font-size:7px}.scene-footer{bottom:16px;left:12px;right:12px;font-size:7px}.location-mark{font-size:14px}.scene-location{gap:5px}.help-card{padding:25px 20px}.help-card h2{font-size:29px}.help-grid{gap:14px}.help-grid span{font-size:9px}.help-note{font-size:7px}.vr-top-label{top:73px;font-size:7px;white-space:nowrap}.vr-instructions{font-size:7px;bottom:94px;white-space:nowrap}.exit-vr{right:12px;bottom:25px;font-size:7px;padding:9px}.vr-pad{bottom:24px;left:65px;transform:none}.vr-pad button{width:28px;height:27px}.ar-heading{top:72px;font-size:7px}.ar-controls{bottom:16px}.masterplan-label{top:72px;font-size:7px;white-space:nowrap}}
 
@@ -236,14 +236,17 @@ const geometryCache = new Map();
 function cachedGeometry(key, factory) { if (!geometryCache.has(key)) geometryCache.set(key, factory()); return geometryCache.get(key); }
 const productSphere = cachedGeometry('product-sphere',()=>new THREE.SphereGeometry(.105,6,5));
 const productIcosa = cachedGeometry('product-ico',()=>new THREE.IcosahedronGeometry(.14,0));
-const humanCapsule = cachedGeometry('human-capsule',()=>new THREE.CapsuleGeometry(.26,.58,3,6));
-const humanHeadGeo = cachedGeometry('human-head',()=>new THREE.SphereGeometry(.19,10,8));
-const humanHairGeo = cachedGeometry('human-hair',()=>new THREE.SphereGeometry(.195,8,6));
-const humanArmGeo = cachedGeometry('human-arm',()=>new THREE.CylinderGeometry(.07,.09,.58,6));
-const humanArmLongGeo = cachedGeometry('human-arm-long',()=>new THREE.CylinderGeometry(.07,.09,.62,6));
-const humanLegGeo = cachedGeometry('human-leg',()=>new THREE.CylinderGeometry(.095,.11,.64,6));
-const humanShoeGeo = cachedGeometry('human-shoe',()=>new THREE.BoxGeometry(.16,.12,.29));
-const humanHandGeo = cachedGeometry('human-hand',()=>new THREE.SphereGeometry(.075,6,5));
+const humanCapsule = cachedGeometry('human-capsule',()=>new THREE.CapsuleGeometry(.225,.55,4,10));
+const humanHeadGeo = cachedGeometry('human-head',()=>new THREE.SphereGeometry(.155,12,10));
+const humanHairGeo = cachedGeometry('human-hair',()=>new THREE.SphereGeometry(.165,10,8));
+const humanNeckGeo = cachedGeometry('human-neck',()=>new THREE.CylinderGeometry(.075,.085,.16,8));
+const humanLimbGeo = cachedGeometry('human-limb',()=>new THREE.CylinderGeometry(.065,.078,1,8));
+const humanJointGeo = cachedGeometry('human-joint',()=>new THREE.SphereGeometry(.078,8,6));
+const humanEyeGeo = cachedGeometry('human-eye',()=>new THREE.SphereGeometry(.022,8,6));
+const humanNoseGeo = cachedGeometry('human-nose',()=>new THREE.SphereGeometry(.032,8,6));
+const humanMouthGeo = cachedGeometry('human-mouth',()=>new THREE.BoxGeometry(.052,.012,.012));
+const humanShoeGeo = cachedGeometry('human-shoe',()=>new THREE.BoxGeometry(.17,.11,.29));
+const humanHandGeo = cachedGeometry('human-hand',()=>new THREE.SphereGeometry(.062,8,6));
 const humanBagGeo = cachedGeometry('human-bag',()=>new THREE.BoxGeometry(.28,.3,.22));
 const humanHandleGeo = cachedGeometry('human-handle',()=>new THREE.TorusGeometry(.10,.025,5,8,Math.PI));
 const HUMAN_BAG = mat('#b58b58');
@@ -258,12 +261,21 @@ const M = {
   produceRed: mat('#b9573d'), produceGreen: mat('#72935a'), produceYellow: mat('#d7ae54'),
   producePurple: mat('#81516c'), produceOrange: mat('#d78043'), fabricCream: mat('#e4d5b5'),
   fabricGreen: mat('#788a69'), fabricRust: mat('#b66f51'), white: mat('#eee8d8'),
-  black: mat('#222824'), roadLine: mat('#e2dfc9'), water: mat('#789998', .25, .15)
+  black: mat('#222824'), roadLine: mat('#e2dfc9'), water: mat('#789998', .25, .15),
+  woodDark: mat('#5d4332'), woodWarm: mat('#9a704d'), canvasRust: mat('#a95e43'),
+  canvasOlive: mat('#78836a'), basket: mat('#98734c'), metalLight: mat('#a5a69e', .42, .55),
+  crateShadow: mat('#473a2d'), scaleScreen: mat('#27322c', .35, .2),
+  flowerStem: mat('#56784a'), leafDeep: mat('#486b42')
 };
 const HUMAN_SKIN = mat('#b98767');
+const HUMAN_SKINS = ['#8e5b43','#a56e50','#b98767','#c99573','#d7a47e'].map(c=>mat(c));
 const HUMAN_HAIR = mat('#41352d');
+const HUMAN_HAIR_OPTIONS = ['#2c2926','#44362e','#5b4335','#241f1c'].map(c=>mat(c));
 const HUMAN_VENDOR = [mat('#587a69'), mat('#b78f63')];
-const HUMAN_CUSTOMERS = ['#b86a4f','#65889a','#9c795d','#788b65','#b28a9d'].map(c=>[mat(c),mat('#3e4540')]);
+const HUMAN_CUSTOMERS = ['#b86a4f','#65889a','#9c795d','#788b65','#b28a9d','#a27b50','#5f7770'].map(c=>[mat(c),mat('#3e4540')]);
+const HUMAN_APRON = mat('#d1c1a0');
+const HUMAN_EYES = mat('#29231f',.4);
+const HUMAN_SHOES = [mat('#292a27'),mat('#4a3930'),mat('#62584d')];
 const STALL_LAMP = new THREE.MeshStandardMaterial({color:'#bd945e',emissive:'#f2b56a',emissiveIntensity:0,roughness:.45});
 
 const marketRoot = new THREE.Group();
@@ -313,6 +325,13 @@ const buildingPoly = [
   [-16.10, 3.60], [-16.10, 15.75], [-25.25, 15.75]
 ];
 const eastCourt = [[7.3, 15.5], [32.05, 15.5], [32.05, -20.0], [19.0, -20.0], [19.0, 2.3], [7.3, 2.3]];
+// Smaller west courtyard: the 8.60 m x 11.00 m planted court already laid out in the ground-floor plan.
+const westCourt = [[-25.0, 15.4], [-16.4, 15.4], [-16.4, 4.4], [-25.0, 4.4]];
+const courtyardVoids = [eastCourt, westCourt];
+const COURTYARD_DIMENSIONS = {
+  east: { width: 24.75, depth: 35.50, shape: 'L-shaped', clearArea: 617.72 },
+  west: { width: 8.60, depth: 11.00, shape: 'rectangular', clearArea: 94.60 }
+};
 
 function addBox(parent, x, y, z, sx, sy, sz, material, opts = {}) {
   const key = `box:${sx.toFixed(3)}:${sy.toFixed(3)}:${sz.toFixed(3)}`;
@@ -362,9 +381,10 @@ function makeThickFloorSlab(parent, poly, topY, material, holes = []) {
     for (let i=1;i<h.length;i++) path.lineTo(h[i][0], -h[i][1]);
     path.closePath(); shape.holes.push(path);
   }
-  const geometry = new THREE.ExtrudeGeometry(shape,{depth:.42,bevelEnabled:false,curveSegments:2});
+  const SLAB_THICKNESS = .62;
+  const geometry = new THREE.ExtrudeGeometry(shape,{depth:SLAB_THICKNESS,bevelEnabled:false,curveSegments:2});
   geometry.rotateX(-Math.PI/2); geometry.computeVertexNormals();
-  const slab = new THREE.Mesh(geometry,material); slab.position.y=topY-.42;
+  const slab = new THREE.Mesh(geometry,material); slab.position.y=topY-SLAB_THICKNESS;
   slab.castShadow=true; slab.receiveShadow=true; slab.userData.isFloorSlab=true;
   parent.add(slab); return slab;
 }
@@ -481,34 +501,84 @@ function createPlanter(parent, x, z, w, d, y = .15) {
 }
 
 function createHuman(parent, x, z, rotation = 0, role = 'customer', outfit = null) {
-  const g = new THREE.Group(); g.position.set(x, .15, z); g.rotation.y = rotation; g.userData.isHuman = true; parent.add(g);
+  // Compact articulated figures with human proportions, facial features and varied local-market clothing.
+  const g = new THREE.Group(); g.position.set(x, .02, z); g.rotation.y = rotation; g.userData.isHuman = true; parent.add(g);
   const clothes = outfit || (role === 'vendor' ? HUMAN_VENDOR : HUMAN_CUSTOMERS[Math.floor(Math.random()*HUMAN_CUSTOMERS.length)]);
+  const skin = HUMAN_SKINS[Math.floor(Math.random()*HUMAN_SKINS.length)];
+  const hairMat = HUMAN_HAIR_OPTIONS[Math.floor(Math.random()*HUMAN_HAIR_OPTIONS.length)];
+  const shoeMat = HUMAN_SHOES[Math.floor(Math.random()*HUMAN_SHOES.length)];
   const torso = new THREE.Mesh(humanCapsule, clothes[0]);
-  torso.position.y = 1.08; torso.castShadow = true; g.add(torso);
-  const head = new THREE.Mesh(humanHeadGeo, HUMAN_SKIN);
-  head.position.set(0,1.68,0); head.castShadow = true; g.add(head);
-  const hair = new THREE.Mesh(humanHairGeo, HUMAN_HAIR);
-  hair.position.set(0,1.78,-.015); hair.scale.set(1,.52,1); g.add(hair);
-  for (const side of [-1,1]) {
-    const leg = new THREE.Mesh(humanLegGeo, clothes[1]);
-    leg.position.set(side*.12,.37,0); leg.castShadow = true; g.add(leg);
-    const shoe = new THREE.Mesh(humanShoeGeo, M.black);
-    shoe.position.set(side*.12,.08,-.07); g.add(shoe);
+  torso.position.set(0,1.06,0); torso.scale.set(1.02,1.02,.88); torso.castShadow = true; g.add(torso);
+  const neck = new THREE.Mesh(humanNeckGeo, skin); neck.position.set(0,1.55,0); neck.castShadow=true; g.add(neck);
+  const head = new THREE.Mesh(humanHeadGeo, skin);
+  head.position.set(0,1.73,.015); head.scale.set(1,.99,.96); head.castShadow = true; g.add(head);
+  // Hair cap, back hair and a small bun/ponytail on a proportion of the figures.
+  const hair = new THREE.Mesh(humanHairGeo, hairMat);
+  hair.position.set(0,1.81,-.025); hair.scale.set(1.02,.58,1.02); hair.castShadow=true; g.add(hair);
+  if (Math.random() > .48) {
+    const backHair = new THREE.Mesh(cachedGeometry('human-back-hair',()=>new THREE.SphereGeometry(.135,8,7)), hairMat);
+    backHair.position.set(0,1.65,-.09); backHair.scale.set(.9,1.0,.72); g.add(backHair);
+    const bun = new THREE.Mesh(cachedGeometry('human-bun',()=>new THREE.SphereGeometry(.085,8,7)), hairMat);
+    bun.position.set(0,1.78,-.17); g.add(bun);
   }
-  const armMat = HUMAN_SKIN;
-  const armA = new THREE.Mesh(humanArmGeo, armMat);
-  armA.position.set(-.31,1.11,-.12); armA.rotation.x=-.38; armA.rotation.z=.38; g.add(armA);
-  const armB = new THREE.Mesh(humanArmLongGeo, armMat);
-  armB.position.set(.32,1.15,.24); armB.rotation.x=.98; armB.rotation.z=-.28; armB.castShadow=true; g.add(armB);
-  const hand = new THREE.Mesh(humanHandGeo, armMat); hand.position.set(.43,1.22,.51); g.add(hand);
-  // A small carry basket / handled produce bag makes the buying interaction legible.
-  if (role === 'customer') {
+  // Eyes, nose, mouth and ears are small but readable at close inspection distance.
+  for (const side of [-1,1]) {
+    const eye = new THREE.Mesh(humanEyeGeo, HUMAN_EYES);
+    eye.position.set(side*.052,1.745,.151); g.add(eye);
+    const ear = new THREE.Mesh(cachedGeometry('human-ear',()=>new THREE.SphereGeometry(.035,7,6)), skin);
+    ear.position.set(side*.151,1.72,.01); ear.scale.set(.58,1,.7); g.add(ear);
+  }
+  const nose = new THREE.Mesh(humanNoseGeo, skin); nose.position.set(0,1.705,.165); nose.scale.set(.78,1.25,.85); g.add(nose);
+  const mouth = new THREE.Mesh(humanMouthGeo, HUMAN_HAIR); mouth.position.set(0,1.655,.151); g.add(mouth);
+
+  const addLimb = (start, end, radius, material, rounded=true) => {
+    const a = new THREE.Vector3(...start), b = new THREE.Vector3(...end);
+    const delta = new THREE.Vector3().subVectors(b,a); const length = delta.length();
+    const limb = new THREE.Mesh(cachedGeometry(`human-limb-${radius.toFixed(3)}-${length.toFixed(3)}`,()=>new THREE.CylinderGeometry(radius*.82,radius,length,8)),material);
+    limb.position.copy(a).add(b).multiplyScalar(.5);
+    limb.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());
+    limb.castShadow=true; g.add(limb);
+    if (rounded) {
+      const jointA = new THREE.Mesh(humanJointGeo,material); jointA.position.copy(a); jointA.scale.setScalar(radius/.078); g.add(jointA);
+      const jointB = new THREE.Mesh(humanJointGeo,material); jointB.position.copy(b); jointB.scale.setScalar(radius/.078); g.add(jointB);
+    }
+    return limb;
+  };
+
+  // Trouser legs and shoes are separated at the knee/ankle for a more natural silhouette.
+  for (const side of [-1,1]) {
+    addLimb([side*.115,.72,0],[side*.135,.17,.015],.092,clothes[1]);
+    const shoe = new THREE.Mesh(humanShoeGeo, shoeMat);
+    shoe.position.set(side*.135,.085,.075); shoe.castShadow=true; g.add(shoe);
+  }
+  // Sleeves and forearms use different materials; the arms are posed for serving or shopping.
+  const vendorPose = role === 'vendor';
+  const leftElbow = vendorPose ? [-.39,1.08,-.10] : [-.38,.98,-.02];
+  const leftHand = vendorPose ? [-.42,.96,-.29] : [-.40,.78,.02];
+  const rightElbow = vendorPose ? [.39,1.10,-.10] : [.38,1.19,.23];
+  const rightHand = vendorPose ? [.36,.99,-.30] : [.48,1.14,.53];
+  for (const [side,elbow,hand] of [[-1,leftElbow,leftHand],[1,rightElbow,rightHand]]) {
+    const shoulder=[side*.235,1.37,0];
+    addLimb(shoulder,elbow,.095,clothes[0]);
+    addLimb(elbow,hand,.062,skin);
+    const palm = new THREE.Mesh(humanHandGeo,skin); palm.position.set(...hand); palm.scale.set(1,.82,1.12); g.add(palm);
+  }
+  // Vendors wear a practical apron; customers carry a cloth shopping bag or basket.
+  if (role === 'vendor') {
+    const apron = new THREE.Mesh(new THREE.BoxGeometry(.30,.48,.035),HUMAN_APRON);
+    apron.position.set(0,.94,.205); apron.castShadow=true; g.add(apron);
+    for(let i=0;i<3;i++){
+      const button = new THREE.Mesh(new THREE.SphereGeometry(.018,6,5),M.woodDark);
+      button.position.set(0,1.08-i*.12,.229); g.add(button);
+    }
+  } else {
     const bag = new THREE.Mesh(humanBagGeo, HUMAN_BAG);
     bag.position.set(-.36,.72,.12); bag.castShadow=true; g.add(bag);
-    const handle = new THREE.Mesh(humanHandleGeo, M.timber);
+    const handle = new THREE.Mesh(humanHandleGeo, M.woodDark);
     handle.position.set(-.36,.9,.12); handle.rotation.z=Math.PI; g.add(handle);
   }
-  g.userData.arm = armB; g.userData.phase = Math.random()*Math.PI*2;
+  g.scale.setScalar(.94 + Math.random()*.12);
+  g.userData.phase = Math.random()*Math.PI*2;
   return g;
 }
 
@@ -527,14 +597,35 @@ function createScooter(parent, x, y, z, rotation = 0) {
 
 function createOpeningCanopy(parent, x, y, z, w, d, colorMat=M.fabricCream) {
   const g = new THREE.Group(); g.position.set(x,y,z); parent.add(g);
-  const postX=w/2-.18, postZ=d/2-.18;
-  for (const px of [-postX,postX]) for (const pz of [-postZ,postZ]) addBox(g,px,y*.0+1.35,pz,.11,2.7,.11,M.steel);
-  addBox(g,0,2.78,0,w,.12,d,M.steel);
-  // thin alternating canopy fabric bands
-  const bandCount=Math.max(4,Math.floor(w/1.0));
+  const postX=w/2-.16, postZ=d/2-.16;
+  // Four slender steel/timber posts and perimeter rails support the cloth awning.
+  for (const px of [-postX,postX]) for (const pz of [-postZ,postZ]) {
+    addBox(g,px,1.36,pz,.085,2.72,.085,M.steel);
+    addBox(g,px*1.015,2.70,pz,.14,.12,.14,M.woodDark);
+  }
+  addBox(g,0,2.72,-postZ,w,.11,.12,M.steel);
+  addBox(g,0,2.72,postZ,w,.11,.12,M.steel);
+  addBox(g,-postX,2.72,0,.11,.11,d,M.steel);
+  addBox(g,postX,2.72,0,.11,.11,d,M.steel);
+  // Alternating weathered canvas panels create a recognisable Indian street-market awning.
+  const bandCount=Math.max(5,Math.floor(w/.62));
   for(let i=0;i<bandCount;i++){
     const bx=-w/2+(i+.5)*w/bandCount;
-    addBox(g,bx,2.92,0,w/bandCount*.96,.11,d,(i%2?colorMat:M.fabricRust));
+    const panel=addBox(g,bx,2.83,0,w/bandCount*.98,.075,d*.98,(i%2?colorMat:M.fabricCream));
+    panel.rotation.x=-.025;
+  }
+  // Pleated front valance and short side drops add depth instead of a flat clay-like canopy.
+  for(let i=0;i<bandCount;i++){
+    const bx=-w/2+(i+.5)*w/bandCount;
+    addBox(g,bx,2.63,-d/2+.05,w/bandCount*.94,.27,.07,(i%2?M.fabricCream:colorMat));
+    const scallop=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),i%2?M.fabricCream:colorMat);
+    scallop.position.set(bx,2.49,-d/2+.05); scallop.scale.set(w/bandCount*.72,.55,.32); g.add(scallop);
+  }
+  for(const sx of [-postX,postX]) addBox(g,sx,2.56,0,.07,.32,d*.88,colorMat);
+  // Small diagonal corner braces make the stall frame read as a buildable structure.
+  for(const sx of [-1,1]) for(const sz of [-1,1]){
+    const brace=addBox(g,sx*(postX-.08),2.43,sz*(postZ-.08),.07,.48,.07,M.steel);
+    brace.rotation.z=sx*.42;
   }
   compactDirectMeshes(g);
   return g;
@@ -593,49 +684,134 @@ function compactHumanMeshes(floorGroup) {
   }
 }
 
+function createMarketCrate(parent,x,y,z,w,d,height,produceMat) {
+  const g = new THREE.Group(); g.position.set(x,y,z); parent.add(g);
+  addBox(g,0,height*.5,0,w*.94,height*.12,d*.94,M.woodDark);
+  for(const sx of [-1,1]) for(let row=0;row<3;row++){
+    addBox(g,sx*(w*.46),height*(.28+row*.27),0,.055,height*.18,d*.92,M.woodWarm);
+  }
+  for(let row=0;row<3;row++) addBox(g,0,height*(.28+row*.27),d*.46,w*.92,height*.09,.055,M.woodWarm);
+  // Visible contents sit just above the crate rim instead of being a single solid lump.
+  const fruitGeo = cachedGeometry('stall-fruit-sphere',()=>new THREE.SphereGeometry(.105,9,7));
+  for(let i=0;i<7;i++){
+    const fruit=new THREE.Mesh(fruitGeo,produceMat);
+    fruit.position.set((i%4-1.5)*w*.17,height*.78+(i%2)*.035,((Math.floor(i/4))-.5)*d*.28);
+    fruit.scale.set(1,.9,.92); fruit.castShadow=true; g.add(fruit);
+  }
+  compactDirectMeshes(g);
+  return g;
+}
+
+function createWeighingScale(parent,x,y,z) {
+  const g=new THREE.Group(); g.position.set(x,y,z); parent.add(g);
+  addBox(g,0,.09,0,.38,.16,.32,M.metalLight);
+  addBox(g,0,.22,-.015,.32,.07,.24,M.steel);
+  addBox(g,0,.31,.055,.20,.10,.045,M.scaleScreen);
+  addBox(g,0,.39,-.075,.34,.045,.25,M.metalLight);
+  const plateGeo=cachedGeometry('scale-plate-geo',()=>new THREE.CylinderGeometry(.12,.12,.035,12));
+  const plate=new THREE.Mesh(plateGeo,M.metalLight); plate.position.set(0,.43,-.075); g.add(plate);
+  return g;
+}
+
+function createFlowerBucket(parent,x,y,z,flowerMat) {
+  const bucketGeo=cachedGeometry('flower-bucket-geo',()=>new THREE.CylinderGeometry(.17,.22,.40,10));
+  const bucket=new THREE.Mesh(bucketGeo,M.steel); bucket.position.set(x,y+.20,z); bucket.castShadow=true; parent.add(bucket);
+  for(let i=0;i<5;i++){
+    const a=i*Math.PI*2/5;
+    const stemGeo=cachedGeometry('flower-stem-geo',()=>new THREE.CylinderGeometry(.018,.022,.48,6));
+    const stem=new THREE.Mesh(stemGeo,M.flowerStem); stem.position.set(x+Math.cos(a)*.055,y+.63,z+Math.sin(a)*.055);
+    stem.rotation.z=Math.cos(a)*.16; stem.rotation.x=Math.sin(a)*.16; parent.add(stem);
+    const bloomGeo=cachedGeometry('flower-bloom-geo',()=>new THREE.SphereGeometry(.095,8,7));
+    const bloom=new THREE.Mesh(bloomGeo,flowerMat);
+    bloom.position.set(x+Math.cos(a)*.10,y+.89+(i%2)*.08,z+Math.sin(a)*.10); bloom.scale.set(1,.75,1); bloom.castShadow=true; parent.add(bloom);
+  }
+  return bucket;
+}
+
 function createStall(parent, config, floor, index) {
-  const {x,z,rotation=0,type='vegetable',name,aisle='market'}=config;
+  const {x,z,rotation=0,type='vegetable',name}=config;
   const g=new THREE.Group(); g.position.set(x,0,z); g.rotation.y=rotation; parent.add(g);
   const sw=config.w||3.2, sd=config.d||3.05;
-  g.userData.stall={type,name:name||`${type==='flower'?'Flower':'Vegetable'} Stall ${String(index).padStart(2,'0')}`,floor,features:type==='flower'?['Display zone','Wrapping counter','Storage','Vendor workspace','Customer interaction zone']:['Produce display','Weighing counter','Under-counter storage','Vendor workspace','Customer interaction zone']};
+  g.userData.stall={type,name:name||`${type==='flower'?'Flower':'Vegetable'} Stall ${String(index).padStart(2,'0')}`,floor,features:type==='flower'?['Flower buckets','Wrapping counter','Storage crates','Vendor workspace','Customer interaction zone']:['Fresh produce crates','Digital weighing scale','Under-counter storage','Vendor workspace','Customer interaction zone']};
+
+  // Low raised concrete plinth with timber fascia and a durable counter surface.
   const base=addBox(g,0,.12,0,sw,.22,sd,M.concreteLight); base.userData.stallRoot=g;
-  addBox(g,0,1.32,sd*.43,sw*.92,2.4,.16,M.timber);
-  addBox(g,0,.81,-sd*.24,sw*.94,.92,.58,M.timberLight);
-  addBox(g,0,1.29,-sd*.24,sw*.94,.12,.62,M.concreteLight);
-  // Three open shelves / basket display.
-  for(let i=0;i<3;i++){
-    addBox(g,0,1.55+i*.48,sd*.28,sw*.9,.09,.38,M.timber);
+  addBox(g,0,.26,-sd*.02,sw*.96,.10,sd*.94,M.woodDark);
+  addBox(g,0,.79,-sd*.23,sw*.94,.86,.63,M.woodWarm);
+  addBox(g,0,1.23,-sd*.23,sw*.98,.13,.72,M.concreteLight);
+  addBox(g,0,.80,-sd*.23,sw*.91,.72,.035,M.timber);
+  // Repeated timber battens, toe-kick and side returns make the counter look fabricated.
+  for(let i=0;i<9;i++){
+    const bx=-sw*.43+i*sw*.1075;
+    addBox(g,bx,.79,-sd*.23,.035,.68,.045,M.woodDark);
   }
+  for(const sx of [-1,1]) addBox(g,sx*sw*.475,.86,-sd*.23,.09,.78,.66,M.woodDark);
+  addBox(g,0,.34,-sd*.23,sw*.88,.10,.70,M.woodDark);
+
+  // Back display wall with open timber shelves and a small painted signboard.
+  addBox(g,0,1.55,sd*.43,sw*.90,2.35,.12,M.woodDark);
+  addBox(g,0,1.50,sd*.355,sw*.82,1.55,.045,M.timberLight);
+  for(let row=0;row<3;row++){
+    const shelfY=1.23+row*.48;
+    addBox(g,0,shelfY,sd*.24,sw*.86,.075,.48,M.woodWarm);
+    addBox(g,0,shelfY+.065,sd*.24,sw*.86,.025,.045,M.woodDark);
+  }
+  for(const sx of [-sw*.42,sw*.42]) addBox(g,sx,1.68,sd*.25,.075,1.0,.48,M.woodDark);
+
   const canopyMat=type==='flower'?M.fabricRust:(floor%2?M.fabricGreen:M.fabricCream);
-  createOpeningCanopy(g,0,0,0,sw+.28,sd+.25,canopyMat);
-  // A front fascia/sign is kept as an editable text texture.
-  addBox(g,0,2.48,-sd*.49,sw*.84,.39,.08,M.terracottaDark);
-  addBox(g,0,2.69,-sd*.32,sw*.42,.055,.08,STALL_LAMP);
-  addTextPanel(g,type==='flower'?'FLOWERS':'FRESH PRODUCE',0,2.49,-sd*.54,sw*.75,.28,Math.PI,'#f4e9d4','#6a4234');
-  // Display bins with produce / bunches. Instanced-looking low-poly shapes stay lightweight.
-  const products=type==='flower'?[M.flowerPink,M.flowerYellow,M.flowerWhite,M.flowerPink,M.flowerYellow]:[M.produceGreen,M.produceRed,M.produceYellow,M.produceOrange,M.producePurple];
-  const dummy = new THREE.Object3D();
-  const productGeometry = type==='flower' ? productSphere : productIcosa;
-  const productPositions=[];
-  for(let i=0;i<5;i++){
-    const bx=-sw*.39+i*sw*.195;
-    addBox(g,bx,1.01,-sd*.25,.49,.28,.48,M.timber);
-    for(let j=0;j<5;j++) productPositions.push({x:bx+(j%2-.5)*.16,y:1.22+Math.floor(j/3)*.12,z:-sd*.25+(Math.floor(j/2)-.5)*.15,material:products[(i+j)%products.length]});
+  createOpeningCanopy(g,0,0,0,sw+.20,sd+.20,canopyMat);
+
+  // Front fascia sign and a modest warm task light below the awning.
+  addBox(g,0,2.42,-sd*.50,sw*.88,.34,.095,M.terracottaDark);
+  addBox(g,0,2.68,-sd*.39,sw*.36,.055,.08,STALL_LAMP);
+  addTextPanel(g,type==='flower'?'FRESH FLOWERS':'FRESH VEGETABLES',0,2.43,-sd*.555,sw*.78,.25,Math.PI,'#f4e9d4','#674232');
+
+  // Individual slatted produce crates sit on the sales counter, with visible fruit above each rim.
+  if(type==='flower'){
+    for(let i=0;i<5;i++){
+      const bx=-sw*.38+i*sw*.19;
+      addBox(g,bx,.99,-sd*.24,.48,.30,.47,M.basket);
+      const flowerMaterials=[M.flowerPink,M.flowerYellow,M.flowerWhite,M.flowerPink,M.flowerYellow];
+      createFlowerBucket(g,bx,1.10,-sd*.24,flowerMaterials[i]);
+    }
+    // Hanging garland strands and wrapped bouquets distinguish the flower vendor.
+    for(let strand=0;strand<3;strand++){
+      const zFront=-sd*.48-strand*.055;
+      for(let i=0;i<13;i++){
+        const t=i/12; const px=-sw*.36+t*sw*.72;
+        const py=1.82+Math.sin(t*Math.PI)*.22-strand*.10;
+        const bead=new THREE.Mesh(cachedGeometry('flower-garland-geo',()=>new THREE.SphereGeometry(.055,7,6)),[M.flowerPink,M.flowerYellow,M.flowerWhite][(i+strand)%3]);
+        bead.position.set(px,py,zFront); bead.scale.set(1,.85,1); g.add(bead);
+      }
+    }
+  } else {
+    const produce=[M.produceGreen,M.produceRed,M.produceYellow,M.produceOrange,M.producePurple];
+    for(let i=0;i<5;i++){
+      const bx=-sw*.39+i*sw*.195;
+      createMarketCrate(g,bx,1.31,-sd*.24,.48,.47,.43,produce[i]);
+    }
+    createWeighingScale(g,sw*.34,1.33,-sd*.25);
+    // A few hanging produce strings and a hand-written price strip animate the working stall edge.
+    for(let i=0;i<5;i++){
+      const bx=-sw*.34+i*sw*.17;
+      const hanging=new THREE.Mesh(cachedGeometry('hanging-produce-geo',()=>new THREE.SphereGeometry(.105,8,7)),produce[(i+2)%produce.length]);
+      hanging.position.set(bx,2.15,sd*.40); hanging.scale.set(.8,1.2,.8); g.add(hanging);
+    }
   }
-  // Instanced produce / bouquet heads: 25 display items collapse to a handful of draw calls.
-  for(const productMaterial of new Set(products)){
-    const instances=productPositions.filter(p=>p.material===productMaterial);
-    if(!instances.length) continue;
-    const mesh=new THREE.InstancedMesh(productGeometry,productMaterial,instances.length);
-    instances.forEach((p,i)=>{dummy.position.set(p.x,p.y,p.z);dummy.scale.setScalar(type==='flower'?.94:1);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);});
-    mesh.instanceMatrix.needsUpdate=true; mesh.castShadow=true; mesh.receiveShadow=true; g.add(mesh);
-  }
-  // Vendor is behind the counter. A shopper stands directly in front and reaches to select goods.
-  createHuman(g,0,sd*.08,Math.PI,'vendor');
-  const shopper=createHuman(g,.55,-sd*.5,0,'customer');
-  shopper.scale.setScalar(.98);
-  // Small animated selection frame around each clickable stall.
-  const outlineGeo=new THREE.EdgesGeometry(new THREE.BoxGeometry(sw+.26,3.18,sd+.35));
+
+  // Small storage crates, cash tray and a vendor stool finish the working setup.
+  for(let i=0;i<2;i++) createMarketCrate(g,-sw*.28+i*sw*.56,.28,sd*.08,.48,.48,.38,M.produceGreen);
+  addBox(g,-sw*.34,1.39,-sd*.43,.38,.12,.28,M.woodDark);
+  addBox(g,-sw*.34,1.47,-sd*.43,.30,.05,.22,M.steel);
+  addBox(g,0,.42,sd*.30,.62,.12,.58,M.woodDark);
+  for(const sx of [-.22,.22]) for(const sz of [-.20,.20]) addBox(g,sx,.21,sd*.30+sz,.06,.34,.06,M.steel);
+
+  // Vendor serves from behind the counter; a shopper stands at the public-facing edge.
+  createHuman(g,0,sd*.10,Math.PI,'vendor');
+  const shopper=createHuman(g,.55,-sd*.50,0,'customer');
+  shopper.scale.multiplyScalar(.98);
+
+  const outlineGeo=new THREE.EdgesGeometry(new THREE.BoxGeometry(sw+.26,3.2,sd+.35));
   const outline=new THREE.LineSegments(outlineGeo,new THREE.LineBasicMaterial({color:'#e9bd85',transparent:true,opacity:.95}));
   outline.position.y=1.62; outline.visible=false; g.add(outline);
   g.userData.highlight=outline;
@@ -696,6 +872,7 @@ function createColumnGrid() {
   const positions=[];
   for(const x of xs) for(const z of zs){
     if(x>7 && x<32 && z<16 && z>-20) continue;
+    if(x>-25.0 && x<-16.4 && z>4.4 && z<15.4) continue;
     if(x<-16 && z<4 && z>-9) continue;
     positions.push([x,z]);
   }
@@ -740,9 +917,15 @@ function createFacadeScreens() {
     addBox(facade,31.8,level*4.2-.12,0,.65,.28,70,M.concreteLight);
   }
   // Open canopy with timber purlins and a light roof plane.
-  const canopy=new THREE.Group(); canopy.position.set(3,21.15,0); facade.add(canopy);
-  addBox(canopy,0,0,0,57,.35,76,M.concreteLight);
-  for(let x=-24;x<=30;x+=3) addBox(canopy,x,-.4,0,.12,.55,75,M.timber);
+  const canopy=new THREE.Group(); canopy.position.set(0,21.8,0); facade.add(canopy);
+  // No roof sheet is placed here: the structural roof above is cut around both courtyards.
+  // Open timber purlins remain only over the building strips, never across either courtyard void.
+  for(let x=-24;x<=30;x+=3){
+    const crossesWestCourt=x>=-25.0 && x<=-16.4;
+    const crossesEastCourt=x>=7.3 && x<=32.05;
+    if(crossesWestCourt || crossesEastCourt) continue;
+    addBox(canopy,x,-.4,0,.12,.55,75,M.timber);
+  }
   addBox(canopy,0,.25,-38,58,.15,1.0,M.steel);
   addBox(facade,-25,14.0,-6,.28,2,44,M.glass);
   return facade;
@@ -769,7 +952,7 @@ function createGroundFloor(parent, floorIndex) {
   createServiceBay(parent);
   // Upper/north retail cluster and the two stair cores seen in the plan.
   makeStallRowX(parent,-10,8,23,4,floorIndex,'flower',0,'N');
-  makeStallRowZ(parent,-18,7,29,5,floorIndex,'flower',Math.PI/2,'W');
+  makeStallRowZ(parent,-14.5,7,29,5,floorIndex,'flower',Math.PI/2,'W');
   makeStallRowZ(parent,-8,5,19,4,floorIndex,'flower',Math.PI/2,'W2');
   makeStallRowZ(parent,1,5,19,4,floorIndex,'flower',Math.PI/2,'C');
   makeStallRowZ(parent,18,18,31,4,floorIndex,'vegetable',Math.PI/2,'E');
@@ -785,19 +968,25 @@ function createGroundFloor(parent, floorIndex) {
   createStairs(parent,4,33,2.8,0,floorIndex);
   // A compact flower-wrapping / vendor counter at the southern end.
   createRoomBlock(parent,1,-25.5,5.2,3.5,'WRAPPING',floorIndex);
-  // Left planted court: two existing canopy trees, perimeter seating and low groundcover.
-  addBox(parent,-20.7,.10,9.9,8.6,.20,11.0,M.green);
-  
-  addBox(parent,-20.7,.39,4.3,8.5,.5,.48,M.timber);
-  // East-side planted court matches the long garden and linear walkways in the zoning sheet.
-  addBox(parent,20.0,.09,-2.8,24.0,.18,18.0,M.green);
-  
-  addBox(parent,20,.38,-12.0,22,.5,.7,M.timber);
-  // Linear tree promenade between two textured paving bands.
-  addBox(parent,24.8,.08,-15.0,7.7,.16,17.0,M.green);
-  
-  addBox(parent,19.5,.10,-15.0,2.4,.2,18.0,M.pavingDark);
-  addBox(parent,30.2,.10,-15.0,2.4,.2,18.0,M.pavingDark);
+  if (floorIndex === 0) {
+    // West courtyard is an 8.60 m x 11.00 m open-to-sky garden, not a concrete floor pad.
+    makeFlatPoly(parent,westCourt,.045,M.green);
+    createTree(parent,-22.4,.06,8.1,.68,false);
+    createTree(parent,-18.9,.06,11.5,.62,false);
+    addBox(parent,-20.7,.39,4.65,7.6,.5,.48,M.timber);
+
+    // The east courtyard follows its exact L-shaped boundary (24.75 m x 35.50 m overall).
+    // Only the ground-level court receives landscape paving; levels above remain completely open.
+    makeFlatPoly(parent,eastCourt,.045,M.pavingDark);
+    const eastGardenNorth=[[8.0,14.8],[31.35,14.8],[31.35,3.0],[8.0,3.0]];
+    const eastGardenLeg=[[19.35,1.95],[31.35,1.95],[31.35,-19.35],[19.35,-19.35]];
+    makeFlatPoly(parent,eastGardenNorth,.065,M.green);
+    makeFlatPoly(parent,eastGardenLeg,.065,M.green);
+    // Seating and planted edges are kept low so the court remains visually open.
+    addBox(parent,26.0,.38,-11.8,5.4,.48,.62,M.timber);
+    createPlanter(parent,10.2,8.2,3.3,1.0,.08);
+    createPlanter(parent,29.4,8.2,3.0,1.0,.08);
+  }
   // Southern hawker spill-out and public forecourt (open to Town Kotha Road).
   addBox(parent,-3.0,.04,-34.5,34,.1,10.0,M.pavingDark);
   addTextPanel(parent,'HAWKER / PUBLIC FORECOURT',-2,.7,-38.9,9,.55,0,'#efe8d7','#5c6258');
@@ -811,7 +1000,6 @@ function createGroundFloor(parent, floorIndex) {
   // Open-air visitor gathering space at the southern entrance.
   createPlanter(parent,10,-35.4,6.0,1.2); createPlanter(parent,25,-35.4,6.0,1.2);
   // Circulation links visible from below and between the levels.
-  createRamp(parent,27,-1,0,Math.PI/2);
 }
 
 function createFirstFloor(parent, floorIndex) {
@@ -822,24 +1010,20 @@ function createFirstFloor(parent, floorIndex) {
   createRoomBlock(parent,7.0,35.3,8.3,4.2,'SERVICE BAY',floorIndex);
   createRoomBlock(parent,22.0,35.2,15,4.3,'RETAIL / SUPPORT',floorIndex);
   // West, central and east banks remain arranged as in the plan.
-  makeStallRowZ(parent,-19,7,25,5,floorIndex,'vegetable',Math.PI/2,'L');
+  makeStallRowZ(parent,-14.5,7,25,5,floorIndex,'vegetable',Math.PI/2,'L');
   makeStallRowZ(parent,-5,3,17,4,floorIndex,'vegetable',Math.PI/2,'C');
-  makeStallRowZ(parent,6,3,17,4,floorIndex,'vegetable',Math.PI/2,'C2');
-  makeStallRowZ(parent,20,9,25,4,floorIndex,'vegetable',Math.PI/2,'R');
-  makeStallRowZ(parent,29,9,25,4,floorIndex,'vegetable',Math.PI/2,'R2');
+  makeStallRowZ(parent,5.5,3,17,4,floorIndex,'vegetable',Math.PI/2,'C2');
+  makeStallRowZ(parent,20,16.5,25,2,floorIndex,'vegetable',Math.PI/2,'R');
+  makeStallRowZ(parent,29,16.5,25,2,floorIndex,'vegetable',Math.PI/2,'R2');
   makeStallRowX(parent,-14,5,-5,5,floorIndex,'vegetable',0,'M');
   makeStallRowX(parent,-10,12,-14,6,floorIndex,'vegetable',0,'V');
   makeStallRowX(parent,-12,9,-22,6,floorIndex,'vegetable',0,'S');
-  // Large open circulation court / atrium to the east. Its outline is legible from above.
-  addBox(parent,20,.04,-1.5,24,.12,17,M.pavingDark);
-  addBox(parent,20,.13,-1.5,22,.1,15,M.green);
-  
-  addBox(parent,20,.5,-9.8,18,.55,.5,M.timber);
+  // East atrium remains a clear opening through the upper floor plates; no paving slab or bench bridges it.
+  // Its L-shaped void is dimensioned from the plan and the courtyard floor is visible below.
   // Vertical circulation and broad ramp/stair landings.
   createStairs(parent,-21,-14,3.0,0,floorIndex);
   createStairs(parent,17,-14,3.0,0,floorIndex);
   createStairs(parent,3,33,2.8,0,floorIndex);
-  createRamp(parent,27,-1,0,Math.PI/2);
   // Southeast multipurpose hall exactly occupies the south-east zone on the first-floor sheet.
   const hall=new THREE.Group(); hall.position.set(21,0,-28.1); parent.add(hall);
   addBox(hall,0,.12,0,21,.24,17,M.concreteDark);
@@ -850,9 +1034,7 @@ function createFirstFloor(parent, floorIndex) {
   addTextPanel(hall,'MULTIPURPOSE HALL',0,2.3,-8.65,8.5,.65,Math.PI,'#f1e9d7','#555b50');
   hall.userData.zone={name:'Multipurpose hall',floor:floorIndex,description:'Flexible community and market-support hall at the southeast end of the first-floor plan.'};
   zoneTargets.push(hall);
-  // Open spill-out terrace in front of hall.
-  addBox(parent,20,.06,-18.0,22,.12,3.4,M.green);
-  for(let x=12;x<29;x+=4) createPlanter(parent,x,-18.0,2.4,.6);
+  // Keep the atrium edge open; the multipurpose hall terminates before the courtyard void.
 }
 
 function createFloorPlates() {
@@ -873,8 +1055,14 @@ function createFloorPlates() {
     floorGroups.push(floor);
     buildingRoot.add(floor);
 
-    const slabMat = mat(i % 2 ? '#c6c1b5' : '#b9b5a9', .92);
-    makeThickFloorSlab(floor, buildingPoly, 0, slabMat, [eastCourt]);
+    const slabMat = mat(i % 2 ? '#d0c9bb' : '#c4bdaf', .88);
+    makeThickFloorSlab(floor, buildingPoly, 0, slabMat, courtyardVoids);
+    // Exposed concrete slab fascia makes each storey legible in the full-building view.
+    // No fascia or slab is placed across the east courtyard opening.
+    const slabFascia = mat('#8f8b80', .9);
+    for (const [fx,fz,fw,fd] of [[3.4,39.82,55.4,.24],[32.12,-2.0,.24,78.0],[-25.18,15.7,.24,48.0],[-7.0,-39.94,35.0,.24]]) {
+      addBox(floor,fx,-.30,fz,fw,.62,fd,slabFascia,{castShadow:true});
+    }
 
     // Slim slab-edge datum beams and open guardrails around the courts.
     for (let x = -24; x <= 30; x += 6) {
@@ -898,8 +1086,8 @@ function createFloorPlates() {
     floor.userData.description = descriptions[i];
   }
 
-  // One continuous mature courtyard tree rises through the open-to-sky atrium.
-  // Floor slabs retain the eastCourt polygon as a true void at every level.
+  // One continuous mature courtyard tree rises through the east atrium. Both courtyard polygons
+  // remain true structural voids through every floor and the roof; only ground-level landscape is placed below.
   const atriumTree = new THREE.Group();
   atriumTree.position.set(22,0,-5);
   buildingRoot.add(atriumTree);
@@ -923,8 +1111,11 @@ function createFloorPlates() {
   roof.position.y = 21.05;
   buildingRoot.add(roof);
   roofStructure = roof;
-  makeFlatPoly(roof, buildingPoly, 0, M.concreteLight, [eastCourt]);
-  for (let x = -23; x < 31; x += 2.6) addBox(roof, x, .55, -2, .12, .18, 67, M.timber);
+  makeThickFloorSlab(roof, buildingPoly, 0, M.concreteLight, courtyardVoids);
+  for (let x = -23; x < 31; x += 2.6) {
+    if (x >= 19 && x <= 30.5) continue; // preserve the east courtyard's open-to-sky roof void
+    addBox(roof, x, .55, -2, .12, .18, 67, M.timber);
+  }
   for (const x of [-20, -10, 0, 10, 20, 29]) createPlanter(roof, x, 29, 4, 2, .2);
 }
 
@@ -997,14 +1188,21 @@ function createAll() {
   createExteriorDetails();
   createRoutes();
   createPetals();
-  // Public forecourt people and street-side transactions.
+  // Public forecourt visitors and a small amount of activity in the open ground-floor courts.
   for(let i=0;i<8;i++) createHuman(marketRoot,-20+i*5,.0-41+(i%2)*1.4,(i%2?Math.PI:0),'customer');
+  createHuman(floorGroups[0],-22.0,7.5,Math.PI/3,'customer');
+  createHuman(floorGroups[0],-18.7,12.0,-Math.PI/3,'customer');
+  createHuman(floorGroups[0],14.5,8.8,Math.PI/2,'customer');
+  createHuman(floorGroups[0],27.8,-13.6,-Math.PI/2,'customer');
   createScooter(marketRoot,31,.05,-38.7,.1);
   // Thin ground plane under the model.
   addBox(marketRoot,0,-.47,0,230,.25,230,M.paving,{castShadow:false});
-  // Click targets for public courts and support spaces.
-  const courtProxy=addBox(marketRoot,20,.35,-2,22,.1,17,new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));
-  courtProxy.userData.zone={name:'Planted court',floor:0,description:'A planted internal court brings daylight, shade and a legible orientation point into the market.'}; zoneTargets.push(courtProxy);
+  // Click targets follow the actual court extents without adding visible floor geometry.
+  const transparentCourtMat=new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide});
+  const courtProxy=new THREE.Mesh(makeFootprintGeometry(eastCourt),transparentCourtMat); courtProxy.position.y=.35; marketRoot.add(courtProxy);
+  courtProxy.userData.zone={name:'East atrium courtyard',floor:0,description:`${COURTYARD_DIMENSIONS.east.shape} open-to-sky court with a ${COURTYARD_DIMENSIONS.east.width.toFixed(2)} m x ${COURTYARD_DIMENSIONS.east.depth.toFixed(2)} m overall envelope.`}; zoneTargets.push(courtProxy);
+  const westCourtProxy=new THREE.Mesh(makeFootprintGeometry(westCourt),transparentCourtMat); westCourtProxy.position.y=.35; marketRoot.add(westCourtProxy);
+  westCourtProxy.userData.zone={name:'West planted courtyard',floor:0,description:`Open-to-sky planted court measuring ${COURTYARD_DIMENSIONS.west.width.toFixed(2)} m x ${COURTYARD_DIMENSIONS.west.depth.toFixed(2)} m.`}; zoneTargets.push(westCourtProxy);
 }
 createAll();
 
@@ -1016,7 +1214,6 @@ masterplanGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(boun
 const planZones=[
   {x:-12,z:22,w:25,d:19,color:'#ba7254',label:'FLOWER MARKET'},
   {x:0,z:-8,w:24,d:22,color:'#89a072',label:'VEGETABLE MARKET'},
-  {x:20,z:-2,w:22,d:18,color:'#78977f',label:'PLANTED COURT'},
   {x:20,z:-28,w:21,d:17,color:'#b5a58a',label:'MULTIPURPOSE HALL'},
   {x:-3,z:-35,w:32,d:9,color:'#d2b27c',label:'PUBLIC HAWKER EDGE'}
 ];
@@ -1026,6 +1223,12 @@ for(const zone of planZones){
   zoneTargets.push(pad);
   addTextPanel(masterplanGroup,zone.label,zone.x,.75,zone.z,Math.min(zone.w*.8,10),.7,0,'#f7efdd','#4a5148');
 }
+const eastCourtPad=makeFlatPoly(masterplanGroup,eastCourt,.32,mat('#78977f'));
+eastCourtPad.userData.zone={name:'East atrium courtyard',floor:0,description:`${COURTYARD_DIMENSIONS.east.shape} open-to-sky courtyard; overall clear envelope ${COURTYARD_DIMENSIONS.east.width.toFixed(2)} m x ${COURTYARD_DIMENSIONS.east.depth.toFixed(2)} m (approx. ${COURTYARD_DIMENSIONS.east.clearArea.toFixed(2)} m²).`};
+zoneTargets.push(eastCourtPad);
+const westCourtPad=makeFlatPoly(masterplanGroup,westCourt,.32,mat('#718c63'));
+westCourtPad.userData.zone={name:'West planted courtyard',floor:0,description:`${COURTYARD_DIMENSIONS.west.shape} planted courtyard; clear dimensions ${COURTYARD_DIMENSIONS.west.width.toFixed(2)} m x ${COURTYARD_DIMENSIONS.west.depth.toFixed(2)} m (${COURTYARD_DIMENSIONS.west.clearArea.toFixed(2)} m²).`};
+zoneTargets.push(westCourtPad);
 
 function setFloorEmphasis(active) {
   floorEmphasis = active;
@@ -1440,4 +1643,3 @@ setTimeout(()=>byId('loading-screen').classList.add('hidden'),750);
   </script>
 </body>
 </html>
-
