@@ -8,7 +8,7 @@
   <title>Poorna Market — Virtual Market Experience</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
 :root{--ink:#f1eee5;--muted:#a8aaa1;--line:rgba(238,234,220,.18);--glass:rgba(19,24,20,.72);--terracotta:#c77453;--sage:#a6b59b;--gold:#e3c38b;--mono:'DM Mono',monospace;--sans:'Manrope',sans-serif}
 *{box-sizing:border-box}html,body,#app{width:100%;height:100%;margin:0;overflow:hidden;background:#181d18;color:var(--ink);font-family:var(--sans)}button{font:inherit;color:inherit;cursor:pointer;border:0}#market-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none}.film-grain{pointer-events:none;position:absolute;inset:0;z-index:2;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E")}.topbar{position:absolute;z-index:10;left:0;right:0;top:0;height:76px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(12,16,13,.6),transparent)}.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);font-size:12px;letter-spacing:.19em;font-weight:500}.brand b{font-weight:800}.brand-mark{width:24px;height:24px;display:flex;align-items:end;gap:3px}.brand-mark i{width:5px;background:var(--terracotta);display:block;transform:skewY(-28deg)}.brand-mark i:nth-child(1){height:13px}.brand-mark i:nth-child(2){height:19px;background:#dfb98c}.brand-mark i:nth-child(3){height:24px;background:#9cae91}.top-meta,.top-actions{display:flex;align-items:center;gap:12px;font:9px var(--mono);letter-spacing:.11em;color:#c6c4b8}.live-dot{width:6px;height:6px;border-radius:50%;background:#b3c69d;display:inline-block;box-shadow:0 0 12px #9ab47d}.meta-sep{color:var(--terracotta);padding:0 5px}.top-actions{gap:25px}.icon-button{width:28px;height:28px;background:transparent;padding:4px}.sound-bars{height:16px;display:flex;align-items:center;gap:2px}.sound-bars i{display:block;width:2px;background:#c6c4b8;height:5px}.sound-bars i:nth-child(2){height:12px}.sound-bars i:nth-child(3){height:8px}.text-button{background:transparent;color:#dfddd1;font:9px var(--mono);letter-spacing:.12em}.text-button span{color:var(--terracotta);font-size:14px;padding-left:5px}
@@ -112,6 +112,7 @@
           <label><input type="checkbox" data-route="service"><span class="route-swatch service"></span>SERVICE</label>
         </div>
         <button class="tool-button" id="section-toggle"><span class="tool-symbol">◫</span><span>ISOLATE FLOOR</span><span class="tool-state">OFF</span></button>
+        <button class="tool-button" id="journey-next"><span class="tool-symbol">↠</span><span>MARKET JOURNEY</span><span class="tool-state" id="journey-state">START</span></button>
       </div>
 
       <aside class="info-panel glass-panel" id="info-panel">
@@ -132,7 +133,7 @@
       <div class="vr-overlay" id="vr-overlay">
         <div class="crosshair"><i></i><b></b></div>
         <div class="vr-top-label"><span class="live-dot"></span> IMMERSIVE WALKTHROUGH <span id="vr-floor-label">GROUND LEVEL</span></div>
-        <div class="vr-instructions">LOOK AROUND · MOVE WITH WASD / TOUCH PAD</div>
+        <div class="vr-instructions">THUMBSTICK: WALK · POINT & HOLD TRIGGER: PICK UP · RELEASE: PLACE</div>
         <div class="vr-pad">
           <button data-move="forward">↑</button>
           <div><button data-move="left">←</button><button data-move="back">↓</button><button data-move="right">→</button></div>
@@ -167,8 +168,10 @@
           <div><b>INSPECT</b><span>Select a stall, stair, court or hall to view its use.</span></div>
           <div><b>WALK</b><span>Enter VR mode and use WASD or the on-screen directional pad.</span></div>
           <div><b>FLOORS</b><span>Choose Ground, First, Second, Third or Fourth Floor. The selected level opens as an isolated 3D floor view.</span></div>
+          <div><b>MARKET JOURNEY</b><span>Use the Market Journey control to move through the street entrance, flower stalls, local produce, weighing counter and courtyard.</span></div>
+          <div><b>SHOPPING</b><span>Inspect stalls for local market stories. In VR, point at fruit or vegetables and hold the controller trigger to pick them up.</span></div>
         </div>
-        <div class="help-note">VR / AR headset support depends on browser, device and secure-context availability. A simulated mode remains available on desktop and mobile.</div>
+        <div class="help-note">Follow MARKET JOURNEY for a guided visit. People move between stalls, and the two English–Telugu information boards introduce the market and its local produce. VR / AR headset support depends on browser, device and secure-context availability; a simulated mode remains available on desktop and mobile.</div>
       </div>
     </div>
 
@@ -267,6 +270,81 @@ const M = {
   crateShadow: mat('#473a2d'), scaleScreen: mat('#27322c', .35, .2),
   flowerStem: mat('#56784a'), leafDeep: mat('#486b42')
 };
+// Procedural surface maps add fine natural variation without external asset dependencies.
+function createOrganicMaterial(name, base, shade, roughness=.78, bumpScale=.025) {
+  const canvas=document.createElement('canvas'); canvas.width=512; canvas.height=512;
+  const ctx=canvas.getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,512,512);
+  grad.addColorStop(0,shade); grad.addColorStop(.48,base); grad.addColorStop(1,shade);
+  ctx.fillStyle=grad; ctx.fillRect(0,0,512,512);
+  for(let i=0;i<1800;i++){
+    const x=Math.random()*512, y=Math.random()*512, r=.35+Math.random()*2.1;
+    ctx.globalAlpha=.045+Math.random()*.13;
+    ctx.fillStyle=Math.random()>.5?'#fff8df':'#1e281b';
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  if(name.includes('leaf') || name.includes('grass')){
+    for(let i=0;i<48;i++){
+      const x=Math.random()*512, y=Math.random()*512;
+      ctx.globalAlpha=.10; ctx.strokeStyle='#d8e6b8'; ctx.lineWidth=.8;
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.quadraticCurveTo(x+8,y-18,x+18,y-30); ctx.stroke();
+    }
+  }
+  if(name.includes('bark')){
+    ctx.globalAlpha=.16; ctx.strokeStyle='#24190f'; ctx.lineWidth=2;
+    for(let i=0;i<90;i++){
+      const x=Math.random()*512; ctx.beginPath(); ctx.moveTo(x,0); ctx.bezierCurveTo(x-8,150,x+10,330,x-3,512); ctx.stroke();
+    }
+  }
+  const map=new THREE.CanvasTexture(canvas); map.colorSpace=THREE.SRGBColorSpace;
+  map.wrapS=map.wrapT=THREE.RepeatWrapping; map.anisotropy=8;
+  const bump=map.clone(); bump.colorSpace=THREE.NoColorSpace; bump.needsUpdate=true;
+  const material=new THREE.MeshStandardMaterial({color:'#ffffff',map,bumpMap:bump,bumpScale,roughness,metalness:0});
+  material.name=name; return material;
+}
+const BARK_SURFACE=createOrganicMaterial('bark-texture','#76533a','#3f2e22',.94,.06);
+const FOLIAGE_SURFACES=[
+  createOrganicMaterial('leaf-canopy-deep','#496f3f','#28472d',.91,.035),
+  createOrganicMaterial('leaf-canopy-light','#78945a','#3f6539',.9,.03)
+];
+const GRASS_TURF=createOrganicMaterial('grass-turf','#557d43','#2f5a32',.98,.045);
+const GRASS_BLADES=createOrganicMaterial('grass-blades','#719a4d','#426b38',.94,.035);
+const PRODUCE={
+  appleRed:createOrganicMaterial('apple-red','#b84232','#742b25',.29,.018),
+  appleGreen:createOrganicMaterial('apple-green','#8eaa43','#536d2e',.32,.018),
+  orange:createOrganicMaterial('orange-rind','#e18a27','#9d4d18',.56,.032),
+  lemon:createOrganicMaterial('lemon-skin','#e6c846','#a58d2d',.57,.026),
+  banana:createOrganicMaterial('banana-peel','#e5ce70','#9d873e',.48,.012),
+  mango:createOrganicMaterial('mango-skin','#d88a35','#864b2d',.38,.018),
+  tomato:createOrganicMaterial('tomato-skin','#c94335','#7d2825',.34,.014),
+  cucumber:createOrganicMaterial('cucumber-skin','#477e42','#244d34',.58,.025),
+  eggplant:createOrganicMaterial('eggplant-skin','#68406e','#342843',.27,.012),
+  carrot:createOrganicMaterial('carrot-skin','#db782c','#98421c',.72,.022),
+  capsicum:createOrganicMaterial('capsicum-skin','#568e3d','#2d5c2c',.34,.016),
+  cabbage:createOrganicMaterial('cabbage-leaf','#80a65b','#486d38',.78,.028),
+  potato:createOrganicMaterial('potato-skin','#ad8a5d','#69513a',.92,.04),
+  onion:createOrganicMaterial('onion-skin','#bd9b68','#765638',.74,.025),
+  cauliflower:createOrganicMaterial('cauliflower-curd','#e8dfc7','#a69c84',.83,.025),
+  produceLeaf:createOrganicMaterial('produce-leaf','#5f8d43','#315a32',.83,.02)
+};
+const pickableItems=[];
+const movingMarketPeople=[];
+const bilingualMaterialCache=new Map();
+const nightLighting=[];
+const xrControllers=[];
+let xrSession=null;
+let xrBaseReferenceSpace=null;
+const xrMoveOffset=new THREE.Vector3();
+let desktopHeldItem=null;
+let marketJourneyIndex=-1;
+const marketJourneyStops=[
+  {name:'STREET ENTRY',category:'WELCOME TO POORNA MARKET',description:'Begin at the public entrance and follow the shaded edge into the market. The forecourt connects the surrounding streets with the everyday life of the market.',target:[0,0,-39],camera:[13,10,-28],tags:['PUBLIC ENTRY','STREET CONNECTION']},
+  {name:'FLOWERS & GARLANDS',category:'FLOWER MARKET',description:'Explore jasmine, marigold and seasonal flowers. Watch vendors sort blooms, prepare bouquets and string garlands for daily use and celebrations.',target:[-6,0,11],camera:[8,9,24],tags:['JASMINE','MARIGOLD','GARLAND MAKING']},
+  {name:'LOCAL ANDHRA PRODUCE',category:'VEGETABLE MARKET',description:'Discover familiar local produce such as gongura, bendakaya, dosakaya, beerakaya, green chillies and drumsticks. Ask vendors what is seasonal and locally grown.',target:[0,0,-11],camera:[11,8,1],tags:['LOCAL GREENS','SEASONAL PRODUCE','VENDOR STORIES']},
+  {name:'WEIGH & TAKE HOME',category:'THE SHOPPING EXPERIENCE',description:'Choose the quantity you need, place the produce on the weighing scale, confirm the price with the vendor and carry your purchase in a reusable basket or bag.',target:[7,0,-17],camera:[18,8,-7],tags:['SELECT','WEIGH','REUSE']},
+  {name:'COURTYARD & COMMUNITY',category:'PUBLIC GATHERING SPACE',description:'Finish in the open courtyard. It offers a pause from the busy aisles, a place to meet others and a shared green space within the market.',target:[23,0,8],camera:[34,10,21],tags:['OPEN COURTYARD','SEATING','COMMUNITY']}
+];
 const HUMAN_SKIN = mat('#b98767');
 const HUMAN_SKINS = ['#8e5b43','#a56e50','#b98767','#c99573','#d7a47e'].map(c=>mat(c));
 const HUMAN_HAIR = mat('#41352d');
@@ -405,6 +483,75 @@ function addTextPanel(parent, text, x, y, z, w = 2.8, h = .65, rot = 0, color = 
   const panel = new THREE.Mesh(new THREE.PlaneGeometry(w, h), createLabel(text, 384, 88, color, bg));
   panel.position.set(x, y, z); panel.rotation.y = rot; parent.add(panel); return panel;
 }
+function createBilingualLabelMaterial(english,telugu,bg='#594438',fg='#f6edda'){
+  const key=`${english}|${telugu}|${bg}|${fg}`;
+  if(bilingualMaterialCache.has(key)) return bilingualMaterialCache.get(key);
+  const c=document.createElement('canvas'); c.width=640; c.height=190;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,c.width,c.height);
+  ctx.strokeStyle='#d2a177'; ctx.lineWidth=5; ctx.strokeRect(8,8,c.width-16,c.height-16);
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle=fg;
+  ctx.font='700 30px Manrope, Arial'; ctx.fillText(english.toUpperCase(),c.width/2,73);
+  ctx.font='600 34px "Noto Sans Telugu", sans-serif'; ctx.fillText(telugu,c.width/2,135);
+  const texture=new THREE.CanvasTexture(c); texture.colorSpace=THREE.SRGBColorSpace; texture.anisotropy=8;
+  const material=new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide});
+  bilingualMaterialCache.set(key,material);
+  if(document.fonts?.ready) document.fonts.ready.then(()=>{texture.needsUpdate=true;});
+  return material;
+}
+function addBilingualTextPanel(parent,english,telugu,x,y,z,w=2.8,h=.58,rot=0,bg='#594438'){
+  const panel=new THREE.Mesh(new THREE.PlaneGeometry(w,h),createBilingualLabelMaterial(english,telugu,bg));
+  panel.position.set(x,y,z); panel.rotation.y=rot; parent.add(panel); return panel;
+}
+function createBilingualBoardTexture(headingEn,headingTe,bodyEn,bodyTe,accent='#c77a56'){
+  const c=document.createElement('canvas'); c.width=960; c.height=700;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#26352d'; ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle='#d4a178'; ctx.fillRect(28,28,c.width-56,8);
+  ctx.strokeStyle='#c7a17b'; ctx.lineWidth=4; ctx.strokeRect(18,18,c.width-36,c.height-36);
+  ctx.fillStyle='#f0e6d3'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font='700 25px Manrope, Arial'; ctx.fillText('POORNA MARKET  /  పూర్ణ మార్కెట్',c.width/2,82);
+  ctx.fillStyle=accent; ctx.fillRect(260,116,440,5);
+  ctx.fillStyle='#fff2dd'; ctx.font='800 49px Manrope, Arial';
+  ctx.fillText(headingEn,c.width/2,188);
+  ctx.font='700 48px "Noto Sans Telugu", sans-serif';
+  ctx.fillText(headingTe,c.width/2,260);
+  ctx.fillStyle='#d8cbb5'; ctx.fillRect(105,310,750,2);
+  ctx.fillStyle='#f0e8da'; ctx.font='500 30px Manrope, Arial';
+  const wrap=(text,font,maxWidth,lineHeight,startY)=>{
+    ctx.font=font; const words=text.split(/\s+/); let line='',y=startY;
+    for(const word of words){const test=line?`${line} ${word}`:word;if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,c.width/2,y);line=word;y+=lineHeight;}else line=test;}
+    if(line) ctx.fillText(line,c.width/2,y);
+  };
+  wrap(bodyEn,'500 29px Manrope, Arial',780,43,374);
+  ctx.fillStyle='#ead6bd';
+  wrap(bodyTe,'500 30px "Noto Sans Telugu", sans-serif',790,48,500);
+  // Small produce-and-flower motif at the foot of the board.
+  for(let i=0;i<5;i++){
+    const x=390+i*45;
+    ctx.fillStyle=[ '#d58b72','#e0bd69','#9bb17c','#d9e0d1','#c77a56'][i];
+    ctx.beginPath(); ctx.arc(x,640,12,0,Math.PI*2); ctx.fill();
+  }
+  const texture=new THREE.CanvasTexture(c); texture.colorSpace=THREE.SRGBColorSpace; texture.anisotropy=8;
+  if(document.fonts?.ready) document.fonts.ready.then(()=>{texture.needsUpdate=true;});
+  return new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide});
+}
+function createBilingualInfoBoard(parent,x,z,headingEn,headingTe,bodyEn,bodyTe,boardName){
+  const g=new THREE.Group(); g.position.set(x,0,z); parent.add(g);
+  // Freestanding timber-framed educational panel; kept clear of the stair approach.
+  for(const sx of [-1.18,1.18]){
+    addBox(g,sx,1.20,0,.11,2.40,.13,M.woodDark);
+    addBox(g,sx,.12,.02,.42,.16,.48,M.woodWarm);
+  }
+  addBox(g,0,1.92,0,2.72,1.94,.16,M.woodDark);
+  addBox(g,0,1.92,.095,2.58,1.80,.035,M.terracottaDark);
+  const face=new THREE.Mesh(new THREE.PlaneGeometry(2.48,1.70),createBilingualBoardTexture(headingEn,headingTe,bodyEn,bodyTe));
+  face.position.set(0,1.92,.12); g.add(face);
+  addBox(g,0,2.94,.02,2.78,.09,.20,M.woodWarm);
+  g.userData.zone={name:boardName,floor:0,description:`Bilingual English and Telugu educational display. ${bodyEn} ${bodyTe}`};
+  zoneTargets.push(g);
+  return g;
+}
 function addSiteOutline() {
   const points = sitePoly.map(([x,z]) => new THREE.Vector3(x, .06, z));
   points.push(points[0].clone());
@@ -431,72 +578,185 @@ function createCar(parent,x,y,z,color='#8f9b91',rotation=0) {
   return g;
 }
 
+function registerNightLight(light,bulbMaterial,intensity,emissive=2.4){
+  light.intensity=0; light.visible=true; nightLighting.push({light,bulbMaterial,intensity,emissive});
+}
+function createStreetLamp(parent,x,z){
+  const pole=new THREE.Group(); pole.position.set(x,0,z); parent.add(pole);
+  addCylinder(pole,0,3.55,0,.075,.12,7.1,M.steel,10);
+  addCylinder(pole,0,.20,0,.22,.27,.4,M.concreteDark,10);
+  const arm=addCylinder(pole,.42,6.82,0,.045,.045,.9,M.steel,8); arm.rotation.z=Math.PI/2;
+  const head=new THREE.Mesh(new THREE.BoxGeometry(.62,.16,.28),M.steel); head.position.set(.86,6.78,0); pole.add(head);
+  const bulbMat=new THREE.MeshStandardMaterial({color:'#fff0c9',emissive:'#ffc56f',emissiveIntensity:0,roughness:.26});
+  const diffuser=new THREE.Mesh(new THREE.BoxGeometry(.48,.045,.22),bulbMat); diffuser.position.set(.86,6.675,0); pole.add(diffuser);
+  const light=new THREE.PointLight(0xffc77f,0,24,2); light.position.set(.86,6.62,0); pole.add(light);
+  registerNightLight(light,bulbMat,5.3,3.0);
+  return pole;
+}
+function createInteriorLamp(parent,x,z,y=3.72){
+  const fixture=new THREE.Group(); fixture.position.set(x,y,z); parent.add(fixture);
+  const stem=addCylinder(fixture,0,-.18,0,.018,.018,.36,M.steel,7);
+  const shadeMat=new THREE.MeshStandardMaterial({color:'#f4dfb6',emissive:'#ffbd6b',emissiveIntensity:0,roughness:.34});
+  const shade=new THREE.Mesh(new THREE.CylinderGeometry(.20,.32,.18,14,1,true),shadeMat); shade.position.y=-.42; fixture.add(shade);
+  const diffuser=new THREE.Mesh(new THREE.SphereGeometry(.13,12,9),shadeMat); diffuser.position.y=-.54; fixture.add(diffuser);
+  const light=new THREE.PointLight(0xffd29a,0,15,2); light.position.set(0,-.58,0); fixture.add(light);
+  registerNightLight(light,shadeMat,3.1,2.5);
+}
+function createInteriorLighting(){
+  const rows=[[-14,16],[4,14],[20,-9],[-4,-16]];
+  floorGroups.forEach((floor,index)=>{
+    for(const [x,z] of rows) createInteriorLamp(floor,x,z,3.72);
+    // Warm wall washers at the service edge improve legibility without altering the architecture.
+    for(const x of [0]){
+      const wallLamp=new THREE.Group(); wallLamp.position.set(x,3.25,36.5); floor.add(wallLamp);
+      const fixtureMat=new THREE.MeshStandardMaterial({color:'#f1d7a7',emissive:'#ffc77b',emissiveIntensity:0,roughness:.32});
+      const lens=new THREE.Mesh(new THREE.BoxGeometry(.38,.18,.09),fixtureMat); wallLamp.add(lens);
+      const light=new THREE.PointLight(0xffd09a,0,12,2); light.position.set(0,-.15,-.45); wallLamp.add(light);
+      registerNightLight(light,fixtureMat,1.45,2.0);
+    }
+  });
+}
 function createRoadsAndContext() {
   // Plot ground, paved pedestrian apron and adjoining street context.
-  addBox(marketRoot, 0, -.24, 0, 240, .35, 240, M.paving, { castShadow: false });
-  makeFlatPoly(marketRoot, sitePoly, -.035, M.paving);
-  // 18 m Town Kotha Road along the stepped southern boundary.
-  addBox(marketRoot, -17.0, -.12, -56.0, 155, .28, 18, M.asphalt, { castShadow: false });
-  for (let x = -85; x < 62; x += 13) addBox(marketRoot, x, .035, -56, 6.5, .025, .18, M.roadLine, { castShadow: false });
-  // 22 m Bowdara Road to the east; pedestrian-prioritised edge and kerb.
-  addBox(marketRoot, 51.3, -.12, -2.0, 22, .28, 145, M.asphalt, { castShadow: false });
-  for (let z = -67; z < 68; z += 13) addBox(marketRoot, 51.3, .035, z, .18, .025, 6.5, M.roadLine, { castShadow: false });
-  addBox(marketRoot, 39.1, .03, -2, .55, .34, 145, M.concreteLight, { castShadow: false });
-  addBox(marketRoot, 0, .03, -46.8, 110, .3, .55, M.concreteLight, { castShadow: false });
-  // Pedestrian paving band, bollards and entry markers.
-  addBox(marketRoot, 38.0, .035, -2, 5.2, .12, 142, M.pavingDark, { castShadow: false });
-  for (let z = -43; z <= 38; z += 8) addCylinder(marketRoot, 35.2, .55, z, .12, .12, 1.1, M.steel, 8);
-  // Main street trees and landscape islands.
-  for (const p of [[-34,-49],[-21,-49],[-8,-49],[5,-49],[20,-49],[45,-41],[45,-25],[45,-9],[45,9],[45,26],[45,43]]) createTree(marketRoot, p[0], .05, p[1], 1.45, true);
-  // Street furniture, cycle stands and two-wheelers near the southern edge.
-  for (let i = 0; i < 7; i++) {
-    const x = -8 + i * 2.0;
-    addCylinder(marketRoot, x, .55, -42.5, .045, .045, 1.1, M.steel, 8);
+  addBox(marketRoot,0,-.24,0,240,.35,240,M.paving,{castShadow:false});
+  makeFlatPoly(marketRoot,sitePoly,-.035,M.paving);
+  // 18 m Town Kotha Road: two carriageways separated by a planted, tree-lined median.
+  addBox(marketRoot,-17,-.12,-56,155,.28,18,M.asphalt,{castShadow:false});
+  for(let x=-85;x<62;x+=13) addBox(marketRoot,x,.035,-56,6.5,.025,.18,M.roadLine,{castShadow:false});
+  addBox(marketRoot,-17,.12,-56,145,.24,1.7,M.concreteLight,{castShadow:false});
+  addBox(marketRoot,-17,.255,-56,143,.055,1.42,GRASS_TURF,{castShadow:false});
+  createGrassPatch(marketRoot,-17,-56,142,1.25,.29,470);
+  for(let x=-80;x<=50;x+=18) createTree(marketRoot,x,.29,-56,.96,true);
+  // Smaller trees along both road edges soften the street without blocking shopfronts.
+  for(let x=-78;x<=48;x+=24){
+    addBox(marketRoot,x,.105,-64.6,2.4,.15,2.4,M.concreteDark,{castShadow:false});
+    createGrassPatch(marketRoot,x,-64.6,2.2,2.2,.20,24);
+    createTree(marketRoot,x,.20,-64.6,.48,true);
+    const innerX=x+11;
+    addBox(marketRoot,innerX,.105,-47.4,2.4,.15,2.4,M.concreteDark,{castShadow:false});
+    createGrassPatch(marketRoot,innerX,-47.4,2.2,2.2,.20,24);
+    createTree(marketRoot,innerX,.20,-47.4,.46,true);
   }
-  for (let i = 0; i < 5; i++) createScooter(marketRoot, 18 + i * 2.1, .05, -42.8 + (i % 2) * 1.5, (i % 2 ? .1 : -.1));
-  // Indicative visitor drop-off / kerbside parking and two-wheeler bays at the street edge.
-  for (const x of [-24,-15]) createCar(marketRoot,x,.03,-57.2,x<0?'#a17d64':'#82928c',0);
-  for (const z of [-33,-28,-23,-18,-13]) createScooter(marketRoot,41.5,.05,z,Math.PI/2);
+  // 22 m Bowdara Road with a continuous planted median and trees on both verges.
+  addBox(marketRoot,51.3,-.12,-2,22,.28,145,M.asphalt,{castShadow:false});
+  for(let z=-67;z<68;z+=13) addBox(marketRoot,51.3,.035,z,.18,.025,6.5,M.roadLine,{castShadow:false});
+  addBox(marketRoot,51.3,.12,-2,1.7,.24,139,M.concreteLight,{castShadow:false});
+  addBox(marketRoot,51.3,.255,-2,1.42,.055,137,GRASS_TURF,{castShadow:false});
+  createGrassPatch(marketRoot,51.3,-2,1.25,136,.29,490);
+  for(let z=-62;z<=58;z+=18) createTree(marketRoot,51.3,.29,z,.9,true);
+  for(let z=-62;z<=58;z+=24){
+    addBox(marketRoot,40.6,.105,z,2.35,.15,2.35,M.concreteDark,{castShadow:false});
+    createGrassPatch(marketRoot,40.6,z,2.15,2.15,.20,24);
+    createTree(marketRoot,40.6,.20,z,.48,true);
+    addBox(marketRoot,62.0,.105,z+10,2.35,.15,2.35,M.concreteDark,{castShadow:false});
+    createGrassPatch(marketRoot,62.0,z+10,2.15,2.15,.20,24);
+    createTree(marketRoot,62.0,.20,z+10,.46,true);
+  }
+  // Kerbs and pedestrian bands at the market-facing edge.
+  addBox(marketRoot,39.1,.03,-2,.55,.34,145,M.concreteLight,{castShadow:false});
+  addBox(marketRoot,0,.03,-46.8,110,.3,.55,M.concreteLight,{castShadow:false});
+  addBox(marketRoot,38,.035,-2,5.2,.12,142,M.pavingDark,{castShadow:false});
+  for(let z=-43;z<=38;z+=8) addCylinder(marketRoot,35.2,.55,z,.12,.12,1.1,M.steel,8);
+  // Warm pedestrian-scale streetlights illuminate both road corridors in evening mode.
+  for(const x of [-72,-30,12,48]) createStreetLamp(marketRoot,x,-48.4);
+  for(const z of [-58,-20,18,56]) createStreetLamp(marketRoot,40.3,z);
+  for(const z of [-54,-12,30]) createStreetLamp(marketRoot,62.2,z);
+  // Street furniture and two-wheelers near the southern edge.
+  for(let i=0;i<7;i++) addCylinder(marketRoot,-8+i*2,.55,-42.5,.045,.045,1.1,M.steel,8);
+  for(let i=0;i<5;i++) createScooter(marketRoot,18+i*2.1,.05,-42.8+(i%2)*1.5,(i%2?.1:-.1));
+  // Indicative visitor drop-off / kerbside parking, kept clear of the new central median.
+  for(const x of [-24,-15]) createCar(marketRoot,x,.03,-61.4,x<0?'#a17d64':'#82928c',0);
+  for(const z of [-33,-28,-23,-18,-13]) createScooter(marketRoot,38.1,.05,z,Math.PI/2);
   addTextPanel(marketRoot,'VISITOR DROP-OFF',-19,.7,-63.2,7,.5,0,'#e8e0cf','#444b43');
   addTextPanel(marketRoot,'TWO-WHEELER PARKING',44,.8,-4,8,.55,Math.PI/2,'#e8e0cf','#444b43');
-  // Simple urban edge context, deliberately low so it does not compete with the market.
-  for (let i = 0; i < 8; i++) {
-    const x = -56 + i * 15;
-    addBox(marketRoot, x, 4.6 + (i % 3) * 1.1, -73, 10.5, 9.2 + (i % 3) * 2.2, 7.5, i % 2 ? M.concreteDark : M.concreteLight, { castShadow: true });
-    addBox(marketRoot, x, 1.6, -68.9, 8.6, 2.5, .12, M.glass, { castShadow: false });
+  // Simple low-rise urban edge context.
+  for(let i=0;i<8;i++){
+    const x=-56+i*15;
+    addBox(marketRoot,x,4.6+(i%3)*1.1,-73,10.5,9.2+(i%3)*2.2,7.5,i%2?M.concreteDark:M.concreteLight,{castShadow:true});
+    addBox(marketRoot,x,1.6,-68.9,8.6,2.5,.12,M.glass,{castShadow:false});
   }
-  for (let i = 0; i < 6; i++) {
-    const z = -51 + i * 18;
-    addBox(marketRoot, 67, 5.4 + (i % 2) * 2.0, z, 8, 10.8 + (i % 2) * 4, 11.5, i % 2 ? M.concreteLight : M.concreteDark);
+  for(let i=0;i<6;i++){
+    const z=-51+i*18;
+    addBox(marketRoot,67,5.4+(i%2)*2,z,8,10.8+(i%2)*4,11.5,i%2?M.concreteLight:M.concreteDark);
   }
-  addTextPanel(marketRoot, 'Town Kotha Road · 18 m', -4, .22, -66, 16, .9, 0, '#d8d7c9', '#303632');
-  addTextPanel(marketRoot, 'Bowdara Road · 22 m', 61, .22, 8, 15, .9, Math.PI / 2, '#d8d7c9', '#303632');
+  addTextPanel(marketRoot,'Town Kotha Road · 18 m',-4,.22,-66,16,.9,0,'#d8d7c9','#303632');
+  addTextPanel(marketRoot,'Bowdara Road · 22 m',61,.22,8,15,.9,Math.PI/2,'#d8d7c9','#303632');
 }
 
-function createTree(parent, x, y, z, scale = 1, street = false) {
-  const g = new THREE.Group(); g.position.set(x, y, z); g.scale.setScalar(scale); parent.add(g);
-  addCylinder(g, 0, 1.35, 0, .17, .28, 2.7, M.timber, 7);
-  const crownMat = street ? M.leaf : M.leaf2;
-  const offsets = [[0,2.8,0],[-.65,2.5,.2],[.6,2.55,.15],[.15,3.25,-.45],[-.3,3.15,.4]];
-  for (const [ox,oy,oz] of offsets) {
-    const leaf = new THREE.Mesh(new THREE.IcosahedronGeometry(.92 + Math.random()*.25, 1), crownMat);
-    leaf.position.set(ox, oy, oz); leaf.scale.set(1.05,.82,1); leaf.castShadow = true; g.add(leaf);
+function createTree(parent,x,y,z,scale=1,street=false) {
+  const g=new THREE.Group(); g.position.set(x,y,z); g.scale.setScalar(scale); parent.add(g);
+  const trunkHeight=street?3.5:3.1;
+  const trunkGeo=cachedGeometry('natural-tree-trunk',()=>new THREE.CylinderGeometry(.13,.27,1,12,5));
+  const trunk=new THREE.Mesh(trunkGeo,BARK_SURFACE); trunk.scale.set(1,trunkHeight,1); trunk.position.y=trunkHeight*.5; trunk.castShadow=true; trunk.receiveShadow=true; g.add(trunk);
+  // Tapered branching limbs and a broad, irregular crown.
+  const branchDirections=[[-.9,2.35,.25],[.85,2.5,-.25],[-.35,2.8,-.8],[.3,2.9,.75],[.95,2.2,.55]];
+  for(const [dx,by,dz] of branchDirections){
+    const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(0,by*.55,0),new THREE.Vector3(dx*.38,by*.78,dz*.38),new THREE.Vector3(dx,by+.25,dz)]);
+    const branch=new THREE.Mesh(new THREE.TubeGeometry(curve,12,.075,7,false),BARK_SURFACE);
+    branch.castShadow=true; g.add(branch);
   }
-  if (!street) {
-    for (let i = 0; i < 10; i++) {
-      const flower = new THREE.Mesh(new THREE.SphereGeometry(.10, 6, 5), i % 2 ? M.flowerPink : M.flowerYellow);
-      const a = i * 2.4; flower.position.set(Math.cos(a)*.95, 2.65 + Math.sin(a*1.7)*.45, Math.sin(a)*.85); g.add(flower);
+  const crownCenters=street?
+    [[0,3.75,0,1.35],[-.95,3.55,.12,1.02],[.9,3.6,-.1,1.05],[.1,4.35,-.55,.95],[-.35,4.25,.62,.95]]:
+    [[0,3.45,0,1.0],[-.72,3.25,.16,.78],[.72,3.30,-.1,.8],[.10,3.95,-.38,.72]];
+  for(let i=0;i<crownCenters.length;i++){
+    const [cx,cy,cz,r]=crownCenters[i];
+    const crown=new THREE.Mesh(new THREE.SphereGeometry(r,20,16),FOLIAGE_SURFACES[i%2]);
+    crown.position.set(cx,cy,cz); crown.scale.set(1.08,.82,.96); crown.castShadow=true; crown.receiveShadow=true; g.add(crown);
+  }
+  const leafGeo=cachedGeometry('natural-leaf-geo',()=>new THREE.SphereGeometry(.16,10,7));
+  for(let matIndex=0;matIndex<2;matIndex++){
+    const count=street?74:48;
+    const leaves=new THREE.InstancedMesh(leafGeo,FOLIAGE_SURFACES[matIndex],count);
+    const dummy=new THREE.Object3D();
+    for(let i=0;i<count;i++){
+      const a=Math.random()*Math.PI*2, radial=Math.sqrt(Math.random())*(street?1.65:1.2);
+      const h=2.65+Math.random()*(street?2.05:1.55);
+      dummy.position.set(Math.cos(a)*radial,h,Math.sin(a)*radial*.83);
+      dummy.rotation.set(Math.random()*.8,Math.random()*Math.PI*2,Math.random()*.8);
+      dummy.scale.set(.9+Math.random()*.65,.22+Math.random()*.25,.42+Math.random()*.45);
+      dummy.updateMatrix(); leaves.setMatrixAt(i,dummy.matrix);
+    }
+    leaves.instanceMatrix.needsUpdate=true; leaves.castShadow=true; leaves.receiveShadow=true; g.add(leaves);
+  }
+  if(!street){
+    // Small flowering accents on courtyard trees, kept sparse and natural.
+    for(let i=0;i<8;i++){
+      const flower=new THREE.Mesh(new THREE.SphereGeometry(.055,8,7),i%2?M.flowerPink:M.flowerYellow);
+      const a=i*2.4; flower.position.set(Math.cos(a)*.9,3.05+Math.sin(a*1.7)*.42,Math.sin(a)*.75); g.add(flower);
     }
   }
   return g;
 }
-function createPlanter(parent, x, z, w, d, y = .15) {
-  addBox(parent, x, y, z, w, .35, d, M.concreteDark);
-  addBox(parent, x, y+.23, z, w-.24, .12, d-.24, M.green);
-  for (let i = 0; i < Math.max(3, Math.floor(w*1.1)); i++) {
-    const px = x - w*.4 + (w*.8)*(i/Math.max(1,Math.floor(w*1.1)-1));
-    const shrub = new THREE.Mesh(new THREE.IcosahedronGeometry(.35, 1), M.leaf2);
-    shrub.position.set(px, y+.65, z+(i%2 ? .18 : -.18)); shrub.scale.set(1,.8,1); shrub.castShadow = true; parent.add(shrub);
+function createGrassPatch(parent,x,z,w,d,y=.12,count=null){
+  const base=new THREE.Mesh(new THREE.BoxGeometry(w,.06,d),GRASS_TURF);
+  base.position.set(x,y,z); base.receiveShadow=true; parent.add(base);
+  const bladeGeo=cachedGeometry('grass-blade-geometry',()=>{
+    const geo=new THREE.BufferGeometry();
+    geo.setAttribute('position',new THREE.Float32BufferAttribute([
+      0,0,0, -.035,.26,0, .035,.26,0,
+      0,0,0, -.012,.47,.045, .012,.47,.045
+    ],3));
+    geo.setIndex([0,1,2,3,4,5]); geo.computeVertexNormals(); return geo;
+  });
+  const n=count??Math.max(45,Math.floor(w*d*7));
+  const blades=new THREE.InstancedMesh(bladeGeo,GRASS_BLADES,n); const dummy=new THREE.Object3D();
+  for(let i=0;i<n;i++){
+    dummy.position.set(x+(Math.random()-.5)*w*.96,y+.04,z+(Math.random()-.5)*d*.96);
+    dummy.rotation.set((Math.random()-.5)*.22,Math.random()*Math.PI*2,(Math.random()-.5)*.22);
+    dummy.scale.set(.7+Math.random()*.75,.45+Math.random()*1.0,.7+Math.random()*.75);
+    dummy.updateMatrix(); blades.setMatrixAt(i,dummy.matrix);
+  }
+  blades.instanceMatrix.needsUpdate=true; blades.castShadow=true; blades.receiveShadow=true; parent.add(blades);
+  return blades;
+}
+function createPlanter(parent,x,z,w,d,y=.15){
+  addBox(parent,x,y,z,w,.35,d,M.concreteDark);
+  createGrassPatch(parent,x,z,w-.24,d-.24,y+.24,Math.max(25,Math.floor(w*d*4)));
+  const shrubGeo=cachedGeometry('natural-shrub-geo',()=>new THREE.SphereGeometry(.27,14,10));
+  for(let i=0;i<Math.max(3,Math.floor(w*.75));i++){
+    const px=x-w*.4+(w*.8)*(i/Math.max(1,Math.floor(w*.75)-1));
+    const shrub=new THREE.Mesh(shrubGeo,FOLIAGE_SURFACES[i%2]);
+    shrub.position.set(px,y+.62,z+(i%2?.18:-.18)); shrub.scale.set(1.15,.72,1); shrub.castShadow=true; parent.add(shrub);
   }
 }
 
@@ -546,10 +806,11 @@ function createHuman(parent, x, z, rotation = 0, role = 'customer', outfit = nul
   };
 
   // Trouser legs and shoes are separated at the knee/ankle for a more natural silhouette.
+  const walkParts={legs:[],shoes:[],arms:[]};
   for (const side of [-1,1]) {
-    addLimb([side*.115,.72,0],[side*.135,.17,.015],.092,clothes[1]);
+    walkParts.legs.push(addLimb([side*.115,.72,0],[side*.135,.17,.015],.092,clothes[1]));
     const shoe = new THREE.Mesh(humanShoeGeo, shoeMat);
-    shoe.position.set(side*.135,.085,.075); shoe.castShadow=true; g.add(shoe);
+    shoe.position.set(side*.135,.085,.075); shoe.castShadow=true; g.add(shoe); walkParts.shoes.push(shoe);
   }
   // Sleeves and forearms use different materials; the arms are posed for serving or shopping.
   const vendorPose = role === 'vendor';
@@ -559,8 +820,8 @@ function createHuman(parent, x, z, rotation = 0, role = 'customer', outfit = nul
   const rightHand = vendorPose ? [.36,.99,-.30] : [.48,1.14,.53];
   for (const [side,elbow,hand] of [[-1,leftElbow,leftHand],[1,rightElbow,rightHand]]) {
     const shoulder=[side*.235,1.37,0];
-    addLimb(shoulder,elbow,.095,clothes[0]);
-    addLimb(elbow,hand,.062,skin);
+    walkParts.arms.push(addLimb(shoulder,elbow,.095,clothes[0]));
+    walkParts.arms.push(addLimb(elbow,hand,.062,skin));
     const palm = new THREE.Mesh(humanHandGeo,skin); palm.position.set(...hand); palm.scale.set(1,.82,1.12); g.add(palm);
   }
   // Vendors wear a practical apron; customers carry a cloth shopping bag or basket.
@@ -579,6 +840,7 @@ function createHuman(parent, x, z, rotation = 0, role = 'customer', outfit = nul
   }
   g.scale.setScalar(.94 + Math.random()*.12);
   g.userData.phase = Math.random()*Math.PI*2;
+  g.userData.walkParts=walkParts;
   return g;
 }
 
@@ -684,22 +946,94 @@ function compactHumanMeshes(floorGroup) {
   }
 }
 
-function createMarketCrate(parent,x,y,z,w,d,height,produceMat) {
-  const g = new THREE.Group(); g.position.set(x,y,z); parent.add(g);
+function addProduceLeaf(group,x,y,z,angle=0,scale=1){
+  const leaf=new THREE.Mesh(cachedGeometry('produce-leaf-geometry',()=>new THREE.SphereGeometry(.075,9,6)),PRODUCE.produceLeaf);
+  leaf.position.set(x,y,z); leaf.scale.set(.55*scale,.12*scale,.22*scale); leaf.rotation.set(.18,angle,.28); group.add(leaf);
+}
+function createProduceItem(parent,type,x,y,z,scale=.72){
+  const g=new THREE.Group(); g.position.set(x,y,z); g.scale.setScalar(scale); g.userData.pickupItem=true; g.userData.produceType=type; g.userData.label=type.replace(/-/g,' '); g.userData.originalScale=scale;
+  let stallOwner=parent; while(stallOwner && !stallOwner.userData?.stall) stallOwner=stallOwner.parent;
+  g.userData.floorIndex=stallOwner?.userData?.stall?.floor ?? currentFloor;
+  parent.add(g);
+  const sphere=(material,sx,sy,sz,r=.15)=>{
+    const mesh=new THREE.Mesh(cachedGeometry(`produce-sphere-${r}`,()=>new THREE.SphereGeometry(r,20,16)),material);
+    mesh.scale.set(sx,sy,sz); mesh.castShadow=true; mesh.receiveShadow=true; g.add(mesh); return mesh;
+  };
+  const stemMat=mat('#6b5030',.8); const stemGeo=cachedGeometry('produce-stem-geo',()=>new THREE.CylinderGeometry(.018,.025,.12,8));
+  const addStem=(px,py,pz,h=.12)=>{const stem=new THREE.Mesh(stemGeo,stemMat);stem.scale.y=h/.12;stem.position.set(px,py,pz);stem.rotation.z=(Math.random()-.5)*.35;g.add(stem);};
+  switch(type){
+    case 'apple':
+      sphere(PRODUCE.appleRed,.95,1.02,.94,.16); addStem(0,.158,0,.09);
+      for(let i=0;i<5;i++) addProduceLeaf(g,Math.cos(i*1.25)*.07,.16,Math.sin(i*1.25)*.07,i*.8,.65);
+      break;
+    case 'green-apple':
+      sphere(PRODUCE.appleGreen,.96,1.03,.94,.16); addStem(0,.16,0,.085); addProduceLeaf(g,.045,.17,0,.8,.55); break;
+    case 'orange':
+      sphere(PRODUCE.orange,1,1,.98,.15); addStem(0,.147,0,.035); addProduceLeaf(g,.07,.145,0,.6,.45); break;
+    case 'lemon':
+      sphere(PRODUCE.lemon,.82,1.18,.75,.15); addStem(.01,.16,0,.04); break;
+    case 'banana': {
+      const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.18,.12,0),new THREE.Vector3(-.11,.03,0),new THREE.Vector3(0,-.02,0),new THREE.Vector3(.12,.03,.005),new THREE.Vector3(.18,.13,.01)]);
+      const banana=new THREE.Mesh(new THREE.TubeGeometry(curve,24,.055,12,false),PRODUCE.banana); banana.castShadow=true; g.add(banana);
+      addStem(-.18,.12,0,.07); addStem(.18,.13,.01,.06); break;
+    }
+    case 'mango':
+      sphere(PRODUCE.mango,.78,1.23,.72,.16).rotation.z=-.28; addStem(.035,.18,0,.06); break;
+    case 'tomato': {
+      sphere(PRODUCE.tomato,1.08,.82,1.02,.16);
+      for(let i=0;i<6;i++){const a=i*Math.PI/3;addProduceLeaf(g,Math.cos(a)*.07,.135,Math.sin(a)*.07,a,.8);}
+      addStem(0,.16,0,.045); break;
+    }
+    case 'cucumber':
+      sphere(PRODUCE.cucumber,.62,1.48,.62,.15).rotation.z=.12;
+      for(let i=0;i<7;i++){const a=i*2.4;const bump=new THREE.Mesh(cachedGeometry('cucumber-bump',()=>new THREE.SphereGeometry(.012,6,5)),PRODUCE.produceLeaf);bump.position.set(Math.cos(a)*.08,(i-3)*.035,Math.sin(a)*.08);g.add(bump);} break;
+    case 'eggplant':
+      sphere(PRODUCE.eggplant,.72,1.38,.72,.15).rotation.z=-.22;
+      for(let i=0;i<5;i++) addProduceLeaf(g,Math.cos(i*1.25)*.07,.18,Math.sin(i*1.25)*.07,i,.9);
+      addStem(0,.18,0,.11); break;
+    case 'carrot': {
+      const cone=new THREE.Mesh(cachedGeometry('carrot-body',()=>new THREE.ConeGeometry(.095,.34,18,3)),PRODUCE.carrot);
+      cone.rotation.z=Math.PI; cone.position.y=.14; cone.castShadow=true; g.add(cone);
+      for(let i=0;i<4;i++) addProduceLeaf(g,Math.cos(i*1.57)*.045,.31,Math.sin(i*1.57)*.045,i,.9); break;
+    }
+    case 'capsicum':
+      sphere(PRODUCE.capsicum,.98,1,.95,.15);
+      for(let i=0;i<4;i++){const l=new THREE.Mesh(cachedGeometry('pepper-lobe',()=>new THREE.SphereGeometry(.075,12,9)),PRODUCE.capsicum);const a=i*Math.PI/2;l.position.set(Math.cos(a)*.09,-.015,Math.sin(a)*.09);l.scale.set(.8,1,.8);g.add(l);}
+      addStem(0,.16,0,.075); break;
+    case 'cabbage':
+      sphere(PRODUCE.cabbage,1.05,.92,1.02,.16);
+      for(let i=0;i<6;i++){const a=i*Math.PI/3;const l=new THREE.Mesh(cachedGeometry('cabbage-outer-leaf',()=>new THREE.SphereGeometry(.12,12,8)),PRODUCE.cabbage);l.position.set(Math.cos(a)*.095,-.025,Math.sin(a)*.095);l.scale.set(1,.65,.55);l.rotation.y=a;g.add(l);} break;
+    case 'potato':
+      sphere(PRODUCE.potato,1.13,.76,.9,.15).rotation.z=.3;
+      for(let i=0;i<5;i++){const spot=new THREE.Mesh(cachedGeometry('potato-eye',()=>new THREE.SphereGeometry(.008,5,4)),stemMat);const a=i*2.4;spot.position.set(Math.cos(a)*.13,Math.sin(a*.8)*.07,Math.sin(a)*.12);g.add(spot);} break;
+    case 'onion':
+      sphere(PRODUCE.onion,.85,1.18,.82,.15); addStem(0,.16,0,.14); break;
+    case 'cauliflower':
+      sphere(PRODUCE.cauliflower,1.08,.94,1.02,.14);
+      for(let i=0;i<8;i++){const a=i*2.4;const curd=new THREE.Mesh(cachedGeometry('cauliflower-curd-geo',()=>new THREE.SphereGeometry(.06,10,8)),PRODUCE.cauliflower);curd.position.set(Math.cos(a)*.085,Math.sin(a*1.3)*.055,Math.sin(a)*.085);g.add(curd);}
+      for(let i=0;i<4;i++) addProduceLeaf(g,Math.cos(i*1.57)*.08,-.08,Math.sin(i*1.57)*.08,i,.9); break;
+    default:
+      sphere(PRODUCE.appleRed,1,1,1,.15);
+  }
+  g.userData.pickRadius=.22; pickableItems.push(g); return g;
+}
+function createMarketCrate(parent,x,y,z,w,d,height,produceMat){
+  const g=new THREE.Group(); g.position.set(x,y,z); parent.add(g);
   addBox(g,0,height*.5,0,w*.94,height*.12,d*.94,M.woodDark);
-  for(const sx of [-1,1]) for(let row=0;row<3;row++){
-    addBox(g,sx*(w*.46),height*(.28+row*.27),0,.055,height*.18,d*.92,M.woodWarm);
-  }
+  for(const sx of [-1,1]) for(let row=0;row<3;row++) addBox(g,sx*(w*.46),height*(.28+row*.27),0,.055,height*.18,d*.92,M.woodWarm);
   for(let row=0;row<3;row++) addBox(g,0,height*(.28+row*.27),d*.46,w*.92,height*.09,.055,M.woodWarm);
-  // Visible contents sit just above the crate rim instead of being a single solid lump.
-  const fruitGeo = cachedGeometry('stall-fruit-sphere',()=>new THREE.SphereGeometry(.105,9,7));
-  for(let i=0;i<7;i++){
-    const fruit=new THREE.Mesh(fruitGeo,produceMat);
-    fruit.position.set((i%4-1.5)*w*.17,height*.78+(i%2)*.035,((Math.floor(i/4))-.5)*d*.28);
-    fruit.scale.set(1,.9,.92); fruit.castShadow=true; g.add(fruit);
-  }
-  compactDirectMeshes(g);
-  return g;
+  // Two individually modeled fruits/vegetables per crate; each can be picked up in VR.
+  const typeMap=new Map([
+    [M.produceGreen,['cucumber','cabbage']],
+    [M.produceRed,['apple','tomato']],
+    [M.produceYellow,['banana','lemon']],
+    [M.produceOrange,['orange','carrot']],
+    [M.producePurple,['eggplant','onion']]
+  ]);
+  const types=typeMap.get(produceMat)||['apple','orange'];
+  createProduceItem(g,types[0],-w*.17,height*.77,-d*.12,.62);
+  createProduceItem(g,types[1],w*.16,height*.78,d*.11,.62);
+  compactDirectMeshes(g); return g;
 }
 
 function createWeighingScale(parent,x,y,z) {
@@ -732,7 +1066,14 @@ function createStall(parent, config, floor, index) {
   const {x,z,rotation=0,type='vegetable',name}=config;
   const g=new THREE.Group(); g.position.set(x,0,z); g.rotation.y=rotation; parent.add(g);
   const sw=config.w||3.2, sd=config.d||3.05;
-  g.userData.stall={type,name:name||`${type==='flower'?'Flower':'Vegetable'} Stall ${String(index).padStart(2,'0')}`,floor,features:type==='flower'?['Flower buckets','Wrapping counter','Storage crates','Vendor workspace','Customer interaction zone']:['Fresh produce crates','Digital weighing scale','Under-counter storage','Vendor workspace','Customer interaction zone']};
+  const localTheme=type==='flower'
+    ? {title:'Flowers & garlands',story:'Fresh jasmine, marigold and seasonal flowers are sorted here. Vendors prepare bouquets and string garlands for everyday worship, celebrations and family occasions.',products:['JASMINE','MARIGOLD','GARLAND MAKING']}
+    : (index%3===0
+      ? {title:'Seasonal Andhra vegetables',story:'A stall for familiar local vegetables such as bendakaya, dosakaya, beerakaya, green chillies and drumsticks. Ask the vendor what is fresh and in season.',products:['BENDakAYA','DOSAKAYA','SEASONAL']}
+      : index%3===1
+        ? {title:'Leafy greens & local produce',story:'Explore leafy vegetables and local greens, including gongura. Vendors can share how to select, clean and cook the produce.',products:['GONGURA','LEAFY GREENS','LOCAL PRODUCE']}
+        : {title:'Fresh produce & daily essentials',story:'A working produce stall with seasonal fruits and vegetables, reusable baskets, a weighing scale and a direct conversation with the seller.',products:['FRESH PRODUCE','WEIGHING','REUSABLE BASKETS']});
+  g.userData.stall={type,name:name||`${type==='flower'?'Flower':'Vegetable'} Stall ${String(index).padStart(2,'0')}`,floor,theme:localTheme.title,story:localTheme.story,products:localTheme.products,features:type==='flower'?['Flower buckets','Wrapping counter','Storage crates','Vendor workspace','Customer interaction zone','Local flower traditions']:['Fresh produce crates','Digital weighing scale','Under-counter storage','Vendor workspace','Customer interaction zone','Seasonal Andhra produce']};
 
   // Low raised concrete plinth with timber fascia and a durable counter surface.
   const base=addBox(g,0,.12,0,sw,.22,sd,M.concreteLight); base.userData.stallRoot=g;
@@ -764,7 +1105,7 @@ function createStall(parent, config, floor, index) {
   // Front fascia sign and a modest warm task light below the awning.
   addBox(g,0,2.42,-sd*.50,sw*.88,.34,.095,M.terracottaDark);
   addBox(g,0,2.68,-sd*.39,sw*.36,.055,.08,STALL_LAMP);
-  addTextPanel(g,type==='flower'?'FRESH FLOWERS':'FRESH VEGETABLES',0,2.43,-sd*.555,sw*.78,.25,Math.PI,'#f4e9d4','#674232');
+  addBilingualTextPanel(g,type==='flower'?'FLOWERS & GARLANDS':'FRESH LOCAL PRODUCE',type==='flower'?'పూలు & మాలలు':'తాజా స్థానిక పంటలు',0,2.43,-sd*.555,sw*.82,.30,Math.PI,'#674232');
 
   // Individual slatted produce crates sit on the sales counter, with visible fruit above each rim.
   if(type==='flower'){
@@ -931,6 +1272,24 @@ function createFacadeScreens() {
   return facade;
 }
 
+function createTeaCorner(parent){
+  const tea=new THREE.Group(); tea.position.set(5,0,-33.4); parent.add(tea);
+  // Kettle, small cups and a serving tray sit on the existing hawker counter.
+  addCylinder(tea,0,1.08,0,.25,.29,.48,M.metalLight,14);
+  addCylinder(tea,0,1.35,0,.13,.16,.08,M.steel,12);
+  const handle=new THREE.Mesh(new THREE.TorusGeometry(.16,.025,6,12,Math.PI),M.steel); handle.position.set(0,1.34,-.02); handle.rotation.z=Math.PI; tea.add(handle);
+  const spout=addCylinder(tea,.28,1.22,-.02,.045,.075,.30,M.metalLight,8); spout.rotation.z=-Math.PI/3;
+  addBox(tea,-.52,.98,.04,.52,.06,.42,M.steel);
+  for(let i=0;i<4;i++){
+    const cup=addCylinder(tea,-.67+(i%2)*.25,1.09,-.08+Math.floor(i/2)*.20,.055,.07,.16,M.concreteLight,10);
+    cup.position.y=1.08;
+  }
+  addBilingualTextPanel(tea,'TEA & REFRESHMENTS','టీ & అల్పాహారం',0,2.72,-.18,2.45,.46,Math.PI,'#624535');
+  tea.userData.zone={name:'Tea & refreshments corner',floor:0,description:'A small local refreshment stop at the public hawker edge, adding an everyday social pause to the market visit.'};
+  zoneTargets.push(tea);
+  createHuman(parent,7.2,-30.8,Math.PI,'vendor');
+}
+
 function createServiceBay(parent) {
   createRoomBlock(parent,-20.6,34.4,4.3,5.8,'TOILETS',0);
   createRoomBlock(parent,-14.7,34.4,5.0,5.8,'WASH / SERVICE',0);
@@ -970,7 +1329,8 @@ function createGroundFloor(parent, floorIndex) {
   createRoomBlock(parent,1,-25.5,5.2,3.5,'WRAPPING',floorIndex);
   if (floorIndex === 0) {
     // West courtyard is an 8.60 m x 11.00 m open-to-sky garden, not a concrete floor pad.
-    makeFlatPoly(parent,westCourt,.045,M.green);
+    makeFlatPoly(parent,westCourt,.045,GRASS_TURF);
+    createGrassPatch(parent,-20.7,9.9,8.2,10.5,.10,210);
     createTree(parent,-22.4,.06,8.1,.68,false);
     createTree(parent,-18.9,.06,11.5,.62,false);
     addBox(parent,-20.7,.39,4.65,7.6,.5,.48,M.timber);
@@ -980,12 +1340,23 @@ function createGroundFloor(parent, floorIndex) {
     makeFlatPoly(parent,eastCourt,.045,M.pavingDark);
     const eastGardenNorth=[[8.0,14.8],[31.35,14.8],[31.35,3.0],[8.0,3.0]];
     const eastGardenLeg=[[19.35,1.95],[31.35,1.95],[31.35,-19.35],[19.35,-19.35]];
-    makeFlatPoly(parent,eastGardenNorth,.065,M.green);
-    makeFlatPoly(parent,eastGardenLeg,.065,M.green);
+    makeFlatPoly(parent,eastGardenNorth,.065,GRASS_TURF);
+    makeFlatPoly(parent,eastGardenLeg,.065,GRASS_TURF);
+    createGrassPatch(parent,19.7,8.9,22.5,10.8,.11,290);
+    createGrassPatch(parent,25.3,-8.7,10.8,19.2,.11,250);
     // Seating and planted edges are kept low so the court remains visually open.
     addBox(parent,26.0,.38,-11.8,5.4,.48,.62,M.timber);
     createPlanter(parent,10.2,8.2,3.3,1.0,.08);
     createPlanter(parent,29.4,8.2,3.0,1.0,.08);
+    // Two bilingual interpretation boards sit beside the main vertical-circulation lobbies.
+    createBilingualInfoBoard(parent,-17.5,-17.8,'A MARKET OF PEOPLE','ప్రజల మార్కెట్',
+      'Local vendors, familiar faces and everyday conversations make this market a shared public place.',
+      'స్థానిక వ్యాపారులు, పరిచయమైన ముఖాలు, రోజువారీ సంభాషణలు ఈ మార్కెట్‌ను అందరి ప్రదేశంగా నిలుపుతాయి.',
+      'Market people & community information board');
+    createBilingualInfoBoard(parent,13.5,-18.0,'FROM FARM TO FAMILY','పొలం నుంచి ఇంటివరకు',
+      'Choose seasonal produce, ask the vendor, weigh what you need and carry it in a reusable basket.',
+      'కాలానుగుణ పంటలను ఎంచుకోండి, వ్యాపారిని అడగండి, అవసరమైనంత తూకం వేయించుకోండి, మళ్లీ వాడే బుట్టలో తీసుకెళ్లండి.',
+      'Local produce & responsible shopping information board');
   }
   // Southern hawker spill-out and public forecourt (open to Town Kotha Road).
   addBox(parent,-3.0,.04,-34.5,34,.1,10.0,M.pavingDark);
@@ -994,6 +1365,7 @@ function createGroundFloor(parent, floorIndex) {
     addBox(parent,-13+i*6,.9,-33.4,3.4,.12,2.3,M.timberLight);
     addBox(parent,-13+i*6,1.8,-33.4,3.4,.12,2.3,M.fabricCream);
   }
+  if(floorIndex===0) createTeaCorner(parent);
   // Goods / delivery edge with loading apron on Bowdara Road.
   addBox(parent,35.2,.1,26,5,.2,18,M.pavingDark);
   addTextPanel(parent,'GOODS IN / OUT',35.2,1.1,26,4.0,.5,Math.PI/2,'#f1eadc','#4c554d');
@@ -1086,23 +1458,41 @@ function createFloorPlates() {
     floor.userData.description = descriptions[i];
   }
 
-  // One continuous mature courtyard tree rises through the east atrium. Both courtyard polygons
-  // remain true structural voids through every floor and the roof; only ground-level landscape is placed below.
-  const atriumTree = new THREE.Group();
-  atriumTree.position.set(22,0,-5);
-  buildingRoot.add(atriumTree);
-  const bark = mat('#76513a',.92);
-  const trunk = addCylinder(atriumTree,0,8.2,0,.42,.78,16.4,bark,12);
-  trunk.castShadow=true;
-  for (const branch of [[-2.1,12.3,.2,4.7],[2.0,13.0,-.25,4.4],[-.3,14.2,1.5,4.0],[.5,11.8,-1.7,3.8]]) {
-    const b=addCylinder(atriumTree,branch[0]*.5,branch[1],branch[2]*.5,.18,.32,branch[3],bark,9);
-    b.rotation.z=branch[0]*.16; b.rotation.x=branch[2]*.14;
+  // One mature courtyard tree rises through the east atrium, with textured bark and dense foliage.
+  const atriumTree=new THREE.Group(); atriumTree.position.set(22,0,-5); buildingRoot.add(atriumTree);
+  const trunkCurve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0,.15,0),new THREE.Vector3(-.18,5.2,.12),new THREE.Vector3(.16,10.1,-.12),new THREE.Vector3(.05,15.2,.18)
+  ]);
+  const trunkMesh=new THREE.Mesh(new THREE.TubeGeometry(trunkCurve,48,.46,14,false),BARK_SURFACE);
+  trunkMesh.castShadow=true; trunkMesh.receiveShadow=true; atriumTree.add(trunkMesh);
+  const limbPaths=[
+    [[-.05,8.7,0],[-1.3,11.2,.4],[-3.2,13.6,.5]],
+    [[.05,9.5,0],[1.45,11.4,-.35],[3.3,13.5,-.6]],
+    [[.06,11.5,0],[-.8,13.5,-1.5],[-1.8,15.1,-2.7]],
+    [[.04,12.4,0],[.75,14.1,1.1],[1.7,16.0,2.5]],
+    [[.08,7.8,0],[1.7,9.7,1.0],[2.8,11.0,1.8]]
+  ];
+  for(const path of limbPaths){
+    const curve=new THREE.CatmullRomCurve3(path.map(p=>new THREE.Vector3(...p)));
+    const limb=new THREE.Mesh(new THREE.TubeGeometry(curve,24,.14,9,false),BARK_SURFACE); limb.castShadow=true; atriumTree.add(limb);
   }
-  const canopyMat=mat('#426b43',.88);
-  const canopyMat2=mat('#638453',.9);
-  for (const c of [[0,17,0,4.8],[-3,15.7,.6,3.4],[3.1,16.1,-.3,3.6],[-1.5,18.1,-2.0,3.1],[1.8,18.4,2.0,3.2],[0,19.4,.3,2.8]]) {
-    const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(c[3],2),c[1]>18?canopyMat2:canopyMat);
-    crown.position.set(c[0],c[1],c[2]); crown.scale.set(1,.78,.95); crown.castShadow=true; crown.receiveShadow=true; atriumTree.add(crown);
+  const canopyCenters=[[0,17,0,4.8],[-3,15.7,.6,3.4],[3.1,16.1,-.3,3.6],[-1.5,18.1,-2.0,3.1],[1.8,18.4,2.0,3.2],[0,19.4,.3,2.8]];
+  for(let i=0;i<canopyCenters.length;i++){
+    const [cx,cy,cz,r]=canopyCenters[i];
+    const crown=new THREE.Mesh(new THREE.SphereGeometry(r,28,20),FOLIAGE_SURFACES[i%2]);
+    crown.position.set(cx,cy,cz); crown.scale.set(1,.78,.95); crown.castShadow=true; crown.receiveShadow=true; atriumTree.add(crown);
+  }
+  const atriumLeafGeo=cachedGeometry('atrium-leaf-geometry',()=>new THREE.SphereGeometry(.22,10,7));
+  for(let m=0;m<2;m++){
+    const leaves=new THREE.InstancedMesh(atriumLeafGeo,FOLIAGE_SURFACES[m],230); const dummy=new THREE.Object3D();
+    for(let i=0;i<230;i++){
+      const a=Math.random()*Math.PI*2, radius=Math.sqrt(Math.random())*4.1;
+      dummy.position.set(Math.cos(a)*radius,14.4+Math.random()*5.2,Math.sin(a)*radius*.78);
+      dummy.rotation.set(Math.random(),Math.random()*Math.PI*2,Math.random());
+      dummy.scale.set(.8+Math.random()*.65,.18+Math.random()*.25,.35+Math.random()*.35);
+      dummy.updateMatrix(); leaves.setMatrixAt(i,dummy.matrix);
+    }
+    leaves.instanceMatrix.needsUpdate=true; leaves.castShadow=true; atriumTree.add(leaves);
   }
   atriumTree.userData.isAtriumTree=true;
 
@@ -1146,7 +1536,7 @@ function createExteriorDetails() {
 
 function createRoutes() {
   const definitions={
-    customer:{color:0xf1c17e,paths:[[[0,.33,-42],[0,.33,-25],[-4,.33,-14],[-4,.33,-4],[0,.33,8],[0,.33,20],[0,.33,33]],[[34,.33,3],[25,.33,3],[18,.33,-2],[12,.33,-5],[5,.33,-8]]]},
+    customer:{color:0xf1c17e,paths:[[[0,.33,-42],[-3,.33,-33],[-7,.33,-25],[-7,.33,-19],[-7,.33,-11],[-5,.33,-3],[-5,.33,5],[2,.33,13],[12,.33,13],[18,.33,9],[23,.33,8]]]},
     vendor:{color:0x7bb4a1,paths:[[[-30,.38,22],[-19,.38,22],[-19,.38,12],[-8,.38,12],[0,.38,12],[12,.38,12],[26,.38,12]],[[0,4.55,28],[0,4.55,13],[6,4.55,2],[6,4.55,-12]]]},
     service:{color:0xd87963,paths:[[[48,.4,29],[35,.4,29],[30,.4,23],[30,.4,10],[30,.4,-5],[20,.4,-14]],[[0,.4,39],[0,.4,34],[12,.4,34],[25,.4,34]]]}
   };
@@ -1163,6 +1553,18 @@ function createRoutes() {
         const t=(i/7+.05)%1; dot.position.copy(curve.getPointAt(t));
         const tangent=curve.getTangentAt(t); dot.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),tangent); dots.add(dot);
         dot.userData.route={curve,offset:i/7};
+      }
+    }
+    if(key==='customer'){
+      const routeStops=[
+        {label:'01 ENTRY',x:0,z:-42},{label:'02 FLOWERS',x:-7,z:5},
+        {label:'03 LOCAL PRODUCE',x:-5,z:-11},{label:'04 WEIGH & PAY',x:8,z:-16},
+        {label:'05 COURTYARD',x:23,z:8}
+      ];
+      for(const stop of routeStops){
+        const marker=new THREE.Mesh(new THREE.SphereGeometry(.24,12,10),new THREE.MeshBasicMaterial({color:0xf7d69b}));
+        marker.position.set(stop.x,.56,stop.z); group.add(marker);
+        addTextPanel(group,stop.label,stop.x,1.55,stop.z,2.7,.42,0,'#fff0d8','#5c4434');
       }
     }
   }
@@ -1183,6 +1585,7 @@ function createAll() {
   createRoadsAndContext();
   addSiteOutline();
   createFloorPlates();
+  createInteriorLighting();
   structuralFrame=createColumnGrid();
   facadeScreenRoot=createFacadeScreens();
   createExteriorDetails();
@@ -1205,6 +1608,56 @@ function createAll() {
   westCourtProxy.userData.zone={name:'West planted courtyard',floor:0,description:`Open-to-sky planted court measuring ${COURTYARD_DIMENSIONS.west.width.toFixed(2)} m x ${COURTYARD_DIMENSIONS.west.depth.toFixed(2)} m.`}; zoneTargets.push(westCourtProxy);
 }
 createAll();
+
+function createMarketWalkers(){
+  for(let floor=0;floor<5;floor++){
+    const even=floor%2===0;
+    const paths=even?[
+      [[-16,-20],[-10,-20],[-3,-20],[4,-20],[10,-20],[13,-16]],
+      [[-12,-3],[-5,-3],[2,-3],[9,-3],[13,2],[14,8]]
+    ]:[
+      [[-16,-18],[-9,-18],[-2,-18],[5,-18],[11,-18]],
+      [[-16,-9],[-9,-9],[-2,-9],[5,-9],[11,-9],[14,-5]]
+    ];
+    paths.forEach((path,index)=>{
+      const start=path[0];
+      const person=createHuman(floorGroups[floor],start[0],start[1],0,'customer');
+      person.scale.multiplyScalar(.94+index*.035);
+      const points=path.map(([x,z])=>new THREE.Vector3(x,0,z));
+      const lengths=[]; let total=0;
+      for(let i=0;i<points.length-1;i++){const len=points[i].distanceTo(points[i+1]);lengths.push(len);total+=len;}
+      person.userData.walker={points,lengths,total,speed:.72+index*.12,offset:(floor*.73+index*.47)%total,legQuaternions:person.userData.walkParts.legs.map(l=>l.quaternion.clone()),armQuaternions:person.userData.walkParts.arms.map(l=>l.quaternion.clone())};
+      movingMarketPeople.push(person);
+    });
+  }
+}
+function animateMarketWalkers(time){
+  for(const person of movingMarketPeople){
+    const walker=person.userData.walker; if(!walker||!walker.total)continue;
+    let distance=(time*walker.speed+walker.offset)%walker.total;
+    let segment=0;
+    while(segment<walker.lengths.length-1&&distance>walker.lengths[segment]){distance-=walker.lengths[segment];segment++;}
+    const a=walker.points[segment],b=walker.points[segment+1];
+    const t=THREE.MathUtils.clamp(distance/walker.lengths[segment],0,1);
+    const x=THREE.MathUtils.lerp(a.x,b.x,t),z=THREE.MathUtils.lerp(a.z,b.z,t);
+    const phase=time*walker.speed*5+person.userData.phase;
+    person.position.set(x,.02+Math.abs(Math.sin(phase))*.035,z);
+    person.rotation.y=Math.atan2(b.x-a.x,b.z-a.z);
+    const step=Math.sin(phase);
+    const parts=person.userData.walkParts;
+    const swingAxis=new THREE.Vector3(1,0,0);
+    if(parts?.legs?.length===2){
+      parts.legs[0].quaternion.copy(walker.legQuaternions[0]).multiply(new THREE.Quaternion().setFromAxisAngle(swingAxis,step*.12));
+      parts.legs[1].quaternion.copy(walker.legQuaternions[1]).multiply(new THREE.Quaternion().setFromAxisAngle(swingAxis,-step*.12));
+    }
+    if(parts?.arms?.length===4){
+      parts.arms[0].quaternion.copy(walker.armQuaternions[0]).multiply(new THREE.Quaternion().setFromAxisAngle(swingAxis,-step*.10));
+      parts.arms[2].quaternion.copy(walker.armQuaternions[2]).multiply(new THREE.Quaternion().setFromAxisAngle(swingAxis,step*.10));
+    }
+    if(parts?.shoes?.length===2){parts.shoes[0].position.y=.085+Math.max(0,step)*.025;parts.shoes[1].position.y=.085+Math.max(0,-step)*.025;}
+  }
+}
+createMarketWalkers();
 
 // Outline site boundary in masterplan mode, plus high-level zone pads.
 const masterplanGroup=new THREE.Group(); marketRoot.add(masterplanGroup); masterplanGroup.visible=false;
@@ -1312,6 +1765,21 @@ function toast(message) {
   const el=document.querySelector('#toast'); el.textContent=message; el.classList.add('show');
   clearTimeout(toast._timer); toast._timer=setTimeout(()=>el.classList.remove('show'),2600);
 }
+function advanceMarketJourney(){
+  if(currentMode==='intro') enterExperience();
+  if(masterplanMode) exitMasterplan();
+  if(simulatedVR||simulatedAR||actualXR) exitXRVisuals();
+  if(currentFloor!==0) selectFloor(0,false,true);
+  else setFloorEmphasis(true);
+  marketJourneyIndex=(marketJourneyIndex+1)%marketJourneyStops.length;
+  const stop=marketJourneyStops[marketJourneyIndex];
+  camera.up.set(0,1,0); controls.enabled=true; controls.minDistance=8; controls.maxDistance=90; controls.maxPolarAngle=Math.PI*.49;
+  cameraGoal={position:new THREE.Vector3(...stop.camera),target:new THREE.Vector3(...stop.target)};
+  document.querySelector('#journey-state').textContent=`${marketJourneyIndex+1}/5`;
+  document.querySelector('#journey-next').classList.add('active');
+  showInfo({category:stop.category,title:stop.name,description:stop.description,tags:stop.tags,number:`JOURNEY / ${String(marketJourneyIndex+1).padStart(2,'0')} OF 05`});
+  toast(`MARKET JOURNEY · ${marketJourneyIndex+1}/5 · ${stop.name}`);
+}
 function clearSelection() {
   if(selectedStall?.userData?.highlight) selectedStall.userData.highlight.visible=false;
   selectedStall=null;
@@ -1324,7 +1792,7 @@ function inspectObject(obj) {
   if(root.userData.stall){
     selectedStall=root; root.userData.highlight.visible=true;
     const d=root.userData.stall;
-    showInfo({category:'INTERACTIVE STALL',title:d.name,description:`${d.type==='flower'?'Flower display and wrapping counter':'Fresh produce display and weighing counter'} with an active vendor workspace. A customer is positioned at the front of the counter, selecting goods.`,tags:d.features,number:`F${d.floor} / STALL`});
+    showInfo({category:d.type==='flower'?'TELUGU FLOWER MARKET':'LOCAL ANDHRA MARKET',title:d.name,description:`${d.story} Shopping experience: greet the vendor, choose what you need, ask the price, use the weighing scale and carry your purchase in a reusable basket.`,tags:[d.theme,...d.products,'ASK · SELECT · WEIGH'],number:`F${d.floor} / STALL`});
   } else {
     const d=root.userData.zone;
     showInfo({category:'ARCHITECTURAL SPACE',title:d.name,description:d.description,tags:['PUBLIC SPACE','MARKET CIRCULATION'],number:`F${d.floor ?? currentFloor} / ZONE`});
@@ -1342,14 +1810,18 @@ function setDayMode(evening) {
     sun.intensity=.7; sun.color.set('#f2b982'); sun.position.set(-24,28,15);
     fillLight.intensity=.4;
     renderer.toneMappingExposure=.88;
-    M.glass.color.set('#b4c4c1'); STALL_LAMP.emissiveIntensity=1.7;
-    toast('EVENING ENVIRONMENT · MARKET LIGHTS ON');
+    M.glass.color.set('#b4c4c1'); STALL_LAMP.emissiveIntensity=2.2;
+    for(const item of nightLighting){item.light.intensity=item.intensity; item.bulbMaterial.emissiveIntensity=item.emissive;}
+    renderer.toneMappingExposure=1.02;
+    toast('EVENING ENVIRONMENT · INTERIOR & STREET LIGHTS ON');
   } else {
     scene.background=new THREE.Color('#b7b8a7'); scene.fog.color.set('#b7b8a7'); scene.fog.density=.0027;
     hemi.intensity=2.0; hemi.color.set('#e9e3ce'); hemi.groundColor.set('#6a6253');
     sun.intensity=3.15; sun.color.set('#ffedcf'); sun.position.set(-42,74,45);
     fillLight.intensity=.85; renderer.toneMappingExposure=1.08;
     M.glass.color.set('#91a59a'); STALL_LAMP.emissiveIntensity=0;
+    for(const item of nightLighting){item.light.intensity=0; item.bulbMaterial.emissiveIntensity=0;}
+    renderer.toneMappingExposure=1.08;
     toast('DAYLIGHT ENVIRONMENT RESTORED');
   }
 }
@@ -1418,18 +1890,126 @@ function exitMasterplan() {
   selectFloor(currentFloor,true);
 }
 
-async function startRealVR() {
-  if(!navigator.xr || !navigator.xr.requestSession) return false;
-  try {
-    const supported=await navigator.xr.isSessionSupported('immersive-vr');
-    if(!supported) return false;
+function setupXRControllers(session){
+  cleanupXRControllers(); xrSession=session; xrBaseReferenceSpace=renderer.xr.getReferenceSpace(); xrMoveOffset.set(0,0,0);
+  for(let i=0;i<2;i++){
+    const controller=renderer.xr.getController(i); controller.userData.controllerIndex=i;
+    const gripSpace=renderer.xr.getControllerGrip(i); controller.userData.gripSpace=gripSpace; scene.add(gripSpace);
+    const rayGeometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,-3.5)]);
+    const rayLine=new THREE.Line(rayGeometry,new THREE.LineBasicMaterial({color:0xffd49a,transparent:true,opacity:.78}));
+    controller.add(rayLine); controller.userData.rayLine=rayLine;
+    // A simple controller body sits in the tracked grip space while the ray follows target-ray space.
+    const gripVisual=new THREE.Group();
+    const gripMaterial=new THREE.MeshStandardMaterial({color:'#303833',roughness:.38,metalness:.25});
+    const handle=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,.22,10),gripMaterial); handle.rotation.x=Math.PI/2; handle.position.z=-.11; gripVisual.add(handle);
+    const trigger=new THREE.Mesh(new THREE.SphereGeometry(.048,10,8),new THREE.MeshStandardMaterial({color:'#d4a071',roughness:.32})); trigger.position.set(0,.035,-.08); gripVisual.add(trigger);
+    gripSpace.add(gripVisual);
+    controller.addEventListener('selectstart',()=>pickProduceFromController(controller));
+    controller.addEventListener('selectend',()=>releaseProduceFromController(controller));
+    controller.addEventListener('squeezestart',()=>{ if(!controller.userData.heldItem) pickProduceFromController(controller); });
+    controller.addEventListener('squeezeend',()=>releaseProduceFromController(controller));
+    scene.add(controller); xrControllers.push(controller);
+  }
+}
+function cleanupXRControllers(){
+  for(const controller of xrControllers){
+    if(controller.userData.heldItem) releaseProduceFromController(controller);
+    scene.remove(controller);
+    if(controller.userData.gripSpace) scene.remove(controller.userData.gripSpace);
+  }
+  xrControllers.length=0; xrSession=null; xrBaseReferenceSpace=null; xrMoveOffset.set(0,0,0);
+}
+function getProduceRoot(object){
+  let node=object;
+  while(node){if(node.userData?.pickupItem)return node;node=node.parent;}
+  return null;
+}
+function visiblePickableItems(){
+  return pickableItems.filter(item=>item.parent===marketRoot || item.userData.floorIndex===currentFloor);
+}
+function pickProduceFromController(controller){
+  if(controller.userData.heldItem) return;
+  raycaster.near=.02; raycaster.far=3.6; raycaster.setFromXRController(controller);
+  const hits=raycaster.intersectObjects(visiblePickableItems(),true);
+  const target=hits.length?getProduceRoot(hits[0].object):null;
+  if(!target) return;
+  target.userData.isHeld=true; target.userData.dropVelocity=null;
+  const grip=controller.userData.gripSpace||controller;
+  grip.attach(target); target.position.set(0,-.025,-.18); target.rotation.set(.15,0,0); target.scale.setScalar(target.userData.originalScale||.72);
+  controller.userData.heldItem=target;
+  if(controller.userData.rayLine) controller.userData.rayLine.material.color.set('#86d6a0');
+  toast(`PICKED UP ${target.userData.label.toUpperCase()} · RELEASE TRIGGER TO PLACE`);
+}
+function releaseProduceFromController(controller){
+  const item=controller.userData.heldItem; if(!item)return;
+  const worldPos=new THREE.Vector3(); (controller.userData.gripSpace||controller).getWorldPosition(worldPos);
+  marketRoot.attach(item); item.position.copy(marketRoot.worldToLocal(worldPos));
+  item.position.y=Math.max(currentFloor*4.2+.22,item.position.y-.38);
+  item.userData.isHeld=false; item.userData.dropVelocity=new THREE.Vector3(0,-.3,0); item.userData.floorY=currentFloor*4.2+.14;
+  controller.userData.heldItem=null;
+  if(controller.userData.rayLine) controller.userData.rayLine.material.color.set('#ffd49a');
+  toast('PRODUCE PLACED');
+}
+function updateXRControllerTargets(){
+  if(!actualXR)return;
+  for(const controller of xrControllers){
+    if(!controller.userData.rayLine || controller.userData.heldItem)continue;
+    raycaster.near=.02; raycaster.far=3.6; raycaster.setFromXRController(controller);
+    const hits=raycaster.intersectObjects(visiblePickableItems(),true);
+    const target=hits.length?getProduceRoot(hits[0].object):null;
+    controller.userData.rayLine.material.color.set(target?'#86d6a0':'#ffd49a');
+  }
+}
+function updateXRLocomotion(dt){
+  if(!actualXR||!xrSession||!xrBaseReferenceSpace)return;
+  const sources=[...xrSession.inputSources];
+  const source=sources.find(s=>s.handedness==='left'&&s.gamepad)||sources.find(s=>s.gamepad);
+  if(!source?.gamepad)return;
+  const axes=source.gamepad.axes||[];
+  const axisStart=axes.length>=4?2:0;
+  const stickX=axes[axisStart]||0, stickY=axes[axisStart+1]||0;
+  if(Math.hypot(stickX,stickY)<.16)return;
+  const xrCamera=renderer.xr.getCamera(camera);
+  const forward=new THREE.Vector3(); xrCamera.getWorldDirection(forward); forward.y=0; forward.normalize();
+  const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();
+  const speed=5.4*dt;
+  xrMoveOffset.addScaledVector(right,stickX*speed);
+  xrMoveOffset.addScaledVector(forward,-stickY*speed);
+  const transform=new XRRigidTransform({position:{x:-xrMoveOffset.x,y:0,z:-xrMoveOffset.z}});
+  renderer.xr.setReferenceSpace(xrBaseReferenceSpace.getOffsetReferenceSpace(transform));
+}
+function animateDroppedProduce(dt){
+  for(const item of pickableItems){
+    const v=item.userData.dropVelocity;
+    if(!v || item.parent!==marketRoot) continue;
+    v.y-=9.8*dt; item.position.addScaledVector(v,dt);
+    const floorY=item.userData.floorY??.14;
+    if(item.position.y<floorY){item.position.y=floorY;item.userData.dropVelocity=null;}
+  }
+}
+function desktopVRPickupOrDrop(){
+  if(desktopHeldItem){
+    const worldPos=new THREE.Vector3(); camera.getWorldPosition(worldPos); marketRoot.attach(desktopHeldItem);
+    desktopHeldItem.position.copy(marketRoot.worldToLocal(worldPos)); desktopHeldItem.position.y=Math.max(currentFloor*4.2+.22,desktopHeldItem.position.y-.3);
+    desktopHeldItem.userData.dropVelocity=new THREE.Vector3(0,-.25,0); desktopHeldItem.userData.floorY=currentFloor*4.2+.14; desktopHeldItem=null; toast('PRODUCE PLACED'); return;
+  }
+  raycaster.near=.05; raycaster.far=2.8; raycaster.setFromCamera(new THREE.Vector2(0,0),camera);
+  const hits=raycaster.intersectObjects(visiblePickableItems(),true); const item=hits.length?getProduceRoot(hits[0].object):null;
+  if(!item){toast('AIM AT A FRUIT OR VEGETABLE WITHIN REACH');return;}
+  camera.attach(item); item.position.set(.30,-.25,-.62); item.rotation.set(.2,.1,0); desktopHeldItem=item; toast(`HOLDING ${item.userData.label.toUpperCase()} · PRESS Q TO PLACE`);
+}
+async function startRealVR(){
+  if(!navigator.xr||!navigator.xr.requestSession)return false;
+  try{
+    const supported=await navigator.xr.isSessionSupported('immersive-vr'); if(!supported)return false;
     const session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor','bounded-floor','hand-tracking']});
     renderer.xr.enabled=true; renderer.xr.setReferenceSpaceType('local-floor'); await renderer.xr.setSession(session);
-    actualXR=true; simulatedVR=false; controls.enabled=false;
-    session.addEventListener('end',()=>{actualXR=false;renderer.xr.enabled=false;controls.enabled=true;simulatedVR=false;currentMode='explore';setModeButton('#mode-explore');document.querySelector('#vr-overlay').classList.remove('active');});
+    actualXR=true; simulatedVR=false; controls.enabled=false; setupXRControllers(session);
+    session.addEventListener('end',()=>{cleanupXRControllers();actualXR=false;renderer.xr.enabled=false;controls.enabled=true;simulatedVR=false;currentMode='explore';setModeButton('#mode-explore');document.querySelector('#vr-overlay').classList.remove('active');});
     return true;
-  } catch(err) { console.warn('WebXR VR unavailable:',err); return false; }
+  }catch(err){console.warn('WebXR VR unavailable:',err);return false;}
 }
+
 async function startVR() {
   if(currentMode==='intro') enterExperience();
   if(masterplanMode) exitMasterplan();
@@ -1442,7 +2022,7 @@ async function startVR() {
   document.querySelector('#scene-state').textContent=ok?'WEBXR / IMMERSIVE VR':'SIMULATED / FIRST-PERSON VR';
   const vrEyeHeight = currentFloor * 4.2 + 1.7;
   camera.position.set(0,vrEyeHeight,-23); camera.lookAt(0,vrEyeHeight,0); cameraGoal=null;
-  if(!ok) toast('SIMULATED VR · MOUSE LOOK + WASD / TOUCH PAD');
+  if(!ok) toast('SIMULATED VR · WASD MOVE · E PICK UP · Q PLACE · AIM AT PRODUCE');
 }
 async function startRealAR() {
   if(!navigator.xr || !navigator.xr.requestSession) return false;
@@ -1476,6 +2056,7 @@ async function startAR() {
   document.querySelector('#scene-state').textContent=ok?'WEBXR / IMMERSIVE AR':'SIMULATED / AR MODEL VIEW';
 }
 function exitVR(showToast=true) {
+  if(desktopHeldItem){const worldPos=new THREE.Vector3();camera.getWorldPosition(worldPos);marketRoot.attach(desktopHeldItem);desktopHeldItem.position.copy(marketRoot.worldToLocal(worldPos));desktopHeldItem.userData.dropVelocity=null;desktopHeldItem=null;}
   if(actualXR && renderer.xr.getSession()) renderer.xr.getSession().end();
   actualXR=false; simulatedVR=false;
   document.querySelector('#vr-overlay').classList.remove('active');
@@ -1530,7 +2111,7 @@ function moveWalker(dt) {
   if(keys.KeyA||keys.ArrowLeft) dir.sub(right);
   if(dir.lengthSq()>0){dir.normalize().multiplyScalar(10*dt);camera.position.add(dir);controls.target.add(dir);}
 }
-window.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='Escape'&&simulatedVR)exitVR();});
+window.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='Escape'&&simulatedVR)exitVR();if(simulatedVR&&!actualXR&&(e.code==='KeyE'||e.code==='KeyQ'))desktopVRPickupOrDrop();});
 window.addEventListener('keyup',e=>{keys[e.code]=false;});
 canvas.addEventListener('click',()=>{ if(simulatedVR&&!actualXR&&document.pointerLockElement!==canvas&&innerWidth>750) canvas.requestPointerLock?.(); });
 document.addEventListener('mousemove',e=>{
@@ -1583,6 +2164,7 @@ byId('evening-button').addEventListener('click',()=>setDayMode(true));
 byId('circulation-toggle').addEventListener('click',()=>setCirculation(!byId('circulation-toggle').classList.contains('active')));
 byId('circulation-options').addEventListener('change',updateRouteToggles);
 byId('section-toggle').addEventListener('click',()=>setFloorEmphasis(!floorEmphasis));
+byId('journey-next').addEventListener('click',advanceMarketJourney);
 byId('close-info').addEventListener('click',()=>byId('info-panel').classList.toggle('collapsed'));
 byId('help-toggle').addEventListener('click',()=>byId('help-modal').classList.add('show'));
 byId('close-help').addEventListener('click',()=>byId('help-modal').classList.remove('show'));
@@ -1620,7 +2202,7 @@ function updateCamera(dt) {
 }
 function animate() {
   const dt=Math.min(clock.getDelta(),.04); const t=clock.elapsedTime;
-  controls.update(); updateCamera(dt); moveWalker(dt);
+  controls.update(); updateCamera(dt); moveWalker(dt); animateMarketWalkers(t); updateXRControllerTargets(); updateXRLocomotion(dt); animateDroppedProduce(dt);
   for(const p of petals){p.position.y+=dt*p.userData.speed;p.position.x+=Math.sin(t*.6+p.position.z)*dt*.22;p.rotation.z+=dt*.45;if(p.position.y>23)p.position.y=.5;}
   // Marching arrows animate along the optional circulation curves.
   for(const group of Object.values(routeGroups)) if(group.visible){
